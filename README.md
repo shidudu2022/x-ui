@@ -2,6 +2,8 @@
 
 面向运维 / 控制台类产品的 React 设计系统与组件馆。本仓库既是可运行的组件文档站，也可源码拷贝接入业务。
 
+[![X-UI 概览](docs/preview.jpg)](https://shidudu2022.github.io/x-ui/)
+
 ## 快速开始
 
 ```bash
