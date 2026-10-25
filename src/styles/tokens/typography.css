@@ -1,0 +1,232 @@
+/* Typography scale — single source of truth */
+
+:root {
+  --fs-xs: 11px;
+  --fs-sm: 12px;
+  --fs-md: 13px;
+  --fs-base: 14px;
+  --fs-lg: 15px;
+  --fs-xl: 16px;
+  --fs-2xl: 20px;
+  --fs-3xl: 24px;
+  --fs-page: 26px;
+
+  --lh-tight: 1.25;
+  --lh-normal: 1.45;
+  --lh-relaxed: 1.6;
+
+  --fw-normal: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 650;
+}
+
+/* Utility text */
+.text {
+  margin: 0;
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+  color: var(--text);
+  font-weight: var(--fw-normal);
+}
+
+.text-xs {
+  font-size: var(--fs-xs);
+}
+.text-sm {
+  font-size: var(--fs-sm);
+}
+.text-md {
+  font-size: var(--fs-md);
+}
+.text-base {
+  font-size: var(--fs-base);
+}
+.text-lg {
+  font-size: var(--fs-lg);
+}
+.text-xl {
+  font-size: var(--fs-xl);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+.text-faint {
+  color: var(--text-faint);
+}
+.text-strong {
+  font-weight: var(--fw-semibold);
+  color: var(--text);
+}
+
+.text-mono,
+.mono {
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.text-label {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
+  color: var(--text);
+}
+
+.text-hint,
+.hint {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  line-height: var(--lh-normal);
+}
+
+.text-caption {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  line-height: var(--lh-tight);
+}
+
+/* Headings */
+.heading {
+  margin: 0;
+  color: var(--text);
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.02em;
+  line-height: var(--lh-tight);
+}
+
+.heading-page {
+  font-size: var(--fs-3xl);
+  letter-spacing: -0.03em;
+}
+
+.heading-section {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-semibold);
+}
+
+.heading-card {
+  font-size: var(--fs-xl);
+  letter-spacing: -0.01em;
+}
+
+.heading-sub {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0;
+}
+
+/* Content area — page title bump (sidebar/topbar stay denser) */
+.content {
+  font-size: var(--fs-base);
+}
+
+.content .page-header h1,
+.content .heading-page {
+  font-size: var(--fs-page);
+}
+
+.content .page-header p {
+  font-size: var(--fs-base);
+}
+
+.content .btn {
+  font-size: var(--fs-base);
+}
+.content .btn.btn-sm {
+  font-size: var(--fs-sm);
+}
+.content .table {
+  font-size: var(--fs-base);
+}
+.content .table th {
+  font-size: var(--fs-md);
+}
+.content .table .actions .btn {
+  font-size: var(--fs-sm);
+}
+.content .mono,
+.content .text-mono {
+  font-size: var(--fs-sm);
+}
+.content .badge {
+  font-size: var(--fs-sm);
+}
+.content .empty h3,
+.content .empty .heading-card,
+.content .empty strong {
+  font-size: var(--fs-xl);
+}
+.content .empty p {
+  font-size: var(--fs-md);
+}
+.content .field label,
+.content .text-label {
+  font-size: var(--fs-base);
+}
+.content .field .hint,
+.content .text-hint {
+  font-size: var(--fs-sm);
+}
+.content .field input,
+.content .field select,
+.content .field textarea {
+  font-size: var(--fs-base);
+}
+.content .segmented button {
+  font-size: var(--fs-base);
+}
+.content .node-meta strong {
+  font-size: var(--fs-lg);
+}
+.content .node-meta span {
+  font-size: var(--fs-md);
+}
+.content .steps .step {
+  font-size: var(--fs-md);
+}
+.content .card h3,
+.content .heading-card {
+  font-size: var(--fs-xl);
+}
+.content .kv,
+.content .meta-row,
+.content .hint-inline {
+  font-size: var(--fs-md);
+}
+.content .log,
+.content pre.log {
+  font-size: var(--fs-sm);
+}
+.content .drawer-header strong,
+.content .modal-header strong {
+  font-size: var(--fs-xl);
+}
+
+/* Showcase */
+.showcase-section h2 {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.02em;
+}
+.showcase-section > p {
+  font-size: var(--fs-md);
+}
+
+/* Type scale demo swatches */
+.type-scale-row {
+  display: grid;
+  grid-template-columns: 100px 72px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.type-scale-row:last-child {
+  border-bottom: 0;
+}
+.type-scale-token {
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}

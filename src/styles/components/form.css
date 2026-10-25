@@ -1,0 +1,241 @@
+.empty {
+  padding: 48px 20px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.empty h3 {
+  margin: 0 0 6px;
+  color: var(--text);
+  font-size: 15px;
+}
+
+.empty p {
+  margin: 0 0 14px;
+  font-size: 12px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 12px;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.form-grid .full {
+  grid-column: 1 / -1;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.field .hint {
+  font-size: 13px;
+  color: var(--text-faint);
+}
+
+.field input,
+.field select,
+.field textarea {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  background: var(--control);
+  color: var(--text);
+  font-size: 13px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-soft);
+}
+
+.field textarea {
+  min-height: 100px;
+  resize: vertical;
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.segmented {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 2px;
+  width: 100%;
+  max-width: 280px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-2);
+  box-sizing: border-box;
+}
+
+.segmented button {
+  flex: 1 1 0;
+  min-width: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  padding: 8px 12px;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.segmented button:hover:not(.active) {
+  color: var(--text);
+  background: var(--hover);
+}
+
+.segmented button.active {
+  background: var(--primary);
+  color: var(--primary-ink);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  font-weight: 600;
+}
+
+.node-pick {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.node-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  cursor: pointer;
+}
+
+.node-option:hover {
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
+}
+
+.node-option.selected {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.node-option.ui-check,
+.node-option.ui-radio {
+  display: flex;
+  width: 100%;
+}
+
+.node-option .ui-check-box,
+.node-option .ui-radio-dot {
+  flex-shrink: 0;
+}
+
+.node-option .node-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Field states */
+.field input.is-invalid,
+.field select.is-invalid,
+.field textarea.is-invalid,
+.field .ui-select.is-invalid .ui-select-trigger {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px var(--danger-soft);
+}
+
+.field input:disabled,
+.field select:disabled,
+.field textarea:disabled,
+.field input[readonly],
+.field select[readonly],
+.field textarea[readonly] {
+  opacity: 0.65;
+  cursor: not-allowed;
+  background: var(--surface-2);
+}
+
+.input-group {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+}
+
+.input-group > input {
+  flex: 1;
+  min-width: 0;
+  border-radius: 0;
+}
+
+.input-group > input:first-child {
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+}
+
+.input-group > input:last-child {
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.input-group-affix {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.input-group-affix:first-child {
+  border-right: 0;
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+}
+
+.input-group-affix:last-child {
+  border-left: 0;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.input-group > input:not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+
+.input-group > input + .input-group-affix,
+.input-group-affix + input {
+  /* keep shared border */
+}
+
+.field-error {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--danger);
+  font-family: var(--mono);
+}
+

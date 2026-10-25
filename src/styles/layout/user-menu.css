@@ -1,0 +1,118 @@
+.user-menu {
+  position: relative;
+}
+
+.user-menu-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--sidebar-text);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    background 0.12s ease,
+    border-color 0.12s ease;
+}
+
+.user-menu-trigger:hover,
+.user-menu.open .user-menu-trigger {
+  background: var(--surface-2);
+  border-color: var(--border);
+}
+
+.user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: var(--primary);
+  color: var(--primary-ink);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.user-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+
+.user-meta strong {
+  font-size: 13px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-meta span {
+  font-size: 11px;
+  color: var(--sidebar-muted);
+  font-family: var(--mono);
+}
+
+.user-caret {
+  color: var(--sidebar-muted);
+  display: inline-flex;
+  transition: transform 0.15s ease;
+}
+
+.user-menu.open .user-caret {
+  transform: rotate(180deg);
+}
+
+.user-menu-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 6px);
+  z-index: 20;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-menu-panel.user-menu-panel-portal {
+  position: fixed;
+  right: auto;
+  z-index: 220;
+}
+
+.user-menu-panel button {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  padding: 8px 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.user-menu-panel button:hover {
+  background: var(--hover);
+}
+
+.user-menu-panel button.danger {
+  color: var(--danger);
+}
+
+.user-menu-panel button.danger:hover {
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+}

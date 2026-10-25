@@ -1,0 +1,78 @@
+.toast {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  z-index: 100;
+  max-width: min(400px, calc(100vw - 32px));
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  font-size: 13px;
+  font-weight: 450;
+  letter-spacing: 0.01em;
+  text-align: center;
+  color: var(--text);
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  transform: translate(-50%, -6px);
+  pointer-events: none;
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+.toast.toast-info {
+  color: var(--text);
+}
+
+.toast.toast-success {
+  color: var(--success);
+}
+
+.toast.toast-error {
+  color: var(--danger);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.overlay,
+#themeOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: none;
+  z-index: 40;
+}
+
+.overlay.open,
+#themeOverlay.open {
+  display: block;
+}
+
+/* Toast host — top center stack (k3s-start/web) */
+.toast-host {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  width: max-content;
+  max-width: min(400px, calc(100vw - 32px));
+}
+
+.toast-host .toast {
+  position: static;
+  transform: none;
+  opacity: 1;
+  pointer-events: auto;
+  width: max-content;
+  max-width: min(400px, calc(100vw - 32px));
+}
+

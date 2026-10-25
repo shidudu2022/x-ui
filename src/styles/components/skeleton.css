@@ -1,0 +1,106 @@
+/* Skeletons */
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.skeleton {
+  display: inline-block;
+  max-width: 100%;
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    var(--surface-2) 0%,
+    color-mix(in srgb, var(--primary) 16%, var(--surface-2)) 45%,
+    var(--surface-2) 90%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.2s ease-in-out infinite;
+  vertical-align: middle;
+}
+
+.skeleton-table {
+  padding: 8px 0 4px;
+}
+
+.skeleton-table-head,
+.skeleton-table-row {
+  display: grid;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 16px;
+}
+
+.skeleton-table-head {
+  border-bottom: 1px solid var(--hairline);
+  opacity: 0.7;
+}
+
+.skeleton-table-row {
+  border-bottom: 1px solid var(--hairline);
+}
+
+.skeleton-table-row:last-child {
+  border-bottom: 0;
+}
+
+.skeleton-detail-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.skeleton-detail-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.skeleton-node-pick {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeleton-node-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+  background: var(--surface-2);
+}
+
+.skeleton-node-meta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.skeleton-log {
+  padding: 12px 4px;
+}
+
+@media (max-width: 960px) {
+  .app {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .grid-2,
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+}

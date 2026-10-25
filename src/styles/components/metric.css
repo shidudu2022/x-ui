@@ -1,0 +1,25 @@
+.metric-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.metric {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  background: var(--surface-2);
+}
+
+.metric .label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.metric .value {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 4px;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}

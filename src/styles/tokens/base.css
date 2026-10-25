@@ -1,0 +1,81 @@
+/* Minimal — mode (dark/light) × accent */
+
+:root {
+  --radius: 10px;
+  --radius-sm: 8px;
+  --radius-lg: 14px;
+  --sidebar-w: 232px;
+  --sidebar-w-collapsed: 64px;
+  --font: "Inter", "SF Pro Text", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+  --mono: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, monospace;
+}
+
+body[data-mode="dark"] {
+  --bg: #111113;
+  --bg-elevated: #161618;
+  --surface: #18181b;
+  --surface-2: #1f1f23;
+  --surface-3: #27272a;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --text: #f4f4f5;
+  --text-muted: #a1a1aa;
+  --text-faint: #71717a;
+  --sidebar-bg: #141416;
+  --sidebar-text: #f4f4f5;
+  --sidebar-muted: #8b8b96;
+  --chrome: #141416;
+  --success: #34d399;
+  --success-soft: rgba(52, 211, 153, 0.12);
+  --warn: #fbbf24;
+  --warn-soft: rgba(251, 191, 36, 0.12);
+  --danger: #f87171;
+  --danger-soft: rgba(248, 113, 113, 0.12);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.4);
+  --log-bg: #0c0c0e;
+  --log-text: #d4d4d8;
+  --control: #1f1f23;
+  --hairline: rgba(255, 255, 255, 0.06);
+  --hover: rgba(255, 255, 255, 0.04);
+  --primary: #2dd4bf;
+  --primary-hover: #5eead4;
+  --primary-soft: rgba(45, 212, 191, 0.14);
+  --primary-ink: #042f2e;
+  --sidebar-active: rgba(45, 212, 191, 0.12);
+}
+
+body[data-mode="light"] {
+  --bg: #f7f7f8;
+  --bg-elevated: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f4f4f5;
+  --surface-3: #ececef;
+  --border: rgba(24, 24, 27, 0.08);
+  --border-strong: rgba(24, 24, 27, 0.12);
+  --text: #18181b;
+  --text-muted: #71717a;
+  --text-faint: #a1a1aa;
+  --sidebar-bg: #ffffff;
+  --sidebar-text: #18181b;
+  --sidebar-muted: #71717a;
+  --chrome: #ffffff;
+  --success: #059669;
+  --success-soft: rgba(5, 150, 105, 0.1);
+  --warn: #d97706;
+  --warn-soft: rgba(217, 119, 6, 0.1);
+  --danger: #dc2626;
+  --danger-soft: rgba(220, 38, 38, 0.1);
+  --shadow: 0 1px 2px rgba(24, 24, 27, 0.04);
+  --shadow-lg: 0 20px 48px rgba(24, 24, 27, 0.1);
+  --log-bg: #18181b;
+  --log-text: #d4d4d8;
+  --control: #f4f4f5;
+  --hairline: rgba(24, 24, 27, 0.06);
+  --hover: rgba(24, 24, 27, 0.04);
+  --primary: #0f766e;
+  --primary-hover: #0d9488;
+  --primary-soft: rgba(15, 118, 110, 0.1);
+  --primary-ink: #ffffff;
+  --sidebar-active: rgba(15, 118, 110, 0.1);
+}

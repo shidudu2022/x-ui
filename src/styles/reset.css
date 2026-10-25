@@ -1,0 +1,42 @@
+* {
+  box-sizing: border-box;
+}
+
+/* 不要用全局 [hidden]{display:none!important}，会打断 Next/React 流式 hydration */
+.stack[hidden],
+.page[hidden],
+.field[hidden],
+.drawer[hidden],
+.card[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+

@@ -1,0 +1,189 @@
+.btn {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.btn-sm {
+  padding: 4px 10px;
+  font-size: 12px;
+  line-height: 1.25;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.btn:hover:not(:disabled):not(.btn-primary):not(.btn-danger):not(.btn-ghost):not(.toggle-btn) {
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--border-strong));
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--primary-ink);
+  border-color: transparent;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+  border-color: transparent;
+}
+
+.btn-secondary {
+  background: var(--surface);
+}
+
+.btn-danger {
+  background: var(--danger-soft);
+  color: var(--danger);
+  border-color: color-mix(in srgb, var(--danger) 35%, var(--border));
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--danger) 18%, transparent);
+  border-color: color-mix(in srgb, var(--danger) 55%, var(--border));
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-muted);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--surface-2);
+  color: var(--text);
+  border-color: transparent;
+}
+
+/* Button-shaped checkbox / toggle */
+.toggle-btn {
+  background: var(--surface);
+  color: var(--text-muted);
+  border-color: var(--border-strong);
+  font-weight: 500;
+  user-select: none;
+}
+
+.toggle-btn .toggle-btn-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid var(--border-strong);
+  background: var(--control);
+  color: transparent;
+  flex-shrink: 0;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.toggle-btn.btn-sm .toggle-btn-check {
+  width: 12px;
+  height: 12px;
+  border-radius: 2.5px;
+}
+
+.toggle-btn:hover:not(:disabled) {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--border-strong));
+}
+
+.toggle-btn.checked {
+  color: var(--primary);
+  background: var(--primary-soft);
+  border-color: color-mix(in srgb, var(--primary) 42%, var(--border));
+}
+
+.toggle-btn.checked .toggle-btn-check {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-ink);
+}
+
+.toggle-btn.checked:hover:not(:disabled) {
+  color: var(--primary-hover);
+  background: color-mix(in srgb, var(--primary) 18%, transparent);
+  border-color: color-mix(in srgb, var(--primary) 55%, var(--border));
+}
+
+/* Compact row actions in tables */
+.table .actions .btn {
+  padding: 0 9px;
+  min-height: 26px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.table .actions .btn-secondary {
+  background: var(--surface-2);
+  color: var(--text-muted);
+  border-color: var(--border);
+}
+
+.table .actions .btn-secondary:hover:not(:disabled) {
+  color: var(--primary);
+  background: var(--primary-soft);
+  border-color: color-mix(in srgb, var(--primary) 42%, var(--border));
+}
+
+.table .actions .btn-primary {
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-color: color-mix(in srgb, var(--primary) 38%, var(--border));
+}
+
+.table .actions .btn-primary:hover:not(:disabled) {
+  color: var(--primary-hover);
+  background: color-mix(in srgb, var(--primary) 22%, transparent);
+  border-color: color-mix(in srgb, var(--primary) 55%, var(--border));
+}
+
+.table .actions .btn-danger {
+  background: transparent;
+  color: var(--danger);
+  border-color: color-mix(in srgb, var(--danger) 30%, var(--border));
+}
+
+.table .actions .btn-danger:hover:not(:disabled) {
+  background: var(--danger-soft);
+  border-color: color-mix(in srgb, var(--danger) 55%, var(--border));
+}
+
+.btn:focus-visible,
+.nav-item:focus-visible,
+.tab:focus-visible,
+.ui-select-trigger:focus-visible,
+.segmented button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+

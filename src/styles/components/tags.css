@@ -1,0 +1,79 @@
+/* Tags */
+.ui-tag-group {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.ui-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 550;
+  line-height: 1.4;
+  border: 1px solid transparent;
+  background: var(--surface-2);
+  color: var(--text-muted);
+}
+
+button.ui-tag {
+  cursor: pointer;
+  font: inherit;
+}
+
+.ui-tag.clickable:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.ui-tag-neutral {
+  background: var(--surface-2);
+  color: var(--text-muted);
+  border-color: var(--border);
+}
+
+.ui-tag-primary {
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-color: color-mix(in srgb, var(--primary) 28%, var(--border));
+}
+
+.ui-tag-info {
+  background: color-mix(in srgb, #38bdf8 14%, transparent);
+  color: #0ea5e9;
+}
+
+.ui-tag-success {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.ui-tag-warn {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+
+.ui-tag-danger {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.content .ui-tag {
+  font-size: 12px;
+}
+
+.tag {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-right: 4px;
+  font-family: var(--mono);
+}
+

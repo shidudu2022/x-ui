@@ -1,0 +1,121 @@
+/*
+ * Density overrides — must live in a layer AFTER components,
+ * otherwise component rules always win and compact looks identical.
+ */
+
+body[data-density='compact'] {
+  --density-pad-y: 6px;
+  --density-pad-x: 10px;
+  --density-gap: 8px;
+}
+
+body[data-density='compact'] .content {
+  padding: 14px 16px 32px;
+}
+
+body[data-density='compact'] .page-header {
+  margin-bottom: 14px;
+  gap: 12px;
+}
+
+body[data-density='compact'] .page-header h1,
+body[data-density='compact'] .content .page-header h1 {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+body[data-density='compact'] .page-header p,
+body[data-density='compact'] .content .page-header p {
+  font-size: 12px;
+}
+
+body[data-density='compact'] .topbar {
+  height: 44px;
+  padding: 0 16px;
+}
+
+body[data-density='compact'] .btn:not(.btn-sm) {
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+body[data-density='compact'] .content .btn:not(.btn-sm) {
+  font-size: 13px;
+}
+
+body[data-density='compact'] .card-pad,
+body[data-density='compact'] .card.padded {
+  padding: 12px 14px;
+}
+
+body[data-density='compact'] .table th,
+body[data-density='compact'] .table td {
+  padding: 6px 8px;
+}
+
+body[data-density='compact'] .field {
+  margin-bottom: 10px;
+}
+
+body[data-density='compact'] .field input,
+body[data-density='compact'] .field select,
+body[data-density='compact'] .field textarea,
+body[data-density='compact'] .ui-select-trigger,
+body[data-density='compact'] .combobox-trigger input,
+body[data-density='compact'] .cascader-trigger {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  font-size: 13px;
+}
+
+body[data-density='compact'] .nav-item {
+  padding: 7px 10px;
+  font-size: 13px;
+}
+
+body[data-density='compact'] .alert {
+  padding: 8px 12px;
+  gap: 10px;
+}
+
+body[data-density='compact'] .showcase-section {
+  margin-bottom: 24px;
+}
+
+body[data-density='compact'] .showcase-section h2 {
+  font-size: 16px;
+}
+
+body[data-density='compact'] .index-catalog {
+  gap: 16px;
+}
+
+body[data-density='compact'] .index-grid {
+  gap: 6px;
+}
+
+body[data-density='compact'] .index-tile {
+  padding: 9px 10px;
+  gap: 2px;
+}
+
+body[data-density='compact'] .index-tile-label {
+  font-size: 12px;
+}
+
+body[data-density='compact'] .index-tile-desc {
+  font-size: 11px;
+}
+
+body[data-density='compact'] .metric,
+body[data-density='compact'] .stat {
+  padding: 10px 12px;
+}
+
+body[data-density='compact'] .stack {
+  gap: 10px;
+}
+
+body[data-density='compact'] .actions {
+  gap: 6px;
+}

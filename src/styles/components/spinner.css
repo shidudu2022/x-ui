@@ -1,0 +1,56 @@
+/* Spinner — track soft primary, arc current accent */
+.spinner {
+  width: 1em;
+  height: 1em;
+  border: 2px solid color-mix(in srgb, var(--primary) 22%, transparent);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  display: inline-block;
+  animation: xui-spin 0.7s linear infinite;
+  vertical-align: -0.125em;
+  color: var(--primary);
+}
+
+.spinner-sm {
+  width: 14px;
+  height: 14px;
+}
+
+.spinner-lg {
+  width: 28px;
+  height: 28px;
+  border-width: 3px;
+}
+
+@keyframes xui-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.btn.is-loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.btn.is-loading .btn-label {
+  opacity: 0;
+}
+
+.btn.is-loading .btn-spinner {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+/* Keep contrast on filled primary / danger buttons */
+.btn-primary.is-loading .spinner {
+  border-color: color-mix(in srgb, var(--primary-ink) 35%, transparent);
+  border-top-color: var(--primary-ink);
+}
+
+.btn-danger.is-loading .spinner {
+  border-color: color-mix(in srgb, #fff 35%, transparent);
+  border-top-color: #fff;
+}

@@ -1,0 +1,122 @@
+/* Showcase helpers (demo only) */
+.showcase-section {
+  margin-bottom: 36px;
+}
+
+.showcase-section h2 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+
+.showcase-section > p {
+  margin: 0 0 16px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.showcase-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.showcase-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.demo-nav-group {
+  margin-top: 8px;
+}
+
+.demo-nav-group-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--sidebar-muted);
+  padding: 8px 12px 4px;
+}
+
+/* Overview catalog index */
+.index-catalog {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.index-group-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.index-group-head h3 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+
+.index-group-head .muted {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.index-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  gap: 8px;
+}
+
+.index-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 12px 11px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+
+.index-tile:hover {
+  border-color: color-mix(in srgb, var(--primary) 45%, var(--border));
+  background: color-mix(in srgb, var(--primary-soft) 55%, var(--surface));
+}
+
+.index-tile:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.index-tile-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.index-tile-desc {
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--text-muted);
+}
+
+.index-footnote {
+  margin: 28px 0 0;
+  padding-top: 4px;
+  font-size: 13px;
+}
+
+@media (max-width: 640px) {
+  .index-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

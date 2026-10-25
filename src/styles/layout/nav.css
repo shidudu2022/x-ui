@@ -1,0 +1,238 @@
+.nav-scroll {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-right: 0;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+}
+
+.nav-scroll.has-up .nav {
+  padding-top: 4px;
+  mask-image: linear-gradient(to bottom, transparent 0, #000 18px, #000 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 18px, #000 100%);
+}
+
+.nav-scroll.has-down .nav {
+  padding-bottom: 4px;
+  mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 18px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 18px), transparent 100%);
+}
+
+.nav-scroll.has-up.has-down .nav {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 18px,
+    #000 calc(100% - 18px),
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 18px,
+    #000 calc(100% - 18px),
+    transparent 100%
+  );
+}
+
+.nav::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+/* Overlay chevrons — no dedicated strip / divider */
+.nav-scroll-btn {
+  position: absolute;
+  left: 50%;
+  z-index: 3;
+  width: 28px;
+  height: 20px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--sidebar-muted);
+  background: transparent;
+  transform: translateX(-50%);
+  opacity: 0.72;
+}
+
+.nav-scroll-up {
+  top: 0;
+}
+
+.nav-scroll-down {
+  bottom: 0;
+}
+
+.nav-scroll-btn:hover {
+  color: var(--primary);
+  opacity: 1;
+}
+
+.nav-scroll-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+  border-radius: 6px;
+}
+
+.nav-item {
+  border: 0;
+  background: transparent;
+  color: var(--sidebar-muted);
+  text-align: left;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+  font-weight: 500;
+  text-decoration: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.nav-item:hover {
+  background: var(--hover);
+  color: var(--sidebar-text);
+}
+
+.nav-item.active {
+  background: var(--sidebar-active);
+  color: var(--primary);
+}
+
+.nav-item-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.88;
+  color: inherit;
+}
+
+.nav-icon svg,
+.nav-icon-svg {
+  display: block;
+  flex-shrink: 0;
+}
+
+.nav-item.active .nav-icon,
+.nav-item:hover .nav-icon {
+  opacity: 1;
+}
+
+.nav-divider {
+  height: 1px;
+  margin: 8px 8px;
+  background: var(--hairline);
+}
+
+.sidebar-foot {
+  flex: 0 0 auto;
+  margin-top: 0;
+  padding: 8px 4px 4px;
+  position: relative;
+  border-top: 1px solid var(--hairline);
+  background: var(--sidebar-bg);
+}
+
+.nav-tooltip-wrap.tooltip-wrap {
+  display: block;
+  width: 100%;
+  position: relative;
+}
+
+.nav-tooltip-wrap > span:first-child {
+  display: block;
+  width: 100%;
+}
+
+.tooltip-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+/* Collapsed: icons only */
+.sidebar.is-collapsed .demo-nav-group-label,
+.sidebar.is-collapsed .nav-item-label,
+.sidebar.is-collapsed .nav-divider {
+  display: none;
+}
+
+.sidebar.is-collapsed .demo-nav-group + .demo-nav-group {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--hairline);
+}
+
+.sidebar.is-collapsed .nav-item {
+  justify-content: center;
+  padding: 10px 0;
+  gap: 0;
+}
+
+.sidebar.is-collapsed .user-meta,
+.sidebar.is-collapsed .user-caret {
+  display: none;
+}
+
+.sidebar.is-collapsed .sidebar-foot {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 4px;
+}
+
+.sidebar.is-collapsed .user-menu {
+  width: auto;
+}
+
+.sidebar.is-collapsed .user-menu-trigger {
+  width: 36px;
+  height: 36px;
+  padding: 4px;
+  margin: 0;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.sidebar.is-collapsed .user-menu-trigger:hover,
+.sidebar.is-collapsed .user-menu.open .user-menu-trigger {
+  background: var(--hover);
+  border-color: transparent;
+}
+
+.sidebar.is-collapsed .user-menu-trigger .avatar {
+  width: 28px;
+  height: 28px;
+}

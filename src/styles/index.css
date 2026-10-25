@@ -1,0 +1,51 @@
+/* x-ui styles — modular sources, Vite bundles to one CSS in production */
+@layer tokens, reset, layout, components, charts, demo, density;
+
+@import './tokens/base.css' layer(tokens);
+@import './tokens/accents.css' layer(tokens);
+@import './tokens/typography.css' layer(tokens);
+@import './tokens/charts.css' layer(tokens);
+
+@import './reset.css' layer(reset);
+
+@import './layout/shell.css' layer(layout);
+@import './layout/brand.css' layer(layout);
+@import './layout/nav.css' layer(layout);
+@import './layout/breadcrumbs.css' layer(layout);
+@import './layout/user-menu.css' layer(layout);
+
+@import './components/button.css' layer(components);
+@import './components/card.css' layer(components);
+@import './components/form.css' layer(components);
+@import './components/select.css' layer(components);
+@import './components/checkbox-radio.css' layer(components);
+@import './components/switch.css' layer(components);
+@import './components/table.css' layer(components);
+@import './components/tags.css' layer(components);
+@import './components/badge.css' layer(components);
+@import './components/alert.css' layer(components);
+@import './components/toast.css' layer(components);
+@import './components/modal-drawer.css' layer(components);
+@import './components/tabs.css' layer(components);
+@import './components/progress.css' layer(components);
+@import './components/spinner.css' layer(components);
+@import './components/pagination.css' layer(components);
+@import './components/accordion.css' layer(components);
+@import './components/avatar.css' layer(components);
+@import './components/timeline.css' layer(components);
+@import './components/tree.css' layer(components);
+@import './components/tooltip-popover.css' layer(components);
+@import './components/command.css' layer(components);
+@import './components/login.css' layer(components);
+@import './components/skeleton.css' layer(components);
+@import './components/steps.css' layer(components);
+@import './components/search.css' layer(components);
+@import './components/metric.css' layer(components);
+@import './components/misc.css' layer(components);
+@import './components/advanced.css' layer(components);
+
+@import './charts/chart.css' layer(charts);
+@import './demo/showcase.css' layer(demo);
+
+/* Density last so compact overrides can win */
+@import './tokens/density.css' layer(density);

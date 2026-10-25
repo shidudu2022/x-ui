@@ -1,0 +1,118 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.pod-tree-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+}
+
+.pod-tree-toggle:hover .pod-tree-ns {
+  color: var(--primary);
+}
+
+.pod-tree-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
+
+.pod-tree-chevron svg {
+  width: 12px;
+  height: 12px;
+}
+
+.pod-tree-ns {
+  font-weight: 600;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.pod-tree-root td {
+  vertical-align: middle;
+}
+
+.pod-tree-leaf td {
+  color: var(--text);
+}
+
+.pod-tree-branch {
+  display: inline-flex;
+  align-items: center;
+  padding-left: 4px;
+}
+
+.pod-tree-rail {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-left: 6px;
+  border-left: 1.5px solid var(--border-strong);
+  border-bottom: 1.5px solid var(--border-strong);
+  border-bottom-left-radius: 2px;
+  opacity: 0.85;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--hairline);
+  vertical-align: middle;
+}
+
+.table th {
+  font-size: 12px;
+  color: var(--text-muted);
+  background: transparent;
+  font-weight: 500;
+}
+
+.table tr:last-child td {
+  border-bottom: 0;
+}
+
+.table tr.clickable {
+  cursor: pointer;
+}
+
+.table tr.clickable:hover td,
+.table tr:hover td {
+  background: var(--hover);
+}
+
+/* Table sort / select */
+.table th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.table th.sortable:hover {
+  color: var(--text);
+}
+
+.table .sort-icon {
+  margin-left: 4px;
+  color: var(--text-faint);
+  vertical-align: middle;
+}
+
+.table .row-check {
+  width: 36px;
+}
+

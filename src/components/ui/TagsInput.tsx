@@ -1,0 +1,54 @@
+import { useState, type KeyboardEvent } from 'react'
+import { X } from 'lucide-react'
+import { cn } from '@/lib/cn'
+
+export function TagsInput({
+  value,
+  onChange,
+  placeholder = '输入后回车添加',
+  className,
+}: {
+  value: string[]
+  onChange: (tags: string[]) => void
+  placeholder?: string
+  className?: string
+}) {
+  const [draft, setDraft] = useState('')
+
+  function add(tag: string) {
+    const next = tag.trim()
+    if (!next || value.includes(next)) return
+    onChange([...value, next])
+    setDraft('')
+  }
+
+  function onKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault()
+      add(draft)
+    }
+    if (e.key === 'Backspace' && !draft && value.length) {
+      onChange(value.slice(0, -1))
+    }
+  }
+
+  return (
+    <div className={cn('tags-input', className)}>
+      {value.map((tag) => (
+        <span key={tag} className="tag-chip">
+          {tag}
+          <button type="button" aria-label={`移除 ${tag}`} onClick={() => onChange(value.filter((t) => t !== tag))}>
+            <X size={12} />
+          </button>
+        </span>
+      ))}
+      <input
+        value={draft}
+        onChange={(e) => setDraft(e.target.value)}
+        onKeyDown={onKeyDown}
+        onBlur={() => add(draft)}
+        placeholder={value.length ? '' : placeholder}
+      />
+    </div>
+  )
+}

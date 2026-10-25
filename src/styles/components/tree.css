@@ -1,0 +1,35 @@
+/* Tree */
+.tree {
+  font-size: 13px;
+}
+
+.tree-node {
+  user-select: none;
+}
+
+.tree-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.tree-row:hover {
+  background: var(--hover);
+}
+
+.tree-row.active {
+  background: var(--primary-soft);
+}
+
+.tree-children {
+  padding-left: 18px;
+}
+
+.tree-chevron {
+  width: 16px;
+  color: var(--text-muted);
+}
+
