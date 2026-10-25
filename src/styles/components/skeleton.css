@@ -24,20 +24,23 @@
 }
 
 .skeleton-table {
-  padding: 8px 0 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 4px 0;
 }
 
 .skeleton-table-head,
 .skeleton-table-row {
   display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
   align-items: center;
-  padding: 14px 16px;
+  padding: 12px 16px;
 }
 
 .skeleton-table-head {
   border-bottom: 1px solid var(--hairline);
-  opacity: 0.7;
 }
 
 .skeleton-table-row {
@@ -46,6 +49,11 @@
 
 .skeleton-table-row:last-child {
   border-bottom: 0;
+}
+
+.skeleton-table-cell {
+  display: block;
+  min-height: 12px;
 }
 
 .skeleton-detail-header {
@@ -87,20 +95,4 @@
 
 .skeleton-log {
   padding: 12px 4px;
-}
-
-@media (max-width: 960px) {
-  .app {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar {
-    display: none;
-  }
-
-  .grid-2,
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-
 }

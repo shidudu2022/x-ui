@@ -6,6 +6,8 @@
   --radius-lg: 14px;
   --sidebar-w: 232px;
   --sidebar-w-collapsed: 64px;
+  --control-h: 36px;
+  --control-h-sm: 28px;
   --font: "Inter", "SF Pro Text", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
   --mono: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, monospace;
 }

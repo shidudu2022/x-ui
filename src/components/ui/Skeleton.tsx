@@ -5,12 +5,24 @@ export function Skeleton({ className, style }: { className?: string; style?: CSS
   return <div className={cn('skeleton', className)} style={style} aria-hidden />
 }
 
-export function SkeletonTable({ rows = 4 }: { rows?: number }) {
+export function SkeletonTable({ rows = 4, cols = 4 }: { rows?: number; cols?: number }) {
   return (
     <div className="skeleton-table" aria-hidden>
-      <div className="skeleton-table-head skeleton" />
+      <div className="skeleton-table-head">
+        {Array.from({ length: cols }).map((_, i) => (
+          <Skeleton key={i} className="skeleton-table-cell" style={{ height: 12, width: '70%' }} />
+        ))}
+      </div>
       {Array.from({ length: rows }).map((_, i) => (
-        <div key={i} className="skeleton-table-row skeleton" />
+        <div key={i} className="skeleton-table-row">
+          {Array.from({ length: cols }).map((_, j) => (
+            <Skeleton
+              key={j}
+              className="skeleton-table-cell"
+              style={{ height: 14, width: j === 0 ? '85%' : `${55 + ((i + j) % 3) * 12}%` }}
+            />
+          ))}
+        </div>
       ))}
     </div>
   )

@@ -5,8 +5,8 @@ import {
   Field,
   FormPage,
   Input,
-  NativeSelect,
   SectionCard,
+  Select,
   Switch,
   Text,
   Textarea,
@@ -42,14 +42,15 @@ export function ExampleFormPage() {
               />
             </Field>
             <Field label="地区" htmlFor="ex-region">
-              <NativeSelect
-                id="ex-region"
+              <Select
+                block
                 value={region}
-                onChange={(e) => setRegion(e.target.value)}
-              >
-                <option value="cn">中国镜像</option>
-                <option value="global">Global</option>
-              </NativeSelect>
+                onChange={setRegion}
+                options={[
+                  { value: 'cn', label: '中国镜像' },
+                  { value: 'global', label: 'Global' },
+                ]}
+              />
             </Field>
             <Field label="备注" htmlFor="ex-notes" className="full">
               <Textarea

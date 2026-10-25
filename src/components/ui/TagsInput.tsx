@@ -35,10 +35,10 @@ export function TagsInput({
   return (
     <div className={cn('tags-input', className)}>
       {value.map((tag) => (
-        <span key={tag} className="tag-chip">
-          {tag}
+        <span key={tag} className="tag-chip" title={tag}>
+          <span className="tag-chip-label">{tag}</span>
           <button type="button" aria-label={`移除 ${tag}`} onClick={() => onChange(value.filter((t) => t !== tag))}>
-            <X size={12} />
+            <X size={12} strokeWidth={2} />
           </button>
         </span>
       ))}
@@ -48,6 +48,7 @@ export function TagsInput({
         onKeyDown={onKeyDown}
         onBlur={() => add(draft)}
         placeholder={value.length ? '' : placeholder}
+        aria-label={placeholder}
       />
     </div>
   )

@@ -140,7 +140,9 @@ export function DataTable<T>({
           <div className="actions">{bulkActions}</div>
         </div>
       ) : null}
-      <Table columns={cols} rows={pageRows} rowKey={rowKey} onRowClick={onRowClick} />
+      <div className="data-table-scroll">
+        <Table columns={cols} rows={pageRows} rowKey={rowKey} onRowClick={onRowClick} />
+      </div>
       <div className="data-table-footer">
         <div className="data-table-summary">
           <span>

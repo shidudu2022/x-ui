@@ -113,10 +113,52 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
   padding: 0 22px;
   position: sticky;
   top: 0;
   z-index: 10;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+}
+
+.topbar-menu-btn {
+  display: none;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  line-height: 0;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.topbar-menu-btn:hover {
+  background: var(--hover);
+  border-color: color-mix(in srgb, var(--primary) 35%, var(--border));
+  color: var(--primary);
+}
+
+.topbar-menu-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
 }
 
 .topbar-title {
@@ -133,6 +175,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
+}
+
+.sidebar-backdrop {
+  display: none;
 }
 
 .crumb-link {
@@ -264,21 +311,24 @@ button.pill-action:hover {
   font-size: 13px;
 }
 .content .field label {
-  font-size: 14px;
+  font-size: 13px;
 }
 .content .field .hint {
   font-size: 12px;
 }
 .content .field input,
 .content .field select,
-.content .field textarea {
-  font-size: 14px;
-}
-.content .field textarea {
-  font-size: 12px;
+.content .field textarea,
+.content .ui-input,
+.content .ui-textarea,
+.content .ui-select-trigger,
+.content .combobox-trigger input,
+.content .tags-input input,
+.content .cascader-trigger {
+  font-size: 13px;
 }
 .content .segmented button {
-  font-size: 14px;
+  font-size: 13px;
 }
 .content .node-meta strong {
   font-size: 15px;

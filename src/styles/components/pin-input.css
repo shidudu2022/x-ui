@@ -1,0 +1,76 @@
+.pin-input {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.pin-input-cell {
+  box-sizing: border-box;
+  flex: 1 1 0;
+  min-width: 0;
+  width: 100%;
+  max-width: 48px;
+  height: var(--control-h);
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--control);
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  font-family: var(--mono);
+  line-height: 1;
+  text-align: center;
+  caret-color: var(--primary);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+
+.pin-input-cell::placeholder {
+  color: var(--text-faint);
+}
+
+.pin-input-cell:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--primary) 35%, var(--border-strong));
+}
+
+.pin-input-cell:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+  background: var(--surface);
+}
+
+.pin-input.is-invalid .pin-input-cell {
+  border-color: var(--danger);
+}
+
+.pin-input.is-invalid .pin-input-cell:focus {
+  box-shadow: 0 0 0 3px var(--danger-soft);
+}
+
+.pin-input.is-disabled .pin-input-cell,
+.pin-input-cell:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  background: var(--surface-2);
+}
+
+@media (max-width: 960px) {
+  .pin-input {
+    gap: 6px;
+  }
+
+  .pin-input-cell {
+    max-width: none;
+    height: 44px;
+    font-size: 18px;
+  }
+}

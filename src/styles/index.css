@@ -1,5 +1,5 @@
 /* x-ui styles — modular sources, Vite bundles to one CSS in production */
-@layer tokens, reset, layout, components, charts, demo, density;
+@layer tokens, reset, layout, components, charts, demo, responsive, density;
 
 @import './tokens/base.css' layer(tokens);
 @import './tokens/accents.css' layer(tokens);
@@ -17,6 +17,7 @@
 @import './components/button.css' layer(components);
 @import './components/card.css' layer(components);
 @import './components/form.css' layer(components);
+@import './components/pin-input.css' layer(components);
 @import './components/select.css' layer(components);
 @import './components/checkbox-radio.css' layer(components);
 @import './components/switch.css' layer(components);
@@ -46,6 +47,9 @@
 
 @import './charts/chart.css' layer(charts);
 @import './demo/showcase.css' layer(demo);
+
+/* After components so mobile overrides (e.g. topbar icon size) win */
+@import './layout/responsive.css' layer(responsive);
 
 /* Density last so compact overrides can win */
 @import './tokens/density.css' layer(density);

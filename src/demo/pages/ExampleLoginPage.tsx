@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { Button, Field, Input, LoginCard, useToast } from '@/components/ui'
+import { Button, Field, Input, LoginCard, PinInput, useToast } from '@/components/ui'
 
 export function ExampleLoginPage() {
   const { toast } = useToast()
-  const [needTotp, setNeedTotp] = useState(false)
+  const [totp, setTotp] = useState('')
 
   return (
     <LoginCard
@@ -24,21 +24,18 @@ export function ExampleLoginPage() {
           autoComplete="current-password"
         />
       </Field>
-      {needTotp ? (
-        <Field label="谷歌验证码" htmlFor="login-totp" hint="设计稿任意 6 位数字可通过。">
-          <Input id="login-totp" inputMode="numeric" maxLength={6} placeholder="6 位动态码" />
-        </Field>
-      ) : null}
+      <Field label="谷歌验证码" htmlFor="login-totp" hint="演示任意 6 位数字可通过。">
+        <PinInput
+          id="login-totp"
+          length={6}
+          value={totp}
+          onChange={setTotp}
+          autoFocus={false}
+          aria-label="谷歌验证码"
+        />
+      </Field>
       <Button variant="primary" type="submit" style={{ width: '100%' }}>
         登录
-      </Button>
-      <Button
-        variant="ghost"
-        type="button"
-        style={{ width: '100%' }}
-        onClick={() => setNeedTotp((v) => !v)}
-      >
-        {needTotp ? '隐藏验证码' : '演示：需要验证码'}
       </Button>
     </LoginCard>
   )

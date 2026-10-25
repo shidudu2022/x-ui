@@ -29,7 +29,13 @@ export function Input({
   className,
   ...rest
 }: InputHTMLAttributes<HTMLInputElement> & ControlProps) {
-  return <input className={cn(invalid && 'is-invalid', className)} aria-invalid={invalid || undefined} {...rest} />
+  return (
+    <input
+      className={cn('ui-input', invalid && 'is-invalid', className)}
+      aria-invalid={invalid || undefined}
+      {...rest}
+    />
+  )
 }
 
 export function Textarea({
@@ -38,7 +44,11 @@ export function Textarea({
   ...rest
 }: TextareaHTMLAttributes<HTMLTextAreaElement> & ControlProps) {
   return (
-    <textarea className={cn(invalid && 'is-invalid', className)} aria-invalid={invalid || undefined} {...rest} />
+    <textarea
+      className={cn('ui-textarea', invalid && 'is-invalid', className)}
+      aria-invalid={invalid || undefined}
+      {...rest}
+    />
   )
 }
 
@@ -49,7 +59,11 @@ export function NativeSelect({
   ...rest
 }: SelectHTMLAttributes<HTMLSelectElement> & ControlProps & { children: ReactNode }) {
   return (
-    <select className={cn(invalid && 'is-invalid', className)} aria-invalid={invalid || undefined} {...rest}>
+    <select
+      className={cn('ui-input', invalid && 'is-invalid', className)}
+      aria-invalid={invalid || undefined}
+      {...rest}
+    >
       {children}
     </select>
   )

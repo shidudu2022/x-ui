@@ -7,6 +7,8 @@ body[data-density='compact'] {
   --density-pad-y: 6px;
   --density-pad-x: 10px;
   --density-gap: 8px;
+  --control-h: 32px;
+  --control-h-sm: 26px;
 }
 
 body[data-density='compact'] .content {
@@ -59,13 +61,21 @@ body[data-density='compact'] .field {
 
 body[data-density='compact'] .field input,
 body[data-density='compact'] .field select,
-body[data-density='compact'] .field textarea,
 body[data-density='compact'] .ui-select-trigger,
 body[data-density='compact'] .combobox-trigger input,
 body[data-density='compact'] .cascader-trigger {
-  padding-top: 6px;
-  padding-bottom: 6px;
   font-size: 13px;
+}
+
+body[data-density='compact'] .field textarea {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-size: 13px;
+}
+
+body[data-density='compact'] .tags-input {
+  min-height: var(--control-h);
+  padding: 4px 6px;
 }
 
 body[data-density='compact'] .nav-item {

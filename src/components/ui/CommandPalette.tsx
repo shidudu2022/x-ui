@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { Search } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { Drawer } from './Drawer'
+import { Input } from './Field'
 
 export type CommandItem = {
   id: string
@@ -87,10 +88,10 @@ export function CommandPalette({
       <div className="stack search-drawer">
         <div className="field">
           <div className="input-group">
-            <span className="input-group-affix">
-              <Search size={14} />
+            <span className="input-group-affix" aria-hidden>
+              <Search size={14} strokeWidth={2} />
             </span>
-            <input
+            <Input
               autoFocus
               value={query}
               onChange={(e) => {
@@ -98,6 +99,7 @@ export function CommandPalette({
                 setActive(0)
               }}
               placeholder={placeholder}
+              aria-label={placeholder}
             />
           </div>
         </div>

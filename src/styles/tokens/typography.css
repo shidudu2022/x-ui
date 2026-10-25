@@ -162,7 +162,7 @@
 }
 .content .field label,
 .content .text-label {
-  font-size: var(--fs-base);
+  font-size: var(--fs-md);
 }
 .content .field .hint,
 .content .text-hint {
@@ -170,8 +170,14 @@
 }
 .content .field input,
 .content .field select,
-.content .field textarea {
-  font-size: var(--fs-base);
+.content .field textarea,
+.content .ui-input,
+.content .ui-textarea,
+.content .ui-select-trigger,
+.content .combobox-trigger input,
+.content .tags-input input,
+.content .cascader-trigger {
+  font-size: var(--fs-md);
 }
 .content .segmented button {
   font-size: var(--fs-base);

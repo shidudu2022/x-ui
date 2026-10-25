@@ -20,6 +20,7 @@ export type NavGroup = {
 const SCROLL_STEP = 120
 
 export function Sidebar({
+  id,
   brand,
   groups,
   footer,
@@ -27,6 +28,7 @@ export function Sidebar({
   onToggleCollapse,
   className,
 }: {
+  id?: string
   brand?: ReactNode
   groups: NavGroup[]
   footer?: ReactNode
@@ -67,7 +69,10 @@ export function Sidebar({
   }
 
   return (
-    <aside className={cn('sidebar', collapsed && 'is-collapsed', className)}>
+    <aside
+      id={id}
+      className={cn('sidebar', collapsed && 'is-collapsed', className)}
+    >
       <div className="sidebar-head">{brand ?? <Brand showText={!collapsed} />}</div>
 
       <div className={cn('nav-scroll', canUp && 'has-up', canDown && 'has-down')}>

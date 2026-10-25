@@ -9,6 +9,7 @@ import {
   PageHeader,
   Popover,
   Progress,
+  StrongConfirm,
   Tooltip,
   useToast,
 } from '@/components/ui'
@@ -19,10 +20,11 @@ export function FeedbackPage() {
   const [modal, setModal] = useState(false)
   const [drawer, setDrawer] = useState(false)
   const [confirm, setConfirm] = useState(false)
+  const [strong, setStrong] = useState(false)
 
   return (
     <div>
-      <PageHeader title="反馈" description="Alert、Toast、Modal、Drawer、Tooltip、Progress。" />
+      <PageHeader title="反馈" description="Alert、Toast、Modal、Drawer、强确认、Tooltip、Progress。" />
 
       <ShowcaseSection title="Alert / Banner / Progress">
         <div className="stack">
@@ -51,7 +53,10 @@ export function FeedbackPage() {
           <Button onClick={() => setModal(true)}>打开 Modal</Button>
           <Button onClick={() => setDrawer(true)}>打开 Drawer</Button>
           <Button variant="danger" onClick={() => setConfirm(true)}>
-            确认删除
+            普通确认
+          </Button>
+          <Button variant="danger" onClick={() => setStrong(true)}>
+            强确认删除
           </Button>
           <Tooltip content="快捷说明">
             <Button variant="ghost">悬停我</Button>
@@ -60,6 +65,10 @@ export function FeedbackPage() {
             <p style={{ margin: 0, fontSize: 13 }}>锚点浮层内容，不同于全屏 Drawer。</p>
           </Popover>
         </div>
+        <p className="muted" style={{ margin: '10px 0 0', fontSize: 12 }}>
+          删除等不可逆操作请用 <code>StrongConfirm</code> / <code>ConfirmModal</code>
+          （居中 Modal + 输入资源名），不要用 Drawer。
+        </p>
       </ShowcaseSection>
 
       <Modal
@@ -90,22 +99,29 @@ export function FeedbackPage() {
           </Button>
         }
       >
-        <p className="muted">右侧抽屉；也可设置 side=&quot;left&quot;。</p>
+        <p className="muted">右侧抽屉适合表单、列表、搜索；不适合强确认删除。</p>
       </Drawer>
 
       <ConfirmModal
         open={confirm}
         onClose={() => setConfirm(false)}
-        title="删除资源"
-        danger
-        confirmValue="delete-me"
-        confirmText="删除"
-        onConfirm={() => toast('已删除', 'success')}
+        title="确认操作"
+        onConfirm={() => toast('已确认', 'info')}
       >
         <p className="muted" style={{ margin: 0 }}>
-          此操作不可恢复。
+          无需输入名称的普通确认。
         </p>
       </ConfirmModal>
+
+      <StrongConfirm
+        open={strong}
+        onClose={() => setStrong(false)}
+        title="删除集群"
+        resourceName="cluster-01"
+        onConfirm={() => toast('已删除 cluster-01', 'success')}
+      >
+        将永久删除该集群及其节点、作业记录。
+      </StrongConfirm>
     </div>
   )
 }

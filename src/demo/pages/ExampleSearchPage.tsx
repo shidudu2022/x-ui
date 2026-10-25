@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Button, Card, Input, PageHeader, Tag } from '@/components/ui'
+import { Button, Card, Field, Input, PageHeader, Tag } from '@/components/ui'
 
 const ALL = [
   { id: '1', title: 'Button 组件', type: '组件', path: '/components/buttons' },
@@ -20,23 +20,22 @@ export function ExampleSearchPage() {
   return (
     <div>
       <PageHeader title="搜索结果" description="顶栏搜索落地页模式。" />
-      <Card padded>
-        <Input
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder="搜索组件 / 示例…"
-          autoFocus
-        />
-        <p className="muted" style={{ margin: '10px 0 0', fontSize: 12 }}>
-          找到 {results.length} 条结果
-        </p>
-        <ul className="search-result-list" style={{ marginTop: 12 }}>
+      <Card padded className="stack">
+        <Field label="关键词" htmlFor="search-q">
+          <Input
+            id="search-q"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="搜索组件 / 示例…"
+            autoFocus
+          />
+        </Field>
+        <p className="muted search-result-count">找到 {results.length} 条结果</p>
+        <ul className="search-result-list">
           {results.map((r) => (
             <li key={r.id}>
-              <a className="search-result-item" href={r.path}>
-                <span className="search-result-type">
-                  <Tag tone="neutral">{r.type}</Tag>
-                </span>
+              <div className="search-result-item">
+                <Tag tone="neutral">{r.type}</Tag>
                 <span className="search-result-main">
                   <strong>{r.title}</strong>
                   <span className="muted">{r.path}</span>
@@ -44,7 +43,7 @@ export function ExampleSearchPage() {
                 <Button size="sm" href={r.path}>
                   打开
                 </Button>
-              </a>
+              </div>
             </li>
           ))}
         </ul>

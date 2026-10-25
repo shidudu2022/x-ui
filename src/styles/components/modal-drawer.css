@@ -94,3 +94,29 @@
   transform: translateX(0);
 }
 
+/* Strong confirm (Modal-based) */
+.confirm-modal-body {
+  gap: 12px;
+}
+
+.confirm-resource {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.confirm-resource .mono,
+.confirm-expect {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+
+.modal-danger .modal-header strong {
+  color: var(--danger);
+}
+

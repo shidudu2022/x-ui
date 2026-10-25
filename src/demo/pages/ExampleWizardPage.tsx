@@ -9,7 +9,7 @@ import {
   FormPage,
   Input,
   Muted,
-  NativeSelect,
+  Select,
   StepHeading,
   Steps,
   Text,
@@ -94,10 +94,14 @@ export function ExampleWizardPage() {
         {step === 4 ? (
           <div className="form-grid">
             <Field label="k3s 版本" htmlFor="opt-ver">
-              <NativeSelect id="opt-ver" defaultValue="latest">
-                <option value="latest">latest</option>
-                <option value="v1.31.3+k3s1">v1.31.3+k3s1</option>
-              </NativeSelect>
+              <Select
+                block
+                defaultValue="latest"
+                options={[
+                  { value: 'latest', label: 'latest' },
+                  { value: 'v1.31.3+k3s1', label: 'v1.31.3+k3s1' },
+                ]}
+              />
             </Field>
             <Field label="TLS SAN" htmlFor="opt-san">
               <Input id="opt-san" placeholder="k3s.example.com" />

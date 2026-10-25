@@ -65,14 +65,16 @@ import { AppShell } from '@/components/layout'
 | 校验汇总 | `FormErrors` |
 | 加载 | `Spinner` / `Skeleton` / `SkeletonTable`（跟主色） |
 
-侧栏折叠、滚动箭头、用户菜单 portal 已由 layout 处理，**不要**再造一套。
+侧栏折叠、滚动箭头、用户菜单 portal、**≤960px 顶栏菜单按钮 + 抽屉导航** 已由 layout 处理，**不要**再造一套。移动端样式在 `styles/layout/responsive.css`。
 
 ## 组件选用速查
 
 - **按钮**：`Button`（`variant` / `size` / `loading` / `href`）
-- **表单**：`Field` + `Input`/`Textarea`/`Select`/`Combobox`/`DatePicker`/`Switch`/`Checkbox`/`Radio`
+- **表单**：`Field` + `Input`/`Textarea`/`Select`/`Combobox`/`DatePicker`/`PinInput`（`length` 可配）/`Switch`/`Checkbox`/`Radio`
+- **向导步骤**：`Steps` 自带左右指示器（无横向滚动条），勿再包一层滚动
 - **表格**：`Table` 或带分页的 `DataTable`（多选用 `selectedKeys` + `bulkActions`）
-- **反馈**：`Alert` / `Toast`（`useToast`）/ `Modal` / `Drawer` / `Sheet` / `ConfirmModal`
+- **反馈**：`Alert` / `Toast`（`useToast`）/ `Modal` / `Drawer` / `Sheet`
+- **删除强确认**：用 `StrongConfirm` / `ConfirmModal`（居中 Modal + `confirmValue`/`resourceName` 输入核对），**不要**用 Drawer 扩展删除确认
 - **标签**：`Tag` / `Badge`（语义 tone：`success` `warn` `danger` `info`…）
 - **图表**：包在 `ChartContainer`；系列色用 `CHART_STATUS`（`success`/`danger`/`primary`/…），不要靠调色板顺序碰运气
 

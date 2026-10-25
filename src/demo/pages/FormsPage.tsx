@@ -6,9 +6,9 @@ import {
   FileUpload,
   Input,
   InputGroup,
-  NativeSelect,
   NumberStepper,
   PageHeader,
+  PinInput,
   Radio,
   RadioGroup,
   RangeSlider,
@@ -26,6 +26,8 @@ export function FormsPage() {
   const [range, setRange] = useState(40)
   const [auth, setAuth] = useState<'password' | 'key'>('password')
   const [multi, setMulti] = useState<string[]>(['a'])
+  const [otp, setOtp] = useState('')
+  const [pin4, setPin4] = useState('')
 
   return (
     <div>
@@ -60,14 +62,9 @@ export function FormsPage() {
 
       <ShowcaseSection title="选择与开关">
         <Card padded className="stack">
-          <Field label="原生 Select">
-            <NativeSelect defaultValue="a">
-              <option value="a">选项 A</option>
-              <option value="b">选项 B</option>
-            </NativeSelect>
-          </Field>
-          <Field label="自定义 Select">
+          <Field label="Select">
             <Select
+              block
               options={[
                 { value: 'a', label: 'Alpha' },
                 { value: 'b', label: 'Beta' },
@@ -105,8 +102,14 @@ export function FormsPage() {
         </Card>
       </ShowcaseSection>
 
-      <ShowcaseSection title="标签 / 数值 / 上传">
+      <ShowcaseSection title="验证码 / 标签 / 数值 / 上传">
         <Card padded className="stack">
+          <Field label="6 位验证码" hint="PinInput · length=6">
+            <PinInput length={6} value={otp} onChange={setOtp} aria-label="6 位验证码" />
+          </Field>
+          <Field label="4 位 PIN" hint="可改位数；masked 隐藏输入">
+            <PinInput length={4} value={pin4} onChange={setPin4} masked aria-label="4 位 PIN" />
+          </Field>
           <Field label="标签">
             <TagsInput value={tags} onChange={setTags} />
           </Field>
