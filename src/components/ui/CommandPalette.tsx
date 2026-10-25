@@ -136,24 +136,22 @@ export function CommandPalette({
   return (
     <Drawer open={open} onClose={onClose} title={title} size="md">
       <div className="stack search-drawer">
-        <div className="field">
-          <div className="input-group">
-            <span className="input-group-affix" aria-hidden>
-              <Search size={14} strokeWidth={2} />
-            </span>
-            <Input
-              autoFocus
-              value={query}
-              onChange={(e) => {
-                const next = e.target.value
-                setQuery(next)
-                setActive(0)
-                onQueryChange?.(next)
-              }}
-              placeholder={placeholder}
-              aria-label={placeholder}
-            />
-          </div>
+        <div className="cmdk-search">
+          <span className="cmdk-search-icon" aria-hidden>
+            <Search size={15} strokeWidth={2} />
+          </span>
+          <Input
+            autoFocus
+            value={query}
+            onChange={(e) => {
+              const next = e.target.value
+              setQuery(next)
+              setActive(0)
+              onQueryChange?.(next)
+            }}
+            placeholder={placeholder}
+            aria-label={placeholder}
+          />
         </div>
         <div className="search-drawer-results">
           {loading ? (

@@ -35,6 +35,9 @@ npm run preview:pages
 | 表单 | `/examples/form` | `page-narrow` + Field |
 | 设置 | `/examples/settings` | SettingsRow + DangerZone + AccentPicker |
 | 登录 | `/examples/login` | LoginCard + TotpBindPanel（本地 QR） |
+| 注册 | `/examples/register` | 注册表单 → 跳转邮箱验证 |
+| 邮箱验证 | `/examples/verify-email` | PinInput + 重发倒计时（演示码 `123456`） |
+| 强确认 | `/examples/strong-confirm` | 按钮 → Drawer，输入匹配字符串后确认 |
 | 向导 | `/examples/wizard` | Steps |
 | 开通 | `/examples/onboarding` | 多步提交完成态 |
 | 搜索 | `/examples/search` | SearchResultList |
@@ -108,9 +111,11 @@ Cursor Agent 请加载：
 .cursor/skills/x-ui/SKILL.md
 ```
 
-组件导出名见 `.cursor/skills/x-ui/reference.md`。
+组件导出名与**示例页面索引**见 `.cursor/skills/x-ui/reference.md`。
 
-约定摘要：只用现有组件与 CSS 变量；不要引入 Tailwind；图表用 `CHART_STATUS`；布局优先 `AppShell` / `PageHeader` / `page-narrow`；删除用 `StrongConfirm`；日期用弹层 DatePicker；颜色用 `ColorInput`；控件字号令牌 `--control-fs`（13px）。
+**示例优先**：实现页面前先按 Skill 里「场景 → 示例」表打开 `src/demo/pages/...` 对照，再按同样组件与校验方式实现（登录对照 `ExampleLoginPage`，强确认抽屉对照 `ExampleStrongConfirmPage`，列表对照 `list/*Template`）。
+
+约定摘要：只用现有组件与 CSS 变量；不要引入 Tailwind；图表用 `CHART_STATUS`；布局优先 `AppShell` / `PageHeader` / `page-narrow`；强确认用 `StrongConfirm` / `StrongConfirmDrawer`；日期用弹层 DatePicker；颜色用 `ColorInput`；控件字号 `--control-fs`（13px）。
 
 ## 技术栈
 

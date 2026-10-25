@@ -20,6 +20,9 @@ import { ExampleDetailPage } from '@/demo/pages/ExampleDetailPage'
 import { ExampleWizardPage } from '@/demo/pages/ExampleWizardPage'
 import { ExampleLogPage } from '@/demo/pages/ExampleLogPage'
 import { ExampleLoginPage } from '@/demo/pages/ExampleLoginPage'
+import { ExampleRegisterPage } from '@/demo/pages/ExampleRegisterPage'
+import { ExampleVerifyEmailPage } from '@/demo/pages/ExampleVerifyEmailPage'
+import { ExampleStrongConfirmPage } from '@/demo/pages/ExampleStrongConfirmPage'
 import { ExampleTypographyPage } from '@/demo/pages/ExampleTypographyPage'
 import { ExampleDashboardPage } from '@/demo/pages/ExampleDashboardPage'
 import { ExampleSettingsPage } from '@/demo/pages/ExampleSettingsPage'
@@ -60,6 +63,9 @@ export default function App() {
               <Route path="examples/wizard" element={<ExampleWizardPage />} />
               <Route path="examples/log" element={<ExampleLogPage />} />
               <Route path="examples/login" element={<ExampleLoginPage />} />
+              <Route path="examples/register" element={<ExampleRegisterPage />} />
+              <Route path="examples/verify-email" element={<ExampleVerifyEmailPage />} />
+              <Route path="examples/strong-confirm" element={<ExampleStrongConfirmPage />} />
               <Route path="examples/typography" element={<ExampleTypographyPage />} />
               <Route path="examples/dashboard" element={<ExampleDashboardPage />} />
               <Route path="examples/settings" element={<ExampleSettingsPage />} />

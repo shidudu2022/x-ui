@@ -13,7 +13,9 @@ import {
   ListTodo,
   Loader,
   LogIn,
+  MailCheck,
   MessageSquare,
+  UserPlus,
   Navigation,
   Palette,
   PieChart,
@@ -27,6 +29,7 @@ import {
   Layers,
   CircleSlash,
   Shield,
+  ShieldAlert,
 } from 'lucide-react'
 import { AppShell, Breadcrumbs, NavIcon, ThemeDrawer, UserMenu } from '@/components/layout'
 import { Button, CommandPalette, Drawer, EmptyState, type CommandItem } from '@/components/ui'
@@ -50,6 +53,9 @@ const titles: Record<string, string> = {
   '/examples/wizard': '向导页',
   '/examples/log': '日志页',
   '/examples/login': '登录页',
+  '/examples/register': '注册页',
+  '/examples/verify-email': '邮箱验证',
+  '/examples/strong-confirm': '强确认',
   '/examples/typography': '字体字号',
   '/examples/dashboard': '仪表盘',
   '/examples/settings': '设置页',
@@ -192,6 +198,9 @@ export function DemoShell() {
           { to: '/examples/wizard', label: '向导页', icon: <NavIcon icon={Workflow} /> },
           { to: '/examples/log', label: '日志页', icon: <NavIcon icon={ListTodo} /> },
           { to: '/examples/login', label: '登录页', icon: <NavIcon icon={LogIn} /> },
+          { to: '/examples/register', label: '注册页', icon: <NavIcon icon={UserPlus} /> },
+          { to: '/examples/verify-email', label: '邮箱验证', icon: <NavIcon icon={MailCheck} /> },
+          { to: '/examples/strong-confirm', label: '强确认', icon: <NavIcon icon={ShieldAlert} /> },
           { to: '/examples/errors', label: '错误与离线', icon: <NavIcon icon={CircleSlash} /> },
           { to: '/examples/audit', label: '审计详情', icon: <NavIcon icon={ListTodo} /> },
           { to: '/examples/onboarding', label: '开通向导', icon: <NavIcon icon={Workflow} /> },

@@ -9,8 +9,29 @@
   gap: 0;
 }
 
-.search-drawer .input-group-affix {
+.cmdk-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.cmdk-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
   color: var(--text-faint);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cmdk-search .ui-input,
+.cmdk-search input {
+  width: 100%;
+  padding-left: 36px;
 }
 
 .search-drawer-results {

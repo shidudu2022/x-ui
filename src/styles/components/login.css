@@ -62,6 +62,42 @@
   color: var(--text-muted);
 }
 
+.login-hint .text-link {
+  font-size: inherit;
+}
+
+.login-agree {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.login-agree .text-link {
+  font-size: inherit;
+}
+
+.login-verify-lead {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.login-verify-lead strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.login-resend-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .totp-bind {
   display: flex;
   flex-direction: column;

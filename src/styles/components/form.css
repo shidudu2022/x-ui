@@ -297,18 +297,45 @@
   max-width: 100%;
 }
 
-.input-group > input {
+/* Beat .field input:not(...) specificity so group joins as one control */
+.input-group > .ui-input,
+.input-group > input,
+.field .input-group > .ui-input,
+.field .input-group > input:not(.pin-input-cell):not(.color-input-text) {
   flex: 1;
   min-width: 0;
+  width: auto;
   border-radius: 0;
+  box-shadow: none;
 }
 
-.input-group > input:first-child {
+.input-group > .ui-input:first-child,
+.input-group > input:first-child,
+.field .input-group > .ui-input:first-child,
+.field .input-group > input:first-child:not(.pin-input-cell):not(.color-input-text) {
   border-radius: var(--radius-sm) 0 0 var(--radius-sm);
 }
 
-.input-group > input:last-child {
+.input-group > .ui-input:last-child,
+.input-group > input:last-child,
+.field .input-group > .ui-input:last-child,
+.field .input-group > input:last-child:not(.pin-input-cell):not(.color-input-text) {
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.input-group > .ui-input:not(:first-child):not(:last-child),
+.input-group > input:not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+
+.input-group-affix + .ui-input,
+.input-group-affix + input {
+  border-left-width: 0;
+}
+
+.input-group > .ui-input:has(+ .input-group-affix),
+.input-group > input:has(+ .input-group-affix) {
+  border-right-width: 0;
 }
 
 .input-group-affix {
@@ -326,12 +353,12 @@
 }
 
 .input-group-affix:first-child {
-  border-right: 0;
+  border-right-width: 0;
   border-radius: var(--radius-sm) 0 0 var(--radius-sm);
 }
 
 .input-group-affix:last-child {
-  border-left: 0;
+  border-left-width: 0;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 }
 
@@ -402,12 +429,23 @@
   margin-top: 12px;
 }
 
-.input-group > input:not(:first-child):not(:last-child) {
-  border-radius: 0;
+.input-group:focus-within .input-group-affix,
+.input-group:focus-within > .ui-input,
+.input-group:focus-within > input {
+  border-color: var(--primary);
 }
 
-.input-group:focus-within .input-group-affix {
-  border-color: var(--primary);
+.input-group:focus-within {
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+.field .input-group > .ui-input:focus,
+.field .input-group > input:not(.pin-input-cell):focus,
+.input-group > .ui-input:focus,
+.input-group > input:focus {
+  box-shadow: none;
+  outline: none;
 }
 
 .field-error {

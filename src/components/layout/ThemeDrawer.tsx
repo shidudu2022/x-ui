@@ -6,7 +6,7 @@ export function ThemeDrawer({ open, onClose }: { open: boolean; onClose: () => v
   const { modePreference, setModePreference, density, setDensity } = useAppearance()
 
   return (
-    <Drawer open={open} onClose={onClose} title="外观">
+    <Drawer open={open} onClose={onClose} title="外观" size="sm">
       <div className="stack">
         <div>
           <StepHeading title="主题" />

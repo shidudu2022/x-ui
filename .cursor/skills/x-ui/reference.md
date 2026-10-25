@@ -4,7 +4,7 @@ Agent 需要具体导出名时查阅本文件。源码以 `src/components/**/ind
 
 ## `@/components/ui`
 
-Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner, BreadcrumbNav, Button, Calendar, Callout, Card, StatusBar, Cascader, CatalogGroup, CatalogTile, Checkbox, Checklist, CodeBlock, ColorInput, Combobox, CommandPalette, ConfirmModal, StrongConfirm, CopyButton, DangerZone, DataTable, DatePicker, DateRangePicker, DescriptionList, MetaRow, Divider, Drawer, DropdownMenu, EmptyState, Field, FormGrid, Input, InputGroup, NativeSelect, Textarea, FileUpload, FilterBar, FormErrors, FormPage, Heading, ImagePreview, JsonViewer, Kbd, KeyValueEditor, TextLink, ListFilterBar, ListPage, LoginCard, LogViewer, MaintenanceBanner, Metric, MetricGrid, MirrorCard, Modal, NodePicker, NotificationList, NumberStepper, PageHeader, PageTabs, Pagination, PinInput, Pill, Popover, Progress, Radio, RadioGroup, RangeSlider, ResourceState, SearchResultList, SearchResultItem, SectionCard, Segmented, Select, SettingsRow, Sheet, Skeleton, SkeletonCard, SkeletonTable, Sparkline, Stat, StatCard, Spinner, SplitPane, Stack, StepHeading, Steps, Switch, Table, DataTableFooter, Tabs, Tag, TagGroup, TagsInput, Text, Muted, Mono, TimePicker, Timeline, ToastProvider, useToast, ToggleButton, Tooltip, TotpBindPanel, buildTotpOtpauth, Transfer, Tree, TreeTableCell
+Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner, BreadcrumbNav, Button, Calendar, Callout, Card, StatusBar, Cascader, CatalogGroup, CatalogTile, Checkbox, Checklist, CodeBlock, ColorInput, Combobox, CommandPalette, ConfirmModal, StrongConfirm, StrongConfirmDrawer, CopyButton, DangerZone, DataTable, DatePicker, DateRangePicker, DescriptionList, MetaRow, Divider, Drawer, DropdownMenu, EmptyState, Field, FormGrid, Input, InputGroup, NativeSelect, Textarea, FileUpload, FilterBar, FormErrors, FormPage, Heading, ImagePreview, JsonViewer, Kbd, KeyValueEditor, TextLink, ListFilterBar, ListPage, LoginCard, LogViewer, MaintenanceBanner, Metric, MetricGrid, MirrorCard, Modal, NodePicker, NotificationList, NumberStepper, PageHeader, PageTabs, Pagination, PinInput, Pill, Popover, Progress, Radio, RadioGroup, RangeSlider, ResourceState, SearchResultList, SearchResultItem, SectionCard, Segmented, Select, SettingsRow, Sheet, Skeleton, SkeletonCard, SkeletonTable, Sparkline, Stat, StatCard, Spinner, SplitPane, Stack, StepHeading, Steps, Switch, Table, DataTableFooter, Tabs, Tag, TagGroup, TagsInput, Text, Muted, Mono, TimePicker, Timeline, ToastProvider, useToast, ToggleButton, Tooltip, TotpBindPanel, buildTotpOtpauth, Transfer, Tree, TreeTableCell
 
 ### 常用 tone / variant / 行为
 
@@ -70,9 +70,51 @@ src/styles/
   demo/
 ```
 
-## 演示路由（`src/App.tsx`）
+## 示例页面索引
 
-- `/` 概览 · `/foundations` 基础 · `/patterns` 组合
-- `/components/{buttons,forms,data,feedback,navigation,charts,advanced}`
-- `/examples/{dashboard,settings,empty,search,compare,profile,roles,notifications,skeleton,typography,page,list,form,detail,wizard,log,login,errors,audit,onboarding,i18n,permissions}`
-- 列表模板：`/examples/list?tpl=sortable|static|pinned|tree|cards|compact`
+Agent 实现业务页时：**先按场景打开对应文件照抄结构**，再改文案与数据。权威流程见 [SKILL.md](SKILL.md)「示例优先」。
+
+路径均相对 `src/demo/pages/`。
+
+| 场景 | 路由 | 源码 |
+|------|------|------|
+| 概览 | `/` | `OverviewPage.tsx` |
+| 基础令牌 | `/foundations` | `FoundationsPage.tsx` |
+| 组合模式 | `/patterns` | `PatternsPage.tsx` |
+| 登录 + TOTP | `/examples/login` | `ExampleLoginPage.tsx` |
+| 注册 | `/examples/register` | `ExampleRegisterPage.tsx` |
+| 邮箱验证码 | `/examples/verify-email` | `ExampleVerifyEmailPage.tsx` |
+| 强确认（抽屉） | `/examples/strong-confirm` | `ExampleStrongConfirmPage.tsx` |
+| 强确认（Modal） | `/components/feedback` | `FeedbackPage.tsx` |
+| 定宽表单 | `/examples/form` | `ExampleFormPage.tsx` |
+| 设置 / DangerZone | `/examples/settings` | `ExampleSettingsPage.tsx` |
+| 列表入口 | `/examples/list` | `ExampleListPage.tsx` |
+| 列表·可排序 | `?tpl=sortable` | `list/ListTableTemplate.tsx` |
+| 列表·不可排序 | `?tpl=static` | `list/ListTableTemplate.tsx` |
+| 列表·固定列 | `?tpl=pinned` | `list/ListPinnedTemplate.tsx` |
+| 列表·树表 | `?tpl=tree` | `list/ListTreeTemplate.tsx` |
+| 列表·卡片 | `?tpl=cards` | `list/ListCardsTemplate.tsx` |
+| 列表·紧凑 | `?tpl=compact` | `list/ListCompactTemplate.tsx` |
+| 详情 / 页头溢出 | `/examples/detail` | `ExampleDetailPage.tsx` |
+| 页头 | `/examples/page` | `ExamplePageHeaderPage.tsx` |
+| 仪表盘 | `/examples/dashboard` | `ExampleDashboardPage.tsx` |
+| 向导 | `/examples/wizard` | `ExampleWizardPage.tsx` |
+| 开通 | `/examples/onboarding` | `ExampleOnboardingPage.tsx` |
+| 搜索结果 | `/examples/search` | `ExampleSearchPage.tsx` |
+| 空态 | `/examples/empty` | `ExampleEmptyPage.tsx` |
+| 错误 / 离线 | `/examples/errors` | `ExampleErrorsPage.tsx` |
+| 资料 + Drawer | `/examples/profile` | `ExampleProfilePage.tsx` |
+| 通知 | `/examples/notifications` | `ExampleNotificationsPage.tsx` |
+| 角色多选 | `/examples/roles` | `ExampleRolesPage.tsx` |
+| 审计 | `/examples/audit` | `ExampleAuditPage.tsx` |
+| Diff | `/examples/compare` | `ExampleComparePage.tsx` |
+| 骨架 | `/examples/skeleton` | `ExampleSkeletonPage.tsx` |
+| 权限 | `/examples/permissions` | `ExamplePermissionsPage.tsx` |
+| 文案密度 | `/examples/i18n` | `ExampleI18nPage.tsx` |
+| 日志 | `/examples/log` | `ExampleLogPage.tsx` |
+| 字体 | `/examples/typography` | `ExampleTypographyPage.tsx` |
+| 组件馆 | `/components/*` | `ButtonsPage` / `FormsPage` / `DataPage` / `FeedbackPage` / `NavigationPage` / `ChartsPage` / `AdvancedPage` |
+
+路由注册：`src/App.tsx`。侧栏标题：`src/demo/DemoShell.tsx`。
+
+**StrongConfirmDrawer**：抽屉内输入 `confirmValue` / `resourceName` 完全匹配后才能确认。

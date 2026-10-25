@@ -145,7 +145,8 @@
   border: 1px solid var(--border);
 }
 
-.modal-danger .modal-header strong {
+.modal-danger .modal-header strong,
+.drawer-danger .drawer-header strong {
   color: var(--danger);
 }
 
