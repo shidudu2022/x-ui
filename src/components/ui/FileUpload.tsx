@@ -1,31 +1,57 @@
 import { useRef, useState, type DragEvent } from 'react'
 import { Upload } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { Progress } from './Progress'
+
+export type FileUploadItem = {
+  name: string
+  size: number
+  progress?: number
+  error?: string
+}
 
 export function FileUpload({
   accept,
   multiple,
+  maxSizeMb,
   onFiles,
+  files,
   title = '点击或拖拽文件到此处',
   hint = '支持常见文档与图片',
   className,
 }: {
   accept?: string
   multiple?: boolean
+  /** Reject files larger than this (MB); shows inline error */
+  maxSizeMb?: number
   onFiles?: (files: File[]) => void
+  /** Controlled progress list (0–100) */
+  files?: FileUploadItem[]
   title?: string
   hint?: string
   className?: string
 }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [dragging, setDragging] = useState(false)
-  const [names, setNames] = useState<string[]>([])
+  const [local, setLocal] = useState<FileUploadItem[]>([])
+  const [rejectHint, setRejectHint] = useState<string | null>(null)
+  const shown = files ?? local
 
   function take(list: FileList | null) {
     if (!list?.length) return
-    const files = Array.from(list)
-    setNames(files.map((f) => f.name))
-    onFiles?.(files)
+    let next = Array.from(list)
+    setRejectHint(null)
+    if (maxSizeMb != null) {
+      const limit = maxSizeMb * 1024 * 1024
+      const rejected = next.filter((f) => f.size > limit)
+      next = next.filter((f) => f.size <= limit)
+      if (rejected.length) {
+        setRejectHint(`${rejected.map((f) => f.name).join(', ')} 超过 ${maxSizeMb}MB`)
+      }
+    }
+    if (!next.length) return
+    setLocal(next.map((f) => ({ name: f.name, size: f.size })))
+    onFiles?.(next)
   }
 
   function onDrop(e: DragEvent) {
@@ -35,31 +61,48 @@ export function FileUpload({
   }
 
   return (
-    <div
-      className={cn('file-upload', dragging && 'is-dragging', className)}
-      onClick={() => inputRef.current?.click()}
-      onDragOver={(e) => {
-        e.preventDefault()
-        setDragging(true)
-      }}
-      onDragLeave={() => setDragging(false)}
-      onDrop={onDrop}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') inputRef.current?.click()
-      }}
-    >
-      <Upload size={20} style={{ marginBottom: 8, color: 'var(--text-muted)' }} />
-      <p className="file-upload-title">{title}</p>
-      <p className="file-upload-hint">{names.length ? names.join(', ') : hint}</p>
-      <input
-        ref={inputRef}
-        type="file"
-        accept={accept}
-        multiple={multiple}
-        onChange={(e) => take(e.target.files)}
-      />
+    <div className={cn('file-upload-wrap', className)}>
+      <div
+        className={cn('file-upload', dragging && 'is-dragging')}
+        onClick={() => inputRef.current?.click()}
+        onDragOver={(e) => {
+          e.preventDefault()
+          setDragging(true)
+        }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={onDrop}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') inputRef.current?.click()
+        }}
+      >
+        <Upload size={20} style={{ marginBottom: 8, color: 'var(--text-muted)' }} />
+        <p className="file-upload-title">{title}</p>
+        <p className="file-upload-hint">
+          {rejectHint ?? (shown.length ? shown.map((f) => f.name).join(', ') : hint)}
+        </p>
+        <input
+          ref={inputRef}
+          type="file"
+          accept={accept}
+          multiple={multiple}
+          onChange={(e) => take(e.target.files)}
+        />
+      </div>
+      {shown.some((f) => f.progress != null || f.error) ? (
+        <ul className="file-upload-list">
+          {shown.map((f) => (
+            <li key={f.name} className="file-upload-item">
+              <div className="file-upload-item-head">
+                <span>{f.name}</span>
+                {f.error ? <span className="danger-text">{f.error}</span> : null}
+              </div>
+              {f.progress != null ? <Progress value={f.progress} /> : null}
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </div>
   )
 }

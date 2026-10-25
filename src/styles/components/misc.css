@@ -224,6 +224,12 @@
   min-width: 0;
 }
 
+.accent-swatch-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+
 .accent-meta strong {
   font-size: 13px;
   font-weight: 500;
@@ -327,7 +333,7 @@
   padding: 0 4px !important;
   margin: 0;
   outline: none;
-  font-size: 13px;
+  font-size: var(--control-fs);
   line-height: 1.35;
   color: var(--text);
 }
@@ -410,6 +416,40 @@
 
 .file-upload input {
   display: none;
+}
+
+.file-upload-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.file-upload-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.file-upload-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  background: var(--surface);
+}
+
+.file-upload-item-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+
+.danger-text {
+  color: var(--danger);
 }
 
 /* Number stepper */

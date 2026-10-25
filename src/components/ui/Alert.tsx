@@ -2,12 +2,14 @@ import { useState, type ReactNode } from 'react'
 import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
-export type AlertTone = 'info' | 'success' | 'warn' | 'error'
+/** Prefer `danger`; `error` kept as alias for compatibility */
+export type AlertTone = 'info' | 'success' | 'warn' | 'danger' | 'error'
 
 const icons = {
   info: Info,
   success: CheckCircle2,
   warn: AlertTriangle,
+  danger: AlertCircle,
   error: AlertCircle,
 }
 
@@ -28,6 +30,7 @@ export function Alert({
 }) {
   const [open, setOpen] = useState(true)
   if (!open) return null
+  const resolved = tone === 'error' ? 'danger' : tone
   const Icon = icons[tone]
 
   function dismiss() {
@@ -36,7 +39,7 @@ export function Alert({
   }
 
   return (
-    <div className={cn('alert', `alert-${tone}`, className)} role="alert">
+    <div className={cn('alert', `alert-${resolved}`, className)} role="alert">
       <span className="alert-icon" aria-hidden>
         <Icon size={16} />
       </span>

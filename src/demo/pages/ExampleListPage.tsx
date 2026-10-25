@@ -1,167 +1,68 @@
-import { useMemo } from 'react'
+import { useCallback } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import { Button, ListPage, PageTabs, useToast } from '@/components/ui'
+import { useListSearch } from '@/lib/useListSearch'
+import { ListCardsTemplate } from './list/ListCardsTemplate'
+import { ListCompactTemplate } from './list/ListCompactTemplate'
+import { ListPinnedTemplate } from './list/ListPinnedTemplate'
+import { ListTableTemplate } from './list/ListTableTemplate'
+import { ListTreeTemplate } from './list/ListTreeTemplate'
 import {
-  Badge,
-  Button,
-  DataTable,
-  ListFilterBar,
-  ListPage,
-  Muted,
-  Tag,
-  TagGroup,
-  Text,
-  useToast,
-} from '@/components/ui'
-import { matchText, useListSearch } from '@/lib/useListSearch'
+  LIST_TEMPLATES,
+  parseListTemplateId,
+  type ListTemplateId,
+} from './list/listSeed'
 
-type Row = {
-  id: string
-  name: string
-  note: string
-  status: 'running' | 'degraded' | 'stopped'
-  version: string
-  nodes: number
-  tags: string[]
+const DESCRIPTIONS: Record<ListTemplateId, string> = {
+  sortable: '可排序平面表：表头点击排序、列显隐、列宽拖拽、多选批量。',
+  static: '不可排序平面表：固定列顺序与展示，适合只读浏览与操作。',
+  pinned: '固定列：左侧名称 + 右侧操作列 sticky，横向滚动时保持可见。',
+  tree: '命名空间分组树：展开/折叠子行，分页按根节点计。',
+  cards: '卡片网格：适合浏览与少字段摘要，无表格。',
+  compact: '紧凑列表：少列、大页容量，偏运维扫读（无排序）。',
 }
 
-const SEED: Row[] = Array.from({ length: 23 }, (_, i) => ({
-  id: String(i + 1),
-  name: `cluster-${String(i + 1).padStart(2, '0')}`,
-  note: i % 3 === 0 ? '生产环境' : i % 3 === 1 ? '预发' : '开发调试',
-  status: (['running', 'degraded', 'stopped'] as const)[i % 3],
-  version: i % 2 === 0 ? 'v1.31.3+k3s1' : 'v1.30.6+k3s1',
-  nodes: 1 + (i % 5),
-  tags: i % 2 === 0 ? ['prod', 'edge'] : ['dev'],
-}))
-
 /**
- * Full-width list — search via topbar (URL `?q=`), not an in-page search field.
+ * List page templates — switch via PageTabs + URL `?tpl=`.
+ * Topbar search (`?q=`) applies to every template.
  */
 export function ExampleListPage() {
   const { toast } = useToast()
   const { q, clear } = useListSearch()
+  const [params, setParams] = useSearchParams()
+  const tpl = parseListTemplateId(params.get('tpl'))
 
-  const filtered = useMemo(() => {
-    if (!q) return SEED
-    return SEED.filter((r) =>
-      matchText(`${r.name} ${r.note} ${r.status} ${r.version} ${r.tags.join(' ')}`, q),
-    )
-  }, [q])
+  const setTpl = useCallback(
+    (id: string) => {
+      const next = new URLSearchParams(params)
+      if (id === 'sortable') next.delete('tpl')
+      else next.set('tpl', id)
+      setParams(next, { replace: true })
+    },
+    [params, setParams],
+  )
 
   return (
     <ListPage
       title="集群"
-      description="创建、扩缩、升级与卸载远程 k3s 集群。"
+      description={DESCRIPTIONS[tpl]}
       actions={
         <Button variant="primary" onClick={() => toast('打开创建流程（示例）', 'info')}>
           创建集群
         </Button>
       }
-      toolbar={
-        <ListFilterBar
-          query={q}
-          total={SEED.length}
-          matched={filtered.length}
-          unit="个"
-          onClear={clear}
-        />
-      }
     >
-      <DataTable
-        rows={filtered}
-        rowKey={(r) => r.id}
-        unit="个"
-        emptyTitle={q ? '无匹配集群' : '还没有集群'}
-        emptyDesc={
-          q
-            ? `没有与「${q}」匹配的集群，可清除筛选后重试。`
-            : '先添加服务器，再创建集群。'
-        }
-        emptyAction={
-          q ? undefined : (
-            <Button variant="primary" onClick={() => toast('打开创建流程（示例）', 'info')}>
-              创建集群
-            </Button>
-          )
-        }
-        onRowClick={(r) => toast(`打开 ${r.name}`, 'info')}
-        columns={[
-          {
-            key: 'name',
-            header: '名称',
-            render: (r) => (
-              <>
-                <Text variant="strong">{r.name}</Text>
-                <Muted as="div" style={{ marginTop: 2 }}>
-                  {r.note}
-                </Muted>
-              </>
-            ),
-          },
-          {
-            key: 'status',
-            header: '状态',
-            render: (r) => (
-              <Badge
-                tone={
-                  r.status === 'running' ? 'success' : r.status === 'degraded' ? 'warn' : 'neutral'
-                }
-              >
-                {r.status}
-              </Badge>
-            ),
-          },
-          {
-            key: 'version',
-            header: '版本',
-            render: (r) => <span className="mono">{r.version}</span>,
-          },
-          {
-            key: 'nodes',
-            header: '节点',
-            render: (r) => r.nodes,
-          },
-          {
-            key: 'tags',
-            header: '标签',
-            render: (r) => (
-              <TagGroup>
-                {r.tags.map((t) => (
-                  <Tag key={t} tone="neutral">
-                    {t}
-                  </Tag>
-                ))}
-              </TagGroup>
-            ),
-          },
-          {
-            key: 'actions',
-            header: '操作',
-            render: (r) => (
-              <div className="actions" onClick={(e) => e.stopPropagation()}>
-                <Button
-                  size="sm"
-                  onClick={() => toast(`打开 ${r.name}`, 'info')}
-                >
-                  打开
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={() => toast(`诊断 ${r.name}（示例）`, 'success')}
-                >
-                  诊断
-                </Button>
-                <Button
-                  size="sm"
-                  variant="danger"
-                  onClick={() => toast(`删除 ${r.name}（示例）`, 'error')}
-                >
-                  删除
-                </Button>
-              </div>
-            ),
-          },
-        ]}
+      <PageTabs
+        value={tpl}
+        onChange={setTpl}
+        items={LIST_TEMPLATES.map((t) => ({ id: t.id, label: t.label }))}
       />
+      {tpl === 'sortable' ? <ListTableTemplate q={q} onClear={clear} sortable /> : null}
+      {tpl === 'static' ? <ListTableTemplate q={q} onClear={clear} sortable={false} /> : null}
+      {tpl === 'pinned' ? <ListPinnedTemplate q={q} onClear={clear} /> : null}
+      {tpl === 'tree' ? <ListTreeTemplate q={q} onClear={clear} /> : null}
+      {tpl === 'cards' ? <ListCardsTemplate q={q} onClear={clear} /> : null}
+      {tpl === 'compact' ? <ListCompactTemplate q={q} onClear={clear} /> : null}
     </ListPage>
   )
 }

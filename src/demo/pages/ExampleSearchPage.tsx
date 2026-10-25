@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Button, Card, Field, Input, PageHeader, Tag } from '@/components/ui'
+import { Card, Field, Input, PageHeader, SearchResultList } from '@/components/ui'
 
 const ALL = [
   { id: '1', title: 'Button 组件', type: '组件', path: '/components/buttons' },
@@ -31,22 +31,15 @@ export function ExampleSearchPage() {
           />
         </Field>
         <p className="muted search-result-count">找到 {results.length} 条结果</p>
-        <ul className="search-result-list">
-          {results.map((r) => (
-            <li key={r.id}>
-              <div className="search-result-item">
-                <Tag tone="neutral">{r.type}</Tag>
-                <span className="search-result-main">
-                  <strong>{r.title}</strong>
-                  <span className="muted">{r.path}</span>
-                </span>
-                <Button size="sm" href={r.path}>
-                  打开
-                </Button>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <SearchResultList
+          items={results.map((r) => ({
+            id: r.id,
+            title: r.title,
+            description: r.path,
+            type: r.type,
+            href: r.path,
+          }))}
+        />
       </Card>
     </div>
   )

@@ -1,7 +1,10 @@
-import { useEffect, useRef, type ReactNode } from 'react'
+import { useEffect, useId, useRef, type ReactNode } from 'react'
 import { X } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { useFocusTrap } from '@/lib/useFocusTrap'
+import { usePresence } from '@/lib/usePresence'
+
+export type DrawerSize = 'sm' | 'md' | 'lg' | 'xl'
 
 type DrawerProps = {
   open: boolean
@@ -10,6 +13,7 @@ type DrawerProps = {
   children?: ReactNode
   footer?: ReactNode
   side?: 'right' | 'left'
+  size?: DrawerSize
   className?: string
 }
 
@@ -20,32 +24,48 @@ export function Drawer({
   children,
   footer,
   side = 'right',
+  size = 'lg',
   className,
 }: DrawerProps) {
   const panelRef = useRef<HTMLElement>(null)
-  useFocusTrap(panelRef, open)
+  const titleId = useId()
+  const { present, visible } = usePresence(open, 200)
+  useFocusTrap(panelRef, visible)
 
   useEffect(() => {
-    if (!open) return
+    if (!visible) return
     function onKey(e: KeyboardEvent) {
       if (e.key === 'Escape') onClose()
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [open, onClose])
+  }, [visible, onClose])
+
+  if (!present) return null
 
   return (
     <>
-      <div className={cn('overlay', open && 'open')} onClick={onClose} aria-hidden={!open} />
+      <div
+        className={cn('overlay', visible && 'open')}
+        onClick={onClose}
+        aria-hidden
+      />
       <aside
         ref={panelRef}
-        className={cn('drawer', side === 'left' && 'drawer-left', open && 'open', className)}
+        className={cn(
+          'drawer',
+          `drawer-${size}`,
+          side === 'left' && 'drawer-left',
+          visible && 'open',
+          className,
+        )}
         role="dialog"
         aria-modal="true"
-        aria-hidden={!open}
+        aria-labelledby={title ? titleId : undefined}
+        aria-hidden={!visible}
       >
         <div className="drawer-header">
-          <strong>{title}</strong>
+          <strong id={titleId}>{title}</strong>
           <button type="button" className="btn btn-ghost btn-sm" aria-label="关闭" onClick={onClose}>
             <X size={16} />
           </button>

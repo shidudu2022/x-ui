@@ -1,6 +1,7 @@
-import { useState, type ReactNode } from 'react'
-import { ChevronDown, ChevronRight } from 'lucide-react'
+import { useMemo, useState, type ReactNode } from 'react'
+import { ChevronDown, ChevronRight, Search } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { Input } from './Field'
 
 export type TreeNodeData = {
   id: string
@@ -8,19 +9,39 @@ export type TreeNodeData = {
   children?: TreeNodeData[]
 }
 
+function nodeText(node: TreeNodeData): string {
+  if (typeof node.label === 'string' || typeof node.label === 'number') return String(node.label)
+  return node.id
+}
+
+function filterNodes(nodes: TreeNodeData[], q: string): TreeNodeData[] {
+  if (!q) return nodes
+  const out: TreeNodeData[] = []
+  for (const node of nodes) {
+    const kids = node.children ? filterNodes(node.children, q) : []
+    if (nodeText(node).toLowerCase().includes(q) || kids.length) {
+      out.push({ ...node, children: kids.length ? kids : node.children })
+    }
+  }
+  return out
+}
+
 function Node({
   node,
   depth,
   activeId,
   onSelect,
+  forceOpen,
 }: {
   node: TreeNodeData
   depth: number
   activeId?: string
   onSelect?: (id: string) => void
+  forceOpen?: boolean
 }) {
-  const [open, setOpen] = useState(depth < 1)
+  const [open, setOpen] = useState(depth < 1 || Boolean(forceOpen))
   const hasChildren = Boolean(node.children?.length)
+  const expanded = forceOpen || open
 
   return (
     <div className="tree-node">
@@ -32,21 +53,28 @@ function Node({
         <button
           type="button"
           className="tree-chevron"
-          aria-label={open ? '折叠' : '展开'}
+          aria-label={expanded ? '折叠' : '展开'}
           onClick={(e) => {
             e.stopPropagation()
             setOpen((v) => !v)
           }}
           style={{ visibility: hasChildren ? 'visible' : 'hidden', border: 0, background: 'transparent' }}
         >
-          {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+          {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
         </button>
         <span>{node.label}</span>
       </div>
-      {hasChildren && open ? (
+      {hasChildren && expanded ? (
         <div className="tree-children">
           {node.children!.map((child) => (
-            <Node key={child.id} node={child} depth={depth + 1} activeId={activeId} onSelect={onSelect} />
+            <Node
+              key={child.id}
+              node={child}
+              depth={depth + 1}
+              activeId={activeId}
+              onSelect={onSelect}
+              forceOpen={forceOpen}
+            />
           ))}
         </div>
       ) : null}
@@ -58,18 +86,49 @@ export function Tree({
   nodes,
   activeId,
   onSelect,
+  searchable = false,
+  searchPlaceholder = '搜索节点…',
   className,
 }: {
   nodes: TreeNodeData[]
   activeId?: string
   onSelect?: (id: string) => void
+  searchable?: boolean
+  searchPlaceholder?: string
   className?: string
 }) {
+  const [query, setQuery] = useState('')
+  const q = query.trim().toLowerCase()
+  const filtered = useMemo(() => filterNodes(nodes, q), [nodes, q])
+
   return (
-    <div className={cn('tree', className)} role="tree">
-      {nodes.map((node) => (
-        <Node key={node.id} node={node} depth={0} activeId={activeId} onSelect={onSelect} />
-      ))}
+    <div className={cn('tree', searchable && 'has-search', className)} role="tree">
+      {searchable ? (
+        <div className="tree-search">
+          <Search size={14} aria-hidden />
+          <Input
+            size="sm"
+            value={query}
+            placeholder={searchPlaceholder}
+            aria-label={searchPlaceholder}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
+      ) : null}
+      {filtered.length === 0 ? (
+        <p className="muted tree-empty">无匹配节点</p>
+      ) : (
+        filtered.map((node) => (
+          <Node
+            key={node.id}
+            node={node}
+            depth={0}
+            activeId={activeId}
+            onSelect={onSelect}
+            forceOpen={Boolean(q)}
+          />
+        ))
+      )}
     </div>
   )
 }

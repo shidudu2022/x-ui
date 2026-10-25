@@ -3,6 +3,7 @@ import { Search } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { Drawer } from './Drawer'
 import { Input } from './Field'
+import { Spinner } from './Spinner'
 
 export type CommandItem = {
   id: string
@@ -12,39 +13,80 @@ export type CommandItem = {
   onSelect?: () => void
 }
 
+const RECENT_KEY = 'x-ui.cmdk.recent'
+
+function readRecent(): string[] {
+  try {
+    const raw = localStorage.getItem(RECENT_KEY)
+    if (!raw) return []
+    const parsed = JSON.parse(raw) as unknown
+    return Array.isArray(parsed) ? parsed.filter((x) => typeof x === 'string') : []
+  } catch {
+    return []
+  }
+}
+
+function pushRecent(id: string) {
+  const next = [id, ...readRecent().filter((x) => x !== id)].slice(0, 8)
+  try {
+    localStorage.setItem(RECENT_KEY, JSON.stringify(next))
+  } catch {
+    /* ignore */
+  }
+}
+
 export function CommandPalette({
   open,
   onClose,
   items,
   placeholder = '搜索…',
   title = '搜索',
+  /** Async / remote results; when provided, replaces local filter for non-empty query */
+  onQueryChange,
+  loading = false,
+  recent = true,
 }: {
   open: boolean
   onClose: () => void
   items: CommandItem[]
   placeholder?: string
   title?: string
+  onQueryChange?: (query: string) => void
+  loading?: boolean
+  recent?: boolean
 }) {
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)
+  const [recentIds, setRecentIds] = useState<string[]>([])
 
   useEffect(() => {
     if (open) {
       setQuery('')
       setActive(0)
+      if (recent) setRecentIds(readRecent())
     }
-  }, [open])
+  }, [open, recent])
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
-    if (!q) return items
+    if (onQueryChange) return items
+    if (!q) {
+      if (!recent || !recentIds.length) return items
+      const map = new Map(items.map((i) => [i.id, i]))
+      const recentItems = recentIds.map((id) => map.get(id)).filter(Boolean) as CommandItem[]
+      const rest = items.filter((i) => !recentIds.includes(i.id))
+      return [
+        ...recentItems.map((i) => ({ ...i, group: i.group ?? '最近使用' })),
+        ...rest,
+      ]
+    }
     return items.filter(
       (item) =>
         item.label.toLowerCase().includes(q) ||
         item.type?.toLowerCase().includes(q) ||
         item.group?.toLowerCase().includes(q),
     )
-  }, [items, query])
+  }, [items, onQueryChange, query, recent, recentIds])
 
   const groups = useMemo(() => {
     const map = new Map<string, CommandItem[]>()
@@ -53,7 +95,11 @@ export function CommandPalette({
       if (!map.has(g)) map.set(g, [])
       map.get(g)!.push(item)
     }
-    return [...map.entries()]
+    return [...map.entries()].sort(([a], [b]) => {
+      if (a === '最近使用') return -1
+      if (b === '最近使用') return 1
+      return a.localeCompare(b, 'zh')
+    })
   }, [filtered])
 
   const flat = filtered
@@ -72,6 +118,10 @@ export function CommandPalette({
       if (e.key === 'Enter') {
         const item = flat[active]
         if (item) {
+          if (recent) {
+            pushRecent(item.id)
+            setRecentIds(readRecent())
+          }
           item.onSelect?.()
           onClose()
         }
@@ -79,12 +129,12 @@ export function CommandPalette({
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [open, flat, active, onClose])
+  }, [open, flat, active, onClose, recent])
 
   let flatIndex = -1
 
   return (
-    <Drawer open={open} onClose={onClose} title={title}>
+    <Drawer open={open} onClose={onClose} title={title} size="md">
       <div className="stack search-drawer">
         <div className="field">
           <div className="input-group">
@@ -95,8 +145,10 @@ export function CommandPalette({
               autoFocus
               value={query}
               onChange={(e) => {
-                setQuery(e.target.value)
+                const next = e.target.value
+                setQuery(next)
                 setActive(0)
+                onQueryChange?.(next)
               }}
               placeholder={placeholder}
               aria-label={placeholder}
@@ -104,7 +156,11 @@ export function CommandPalette({
           </div>
         </div>
         <div className="search-drawer-results">
-          {groups.length === 0 ? (
+          {loading ? (
+            <div className="resource-state-spinner">
+              <Spinner />
+            </div>
+          ) : groups.length === 0 ? (
             <p className="muted">无匹配结果</p>
           ) : (
             groups.map(([group, groupItems]) => (
@@ -121,6 +177,10 @@ export function CommandPalette({
                         className={cn('search-result-item', index === active && 'active')}
                         onMouseEnter={() => setActive(index)}
                         onClick={() => {
+                          if (recent) {
+                            pushRecent(item.id)
+                            setRecentIds(readRecent())
+                          }
                           item.onSelect?.()
                           onClose()
                         }}

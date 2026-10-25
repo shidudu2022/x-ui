@@ -8,7 +8,7 @@ import {
 } from 'react'
 import { cn } from '@/lib/cn'
 
-type ToastTone = 'info' | 'success' | 'error'
+export type ToastTone = 'info' | 'success' | 'warn' | 'error' | 'danger'
 
 type ToastItem = {
   id: number
@@ -22,12 +22,17 @@ type ToastContextValue = {
 
 const ToastContext = createContext<ToastContextValue | null>(null)
 
+function resolveTone(tone: ToastTone) {
+  if (tone === 'danger') return 'error'
+  return tone
+}
+
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<ToastItem[]>([])
 
   const toast = useCallback((message: string, tone: ToastTone = 'info') => {
     const id = Date.now() + Math.random()
-    setItems((prev) => [...prev, { id, message, tone }])
+    setItems((prev) => [...prev, { id, message, tone: resolveTone(tone) }])
     window.setTimeout(() => {
       setItems((prev) => prev.filter((t) => t.id !== id))
     }, 2800)
@@ -47,6 +52,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               'show',
               item.tone === 'info' && 'toast-info',
               item.tone === 'success' && 'toast-success',
+              item.tone === 'warn' && 'toast-warn',
               item.tone === 'error' && 'toast-error',
             )}
           >

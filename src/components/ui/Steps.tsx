@@ -12,10 +12,12 @@ const SCROLL_PAD = 12
 export function Steps({
   items,
   current,
+  size = 'md',
   className,
 }: {
   items: StepItem[]
   current: number
+  size?: 'sm' | 'md'
   className?: string
 }) {
   const trackRef = useRef<HTMLDivElement>(null)
@@ -79,18 +81,18 @@ export function Steps({
     <div
       className={cn(
         'steps-wrap',
+        size === 'sm' && 'steps-sm',
         overflow && 'is-overflow',
         overflow && !canPrev && 'is-at-start',
         overflow && !canNext && 'is-at-end',
         className,
       )}
     >
-      {overflow ? (
+      {canPrev ? (
         <button
           type="button"
           className="steps-nav steps-nav-prev"
           aria-label="查看前面的步骤"
-          disabled={!canPrev}
           onClick={() => scrollByDir(-1)}
         >
           <ChevronLeft size={16} strokeWidth={2} />
@@ -117,12 +119,11 @@ export function Steps({
         </div>
       </div>
 
-      {overflow ? (
+      {canNext ? (
         <button
           type="button"
           className="steps-nav steps-nav-next"
           aria-label="查看后面的步骤"
-          disabled={!canNext}
           onClick={() => scrollByDir(1)}
         >
           <ChevronRight size={16} strokeWidth={2} />

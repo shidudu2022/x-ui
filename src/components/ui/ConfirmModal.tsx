@@ -68,7 +68,7 @@ export function ConfirmModal({
     >
       <div className="stack confirm-modal-body">
         {danger ? (
-          <Alert tone="error" title="此操作不可撤销">
+          <Alert tone="danger" title="此操作不可撤销">
             {children ?? '删除后数据无法恢复，请谨慎确认。'}
           </Alert>
         ) : (

@@ -59,18 +59,9 @@ body[data-density='compact'] .field {
   margin-bottom: 10px;
 }
 
-body[data-density='compact'] .field input,
-body[data-density='compact'] .field select,
-body[data-density='compact'] .ui-select-trigger,
-body[data-density='compact'] .combobox-trigger input,
-body[data-density='compact'] .cascader-trigger {
-  font-size: 13px;
-}
-
 body[data-density='compact'] .field textarea {
   padding-top: 8px;
   padding-bottom: 8px;
-  font-size: 13px;
 }
 
 body[data-density='compact'] .tags-input {
@@ -129,3 +120,4 @@ body[data-density='compact'] .stack {
 body[data-density='compact'] .actions {
   gap: 6px;
 }
+

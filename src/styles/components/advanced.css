@@ -1,10 +1,390 @@
-/* DatePicker */
-.date-picker {
-  width: 280px;
-  padding: 10px;
+/* Date field — input trigger + popover calendar */
+.date-field {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.date-field-trigger {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  height: var(--control-h);
+  margin: 0;
+  padding: 0 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--control);
+  color: var(--text);
+  font-size: var(--control-fs);
+  font-weight: 450;
+  line-height: 1.35;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+
+.date-field-trigger:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--primary) 35%, var(--border-strong));
+}
+
+.date-field.open .date-field-trigger,
+.date-field-trigger:focus-visible {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+  background: var(--surface);
+}
+
+.date-field.is-invalid .date-field-trigger {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px var(--danger-soft);
+}
+
+.date-field-trigger:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  background: var(--surface-2);
+}
+
+.date-field-value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.date-field-value.is-placeholder {
+  color: var(--text-faint);
+  font-weight: 400;
+}
+
+.date-field-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.date-field-popover {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 4px);
+  left: 0;
+  width: max-content;
+  max-width: min(100vw - 24px, 420px);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.date-field-popover.has-time {
+  max-width: min(100vw - 24px, 460px);
+}
+
+.date-field-popover.is-range {
+  max-width: min(100vw - 24px, 620px);
+}
+
+.date-field-popover.is-range.has-time {
+  max-width: min(100vw - 24px, 860px);
+}
+
+.date-field-body {
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.date-field-body.has-time,
+.date-field-body.is-range,
+.date-field-body.is-range-with-time {
+  flex-direction: row;
+}
+
+.date-range-calendars {
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+  flex: 1;
+}
+
+.date-range-calendars .date-picker-panel + .date-picker-panel {
+  border-left: 1px solid var(--hairline);
+}
+
+.date-range-times {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  flex-shrink: 0;
+  border-left: 1px solid var(--hairline);
+  min-width: 0;
+}
+
+.date-range-times .time-wheels {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 120px;
+  padding: 10px 8px 12px;
+  box-sizing: border-box;
+}
+
+.date-range-times .time-wheels + .time-wheels {
+  border-left: 1px solid var(--hairline);
+}
+
+.date-picker-panel {
+  width: 280px;
+  max-width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  background: var(--surface);
+}
+
+.date-field-popover .date-picker-panel,
+.date-field-inline .date-picker-panel {
+  box-shadow: none;
+  border: 0;
+  border-radius: 0;
+}
+
+.date-field-inline {
+  display: inline-block;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.date-field-hint {
+  margin: 0;
+  padding: 10px 12px;
+  border-top: 1px solid var(--hairline);
+  font-size: 12px;
+}
+
+.date-field-hint p {
+  margin: 0;
+}
+
+.date-field-hint.has-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.date-time-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 132px;
+  flex-shrink: 0;
+  padding: 10px 10px 12px;
+  box-sizing: border-box;
+  border-left: 1px solid var(--hairline);
+  background: var(--surface);
+}
+
+.date-time-panel-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.time-wheels {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.time-wheels.is-disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.time-wheels-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.time-wheels-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.time-wheel-col {
+  position: relative;
+  width: 48px;
+  border-radius: var(--radius-sm);
+  outline: none;
+}
+
+.time-wheel-col:focus-visible {
+  box-shadow: 0 0 0 2px var(--primary-soft);
+}
+
+.time-wheel-col.is-disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.time-wheel-highlight {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  top: 50%;
+  height: var(--time-wheel-item, 32px);
+  margin-top: calc(var(--time-wheel-item, 32px) / -2);
+  border-radius: 8px;
+  background: var(--primary-soft);
+  border: 1px solid color-mix(in srgb, var(--primary) 28%, transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.time-wheel-scroller {
+  --time-wheel-item: 32px;
+  --time-wheel-visible: 5;
+  height: calc(var(--time-wheel-item) * var(--time-wheel-visible));
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 18%,
+    #000 82%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 18%,
+    #000 82%,
+    transparent 100%
+  );
+}
+
+.time-wheel-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.time-wheel-spacer {
+  height: calc(var(--time-wheel-item) * 2);
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.time-wheel-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: var(--time-wheel-item, 32px);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  scroll-snap-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.time-wheel-item.is-active {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.time-wheel-item:hover:not(:disabled):not(.is-active) {
+  color: var(--text);
+}
+
+.time-wheel-sep {
+  flex-shrink: 0;
+  width: 10px;
+  text-align: center;
+  color: var(--text-muted);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  font-size: 14px;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (max-width: 860px) {
+  .date-field-body.has-time,
+  .date-field-body.is-range,
+  .date-field-body.is-range-with-time {
+    flex-direction: column;
+  }
+
+  .date-range-calendars {
+    flex-direction: column;
+  }
+
+  .date-range-calendars .date-picker-panel + .date-picker-panel {
+    border-left: 0;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .date-picker-panel {
+    width: 100%;
+  }
+
+  .date-time-panel {
+    width: 100%;
+    border-left: 0;
+    border-top: 1px solid var(--hairline);
+    align-items: center;
+  }
+
+  .date-range-times {
+    width: 100%;
+    border-left: 0;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .date-range-times .time-wheels {
+    flex: 1;
+    width: auto;
+  }
+
+  .date-field-hint.has-action {
+    flex-wrap: wrap;
+  }
 }
 
 .date-picker-head {
@@ -12,6 +392,12 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 8px;
+}
+
+.date-picker-head-spacer {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
 }
 
 .date-picker-week,
@@ -36,6 +422,8 @@
   cursor: pointer;
   color: var(--text);
   font-size: 13px;
+  position: relative;
+  z-index: 0;
 }
 
 .date-picker-day:hover {
@@ -46,9 +434,50 @@
   color: var(--text-faint);
 }
 
+.date-picker-day.is-in-range {
+  background: var(--primary-soft);
+  border-radius: 0;
+  color: var(--text);
+}
+
+.date-picker-day.is-in-range:hover {
+  background: color-mix(in srgb, var(--primary) 22%, transparent);
+}
+
+.date-picker-day.is-range-start {
+  border-radius: 8px 0 0 8px;
+}
+
+.date-picker-day.is-range-end {
+  border-radius: 0 8px 8px 0;
+}
+
+.date-picker-day.is-range-start.is-range-end {
+  border-radius: 8px;
+}
+
 .date-picker-day.is-active {
   background: var(--primary);
   color: var(--primary-ink);
+  z-index: 1;
+}
+
+.date-picker-day.is-active:hover {
+  background: var(--primary-hover);
+  color: var(--primary-ink);
+}
+
+.date-picker-day.is-disabled,
+.date-picker-day:disabled {
+  color: var(--text-faint);
+  opacity: 0.45;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+.date-picker-day.is-disabled:hover,
+.date-picker-day:disabled:hover {
+  background: transparent;
 }
 
 /* Combobox */
@@ -98,7 +527,7 @@
   box-shadow: none !important;
   padding: 0 12px !important;
   min-width: 0;
-  font-size: 13px;
+  font-size: var(--control-fs);
   line-height: 1.35;
   outline: none;
 }
@@ -412,6 +841,20 @@
   font-size: 13px;
 }
 
+.transfer-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--hairline);
+  color: var(--text-muted);
+}
+
+.transfer-search input {
+  flex: 1;
+  min-width: 0;
+}
+
 .transfer-list {
   list-style: none;
   margin: 0;
@@ -441,6 +884,23 @@
   gap: 8px;
 }
 
+@media (max-width: 720px) {
+  .transfer {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .transfer-actions {
+    flex-direction: row;
+    justify-content: center;
+    order: 0;
+  }
+
+  .transfer-actions .btn {
+    min-width: 44px;
+  }
+}
+
 /* Cascader */
 .cascader {
   position: relative;
@@ -461,7 +921,7 @@
   border-radius: var(--radius-sm);
   background: var(--control);
   cursor: pointer;
-  font-size: 13px;
+  font-size: var(--control-fs);
   font-weight: 450;
   line-height: 1.35;
   transition:

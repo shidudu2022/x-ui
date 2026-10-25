@@ -88,16 +88,20 @@
   color: color-mix(in srgb, var(--warn) 52%, var(--text-muted));
 }
 
+.alert-danger,
 .alert-error {
   background: var(--danger-soft);
   border-color: transparent;
 }
 
+.alert-danger .alert-title,
+.alert-danger .alert-icon,
 .alert-error .alert-title,
 .alert-error .alert-icon {
   color: var(--danger);
 }
 
+.alert-danger .alert-desc,
 .alert-error .alert-desc {
   color: color-mix(in srgb, var(--danger) 52%, var(--text-muted));
 }

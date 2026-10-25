@@ -168,7 +168,7 @@
 .content .text-hint {
   font-size: var(--fs-sm);
 }
-.content .field input,
+.content .field input:not(.pin-input-cell),
 .content .field select,
 .content .field textarea,
 .content .ui-input,
@@ -176,8 +176,10 @@
 .content .ui-select-trigger,
 .content .combobox-trigger input,
 .content .tags-input input,
-.content .cascader-trigger {
-  font-size: var(--fs-md);
+.content .cascader-trigger,
+.content .date-field-trigger,
+.content .number-stepper input {
+  font-size: var(--control-fs);
 }
 .content .segmented button {
   font-size: var(--fs-base);

@@ -7,14 +7,25 @@
   background: var(--surface);
   border-left: 1px solid var(--border);
   transform: translateX(100%);
-  transition: transform 0.18s ease;
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 50;
   display: flex;
   flex-direction: column;
+  /* Avoid compositing quirks that skip the first enter transition */
+  backface-visibility: hidden;
 }
 
 .drawer.open {
   transform: translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer,
+  .drawer.drawer-left,
+  .modal,
+  .overlay {
+    transition-duration: 0.01ms !important;
+  }
 }
 
 .drawer-header,
@@ -87,11 +98,29 @@
 .drawer.drawer-left {
   right: auto;
   left: 0;
-  transform: translateX(-105%);
+  border-left: 0;
+  border-right: 1px solid var(--border);
+  transform: translateX(-100%);
 }
 
 .drawer.drawer-left.open {
   transform: translateX(0);
+}
+
+.drawer.drawer-sm {
+  width: min(360px, 100%);
+}
+
+.drawer.drawer-md {
+  width: min(480px, 100%);
+}
+
+.drawer.drawer-lg {
+  width: min(720px, 100%);
+}
+
+.drawer.drawer-xl {
+  width: min(960px, 100%);
 }
 
 /* Strong confirm (Modal-based) */

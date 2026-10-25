@@ -1,14 +1,17 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react'
+import { withBase } from '@/lib/baseUrl'
 import { cn } from '@/lib/cn'
 import { Spinner } from './Spinner'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost'
-export type ButtonSize = 'md' | 'sm'
+export type ButtonSize = 'sm' | 'md' | 'lg'
 
 type Shared = {
   variant?: ButtonVariant
   size?: ButtonSize
   loading?: boolean
+  block?: boolean
+  iconOnly?: boolean
   children?: ReactNode
   className?: string
 }
@@ -25,7 +28,14 @@ type ButtonAsLink = Shared &
 
 export type ButtonProps = ButtonAsButton | ButtonAsLink
 
-function buttonClass(variant: ButtonVariant, size: ButtonSize, loading: boolean, className?: string) {
+function buttonClass(
+  variant: ButtonVariant,
+  size: ButtonSize,
+  loading: boolean,
+  block: boolean,
+  iconOnly: boolean,
+  className?: string,
+) {
   return cn(
     'btn',
     variant === 'primary' && 'btn-primary',
@@ -33,6 +43,9 @@ function buttonClass(variant: ButtonVariant, size: ButtonSize, loading: boolean,
     variant === 'danger' && 'btn-danger',
     variant === 'ghost' && 'btn-ghost',
     size === 'sm' && 'btn-sm',
+    size === 'lg' && 'btn-lg',
+    block && 'btn-block',
+    iconOnly && 'btn-icon',
     loading && 'is-loading',
     className,
   )
@@ -43,12 +56,14 @@ export function Button(props: ButtonProps) {
     variant = 'secondary',
     size = 'md',
     loading = false,
+    block = false,
+    iconOnly = false,
     className,
     children,
     ...rest
   } = props
 
-  const cls = buttonClass(variant, size, loading, className)
+  const cls = buttonClass(variant, size, loading, block, iconOnly, className)
   const content = (
     <>
       <span className="btn-label">{children}</span>
@@ -64,7 +79,7 @@ export function Button(props: ButtonProps) {
     const { href, ...anchorRest } = rest as AnchorHTMLAttributes<HTMLAnchorElement>
     return (
       <a
-        href={href}
+        href={withBase(href!)}
         className={cls}
         aria-busy={loading || undefined}
         {...anchorRest}

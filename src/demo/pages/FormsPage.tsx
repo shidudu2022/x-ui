@@ -2,6 +2,8 @@ import { useState } from 'react'
 import {
   Card,
   Checkbox,
+  DatePicker,
+  DateRangePicker,
   Field,
   FileUpload,
   Input,
@@ -28,6 +30,13 @@ export function FormsPage() {
   const [multi, setMulti] = useState<string[]>(['a'])
   const [otp, setOtp] = useState('')
   const [pin4, setPin4] = useState('')
+  const [date, setDate] = useState('2026-10-25')
+  const [datetime, setDatetime] = useState('2026-10-25T14:30')
+  const [dateRange, setDateRange] = useState({ start: '2026-10-01', end: '2026-10-12' })
+  const [dateTimeRange, setDateTimeRange] = useState({
+    start: '2026-10-01T09:00',
+    end: '2026-10-12T18:00',
+  })
 
   return (
     <div>
@@ -39,14 +48,14 @@ export function FormsPage() {
             <Field label="名称" htmlFor="name" hint="用于展示">
               <Input id="name" placeholder="demo" />
             </Field>
+            <Field label="小尺寸" htmlFor="name-sm">
+              <Input id="name-sm" size="sm" placeholder="size=sm" />
+            </Field>
             <Field label="校验失败" htmlFor="bad" error="必填项">
               <Input id="bad" invalid defaultValue="" placeholder="请输入" />
             </Field>
             <Field label="禁用" htmlFor="dis">
               <Input id="dis" disabled defaultValue="readonly value" />
-            </Field>
-            <Field label="日期" htmlFor="date">
-              <Input id="date" type="date" />
             </Field>
             <Field label="前缀后缀" htmlFor="url" className="full">
               <InputGroup prefix="https://" suffix=".com">
@@ -55,6 +64,35 @@ export function FormsPage() {
             </Field>
             <Field label="多行" htmlFor="notes" className="full">
               <Textarea id="notes" rows={3} placeholder="备注" />
+            </Field>
+          </div>
+        </Card>
+      </ShowcaseSection>
+
+      <ShowcaseSection title="日期 / 时间">
+        <Card padded>
+          <div className="form-grid">
+            <Field label="日期" hint="mode=&quot;date&quot;">
+              <DatePicker value={date} onChange={setDate} mode="date" />
+            </Field>
+            <Field label="日期时间" hint="mode=&quot;datetime&quot;">
+              <DatePicker value={datetime} onChange={setDatetime} mode="datetime" />
+            </Field>
+            <Field label="日期范围" hint="DateRangePicker · date" className="full">
+              <DateRangePicker
+                mode="date"
+                start={dateRange.start}
+                end={dateRange.end}
+                onChange={setDateRange}
+              />
+            </Field>
+            <Field label="日期时间范围" hint="DateRangePicker · datetime" className="full">
+              <DateRangePicker
+                mode="datetime"
+                start={dateTimeRange.start}
+                end={dateTimeRange.end}
+                onChange={setDateTimeRange}
+              />
             </Field>
           </div>
         </Card>
@@ -102,14 +140,23 @@ export function FormsPage() {
         </Card>
       </ShowcaseSection>
 
-      <ShowcaseSection title="验证码 / 标签 / 数值 / 上传">
+      <ShowcaseSection title="验证码（PinInput）">
         <Card padded className="stack">
-          <Field label="6 位验证码" hint="PinInput · length=6">
-            <PinInput length={6} value={otp} onChange={setOtp} aria-label="6 位验证码" />
-          </Field>
-          <Field label="4 位 PIN" hint="可改位数；masked 隐藏输入">
-            <PinInput length={4} value={pin4} onChange={setPin4} masked aria-label="4 位 PIN" />
-          </Field>
+          <div className="pin-demo pin-demo-6">
+            <Field label="6 位验证码" hint="length=6">
+              <PinInput length={6} value={otp} onChange={setOtp} aria-label="6 位验证码" />
+            </Field>
+          </div>
+          <div className="pin-demo pin-demo-4">
+            <Field label="4 位 PIN" hint="length=4 · masked">
+              <PinInput length={4} value={pin4} onChange={setPin4} masked aria-label="4 位 PIN" />
+            </Field>
+          </div>
+        </Card>
+      </ShowcaseSection>
+
+      <ShowcaseSection title="标签 / 数值 / 上传">
+        <Card padded className="stack">
           <Field label="标签">
             <TagsInput value={tags} onChange={setTags} />
           </Field>

@@ -45,9 +45,33 @@ body[data-mode='dark'] .tooltip {
   max-width: 320px;
 }
 
+.dropdown {
+  position: relative;
+  display: inline-flex;
+}
+
+.dropdown-trigger-wrap {
+  display: inline-flex;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
 .dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
   padding: 6px;
   min-width: 180px;
+}
+
+.dropdown-menu.align-start {
+  right: auto;
+  left: 0;
 }
 
 .dropdown-item {

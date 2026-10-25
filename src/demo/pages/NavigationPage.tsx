@@ -77,6 +77,15 @@ export function NavigationPage() {
                 { id: '3', label: '确认' },
               ]}
             />
+            <Steps
+              size="sm"
+              current={step}
+              items={[
+                { id: '1', label: '命名' },
+                { id: '2', label: '配置' },
+                { id: '3', label: '确认' },
+              ]}
+            />
             <div className="actions">
               <Button disabled={step <= 1} onClick={() => setStep((s) => s - 1)}>
                 上一步

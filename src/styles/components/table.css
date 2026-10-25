@@ -61,11 +61,20 @@
   display: inline-block;
   width: 8px;
   height: 8px;
-  margin-left: 6px;
+  margin-right: 6px;
   border-left: 1.5px solid var(--border-strong);
   border-bottom: 1.5px solid var(--border-strong);
   border-bottom-left-radius: 2px;
   opacity: 0.85;
+  flex-shrink: 0;
+}
+
+.tree-table-cell {
+  min-width: 0;
+}
+
+.tree-table-cell-body {
+  min-width: 0;
 }
 
 .table th,
@@ -98,21 +107,217 @@
 
 /* Table sort / select */
 .table th.sortable {
-  cursor: pointer;
   user-select: none;
 }
 
-.table th.sortable:hover {
+.table-sort-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.table-sort-btn:hover {
   color: var(--text);
 }
 
 .table .sort-icon {
-  margin-left: 4px;
   color: var(--text-faint);
   vertical-align: middle;
+  display: inline-flex;
 }
 
 .table .row-check {
-  width: 36px;
+  width: 48px;
+  min-width: 48px;
+  max-width: 48px;
+  box-sizing: border-box;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.table th.is-resizable {
+  position: relative;
+}
+
+.table-col-resizer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 6px;
+  height: 100%;
+  cursor: col-resize;
+  user-select: none;
+}
+
+.table-col-resizer:hover {
+  background: color-mix(in srgb, var(--primary) 35%, transparent);
+}
+
+.data-table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.data-table-toolbar-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.data-table-col-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 160px;
+  padding: 4px;
+}
+
+.data-table-col-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* Sticky / pinned columns — opaque fill so scrolled cells cannot show through */
+.data-table-scroll.has-pinned-cols {
+  position: relative;
+  z-index: 0;
+}
+
+.table.has-pinned-cols {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: max-content;
+  min-width: 100%;
+}
+
+.table.has-pinned-cols th,
+.table.has-pinned-cols td {
+  /* Keep middle columns from painting over sticky cells */
+  background-clip: padding-box;
+}
+
+.table.has-pinned-cols td:not(.is-pinned-left):not(.is-pinned-right) {
+  overflow: hidden;
+}
+
+.table th.is-pinned-left,
+.table td.is-pinned-left,
+.table th.is-pinned-right,
+.table td.is-pinned-right {
+  position: sticky;
+  /* Solid opaque — never use --hover (translucent) on pinned cells */
+  background-color: var(--surface) !important;
+  background-image: none !important;
+  background-clip: padding-box;
+}
+
+.table th.is-pinned-left,
+.table td.is-pinned-left {
+  z-index: 3;
+}
+
+.table th.is-pinned-right,
+.table td.is-pinned-right {
+  z-index: 4;
+}
+
+.table thead th.is-pinned-left {
+  z-index: 6;
+}
+
+.table thead th.is-pinned-right {
+  z-index: 7;
+}
+
+/* Opaque hover for pinned cells (beat .table tr:hover td { background: var(--hover) }) */
+.table tr:hover td.is-pinned-left,
+.table tr:hover td.is-pinned-right,
+.table tr.clickable:hover td.is-pinned-left,
+.table tr.clickable:hover td.is-pinned-right {
+  background-color: var(--surface-2) !important;
+}
+
+/* Soft edge fade (not a heavy drop-shadow) */
+.table th.is-pinned-left.is-pinned-edge,
+.table td.is-pinned-left.is-pinned-edge,
+.table th.is-pinned-right.is-pinned-edge,
+.table td.is-pinned-right.is-pinned-edge {
+  box-shadow: none;
+}
+
+.table th.is-pinned-left.is-pinned-edge::after,
+.table td.is-pinned-left.is-pinned-edge::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -10px;
+  bottom: 0;
+  width: 10px;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--text) 8%, transparent),
+    transparent
+  );
+}
+
+.table th.is-pinned-right.is-pinned-edge::after,
+.table td.is-pinned-right.is-pinned-edge::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -10px;
+  bottom: 0;
+  width: 10px;
+  pointer-events: none;
+  background: linear-gradient(
+    to left,
+    color-mix(in srgb, var(--text) 8%, transparent),
+    transparent
+  );
+}
+
+body[data-mode='dark'] .table th.is-pinned-left.is-pinned-edge::after,
+body[data-mode='dark'] .table td.is-pinned-left.is-pinned-edge::after {
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.35), transparent);
+}
+
+body[data-mode='dark'] .table th.is-pinned-right.is-pinned-edge::after,
+body[data-mode='dark'] .table td.is-pinned-right.is-pinned-edge::after {
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.35), transparent);
+}
+
+/* Full-cell opaque underlay — fixes sticky td paint gaps in some engines */
+.table td.is-pinned-left,
+.table td.is-pinned-right,
+.table th.is-pinned-left,
+.table th.is-pinned-right {
+  isolation: isolate;
+}
+
+.table td.is-pinned-left::before,
+.table td.is-pinned-right::before,
+.table th.is-pinned-left::before,
+.table th.is-pinned-right::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: inherit;
+  pointer-events: none;
 }
 

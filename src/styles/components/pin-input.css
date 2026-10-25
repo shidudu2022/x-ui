@@ -1,26 +1,42 @@
 .pin-input {
+  --pin-size: 40px;
+  --pin-gap: 8px;
   display: flex;
   flex-wrap: nowrap;
-  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--pin-gap);
   width: 100%;
   max-width: 100%;
   min-width: 0;
 }
 
-.pin-input-cell {
+.pin-input-slot {
+  flex: 0 0 var(--pin-size);
+  width: var(--pin-size);
+  height: var(--pin-size);
+  min-width: var(--pin-size);
+  max-width: var(--pin-size);
+}
+
+.pin-input-cell,
+.field .pin-input-cell,
+.field .pin-input .pin-input-cell {
   box-sizing: border-box;
-  flex: 1 1 0;
-  min-width: 0;
-  width: 100%;
-  max-width: 48px;
-  height: var(--control-h);
+  display: block;
+  width: var(--pin-size) !important;
+  height: var(--pin-size) !important;
+  min-width: var(--pin-size);
+  max-width: var(--pin-size);
+  min-height: var(--pin-size);
+  max-height: var(--pin-size);
   margin: 0;
-  padding: 0;
+  padding: 0 !important;
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
   background: var(--control);
   color: var(--text);
-  font-size: 16px;
+  font-size: var(--control-fs);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   font-family: var(--mono);
@@ -33,31 +49,39 @@
     background 0.15s ease;
 }
 
-.pin-input-cell::placeholder {
+.pin-input-cell::placeholder,
+.field .pin-input-cell::placeholder {
   color: var(--text-faint);
+  opacity: 1;
 }
 
-.pin-input-cell:hover:not(:disabled) {
+.pin-input-cell:hover:not(:disabled),
+.field .pin-input-cell:hover:not(:disabled) {
   border-color: color-mix(in srgb, var(--primary) 35%, var(--border-strong));
 }
 
-.pin-input-cell:focus {
+.pin-input-cell:focus,
+.field .pin-input-cell:focus {
   outline: none;
   border-color: var(--primary);
   box-shadow: 0 0 0 3px var(--primary-soft);
   background: var(--surface);
 }
 
-.pin-input.is-invalid .pin-input-cell {
+.pin-input.is-invalid .pin-input-cell,
+.field .pin-input.is-invalid .pin-input-cell {
   border-color: var(--danger);
 }
 
-.pin-input.is-invalid .pin-input-cell:focus {
+.pin-input.is-invalid .pin-input-cell:focus,
+.field .pin-input.is-invalid .pin-input-cell:focus {
   box-shadow: 0 0 0 3px var(--danger-soft);
 }
 
 .pin-input.is-disabled .pin-input-cell,
-.pin-input-cell:disabled {
+.pin-input-cell:disabled,
+.field .pin-input.is-disabled .pin-input-cell,
+.field .pin-input-cell:disabled {
   opacity: 0.65;
   cursor: not-allowed;
   background: var(--surface-2);
@@ -65,12 +89,7 @@
 
 @media (max-width: 960px) {
   .pin-input {
-    gap: 6px;
-  }
-
-  .pin-input-cell {
-    max-width: none;
-    height: 44px;
-    font-size: 18px;
+    --pin-size: 40px;
+    --pin-gap: 6px;
   }
 }

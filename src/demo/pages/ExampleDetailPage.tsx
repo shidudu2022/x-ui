@@ -11,8 +11,8 @@ import {
   Mono,
   Muted,
   PageHeader,
+  PageTabs,
   SectionCard,
-  Segmented,
   StatusBar,
   Table,
   Text,
@@ -37,39 +37,58 @@ export function ExampleDetailPage() {
           </>
         }
         actions={
-          <>
-            <ToggleButton checked={autoRefresh} onClick={() => setAutoRefresh((v) => !v)}>
-              自动刷新
-            </ToggleButton>
-            <Button onClick={() => toast('下载 kubeconfig（示例）', 'info')}>kubeconfig</Button>
-            <Button onClick={() => toast('诊断已开始（示例）', 'success')}>诊断</Button>
-            <Button onClick={() => toast('打开升级（示例）', 'info')}>升级</Button>
-            <Button variant="primary" onClick={() => toast('安装/重试（示例）', 'info')}>
-              安装/重试
-            </Button>
-            <Button variant="danger" onClick={() => toast('打开删除确认（示例）', 'error')}>
-              删除
-            </Button>
-          </>
+          <ToggleButton checked={autoRefresh} onClick={() => setAutoRefresh((v) => !v)}>
+            自动刷新
+          </ToggleButton>
         }
+        actionItems={[
+          {
+            id: 'retry',
+            label: '安装/重试',
+            variant: 'primary',
+            onClick: () => toast('安装/重试（示例）', 'info'),
+          },
+          {
+            id: 'delete',
+            label: '删除',
+            variant: 'danger',
+            onClick: () => toast('打开删除确认（示例）', 'error'),
+          },
+          {
+            id: 'kubeconfig',
+            label: 'kubeconfig',
+            overflow: true,
+            onClick: () => toast('下载 kubeconfig（示例）', 'info'),
+          },
+          {
+            id: 'diagnose',
+            label: '诊断',
+            overflow: true,
+            onClick: () => toast('诊断已开始（示例）', 'success'),
+          },
+          {
+            id: 'upgrade',
+            label: '升级',
+            overflow: true,
+            onClick: () => toast('打开升级（示例）', 'info'),
+          },
+        ]}
+        overflowLabel="更多"
       />
 
       <div style={{ marginBottom: 16 }}>
         <Banner>维护模式进行中，危险操作已锁定。</Banner>
       </div>
 
-      <div style={{ margin: '16px 0' }}>
-        <Segmented
-          value={tab}
-          onChange={setTab}
-          aria-label="详情页签"
-          options={[
-            { value: 'overview', label: '概览' },
-            { value: 'workloads', label: '工作负载' },
-            { value: 'meta', label: '元数据' },
-          ]}
-        />
-      </div>
+      <PageTabs
+        value={tab}
+        onChange={(id) => setTab(id as typeof tab)}
+        items={[
+          { id: 'overview', label: '概览' },
+          { id: 'workloads', label: '工作负载' },
+          { id: 'meta', label: '元数据' },
+        ]}
+      />
 
       {tab === 'overview' ? (
         <div className="grid-2">

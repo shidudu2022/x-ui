@@ -179,10 +179,14 @@
     width: 100%;
   }
 
-  .page-header .actions .btn {
+  .page-header .actions .btn:not(.btn-icon) {
     flex: 1 1 auto;
     min-width: 0;
     justify-content: center;
+  }
+
+  .page-header .actions .btn-icon {
+    flex: 0 0 auto;
   }
 
   .grid-2,
@@ -332,11 +336,10 @@
   }
 
   .data-table-size .ui-select-sm .ui-select-trigger {
-    height: var(--control-h-sm);
-    min-width: 52px;
-    max-width: 72px;
+    height: var(--control-h);
+    min-width: 56px;
+    max-width: 80px;
     padding: 0 8px;
-    font-size: 12px !important;
   }
 
   .actions,
@@ -370,28 +373,14 @@
     max-width: 100%;
   }
 
-  /* 16px prevents iOS focus zoom; keep sm selects compact */
-  .ui-input,
-  .ui-textarea,
-  .field input,
-  .field select,
-  .field textarea,
-  .ui-select:not(.ui-select-sm) .ui-select-trigger,
-  .combobox-trigger input,
-  .tags-input input,
-  .cascader-trigger {
-    font-size: 16px;
-  }
-
-  .ui-select-sm .ui-select-trigger {
-    font-size: 12px;
-  }
-
+  /* Control font is always --control-fs (13px) — no mobile-only bump. */
   .field,
   .combobox,
   .tags-input,
   .ui-select,
-  .input-group {
+  .input-group,
+  .date-field,
+  .number-stepper {
     min-width: 0;
     max-width: 100%;
   }

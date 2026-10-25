@@ -114,26 +114,27 @@ export function PinInput({
       aria-label={ariaLabel}
     >
       {chars.map((ch, i) => (
-        <input
-          key={`${rootId}-${i}`}
-          ref={(el) => {
-            refs.current[i] = el
-          }}
-          id={i === 0 ? rootId : `${rootId}-${i}`}
-          className="pin-input-cell"
-          type={masked ? 'password' : 'text'}
-          inputMode={inputMode === 'numeric' ? 'numeric' : 'text'}
-          autoComplete={i === 0 ? 'one-time-code' : 'off'}
-          maxLength={1}
-          value={ch}
-          disabled={disabled}
-          aria-invalid={invalid || undefined}
-          aria-label={`${ariaLabel} 第 ${i + 1} 位`}
-          onChange={(e) => onInput(i, e.target.value)}
-          onKeyDown={(e) => onKeyDown(e, i)}
-          onPaste={(e) => onPaste(e, i)}
-          onFocus={(e) => e.target.select()}
-        />
+        <div key={`${rootId}-${i}`} className="pin-input-slot">
+          <input
+            ref={(el) => {
+              refs.current[i] = el
+            }}
+            id={i === 0 ? rootId : `${rootId}-${i}`}
+            className="pin-input-cell"
+            type={masked ? 'password' : 'text'}
+            inputMode={inputMode === 'numeric' ? 'numeric' : 'text'}
+            autoComplete={i === 0 ? 'one-time-code' : 'off'}
+            maxLength={1}
+            value={ch}
+            disabled={disabled}
+            aria-invalid={invalid || undefined}
+            aria-label={`${ariaLabel} 第 ${i + 1} 位`}
+            onChange={(e) => onInput(i, e.target.value)}
+            onKeyDown={(e) => onKeyDown(e, i)}
+            onPaste={(e) => onPaste(e, i)}
+            onFocus={(e) => e.target.select()}
+          />
+        </div>
       ))}
     </div>
   )

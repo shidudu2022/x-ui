@@ -31,7 +31,7 @@ export function NodePicker({
             role="option"
             aria-selected={active}
             disabled={opt.disabled}
-            className={cn('node-option', active && 'active')}
+            className={cn('node-option', active && 'selected')}
             onClick={() => onChange?.(opt.id)}
           >
             <strong>{opt.title}</strong>

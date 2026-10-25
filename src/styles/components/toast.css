@@ -28,6 +28,10 @@
   color: var(--success);
 }
 
+.toast.toast-warn {
+  color: var(--warn);
+}
+
 .toast.toast-error {
   color: var(--danger);
 }
@@ -42,13 +46,16 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.55);
-  display: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
   z-index: 40;
 }
 
 .overlay.open,
 #themeOverlay.open {
-  display: block;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Toast host — top center stack (k3s-start/web) */

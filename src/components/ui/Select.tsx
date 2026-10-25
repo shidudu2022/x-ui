@@ -1,11 +1,14 @@
-import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
-import { ChevronDown } from 'lucide-react'
+import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react'
+import { ChevronDown, Search } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { Input } from './Field'
 
 export type SelectOption = {
   value: string
   label: ReactNode
   disabled?: boolean
+  /** Plain text used for filter / native option */
+  searchText?: string
 }
 
 type SelectProps = {
@@ -22,6 +25,20 @@ type SelectProps = {
   multiple?: boolean
   values?: string[]
   onValuesChange?: (values: string[]) => void
+  /** Show filter input when option count exceeds threshold (default 8) */
+  searchable?: boolean
+  searchThreshold?: number
+  /**
+   * On coarse pointers / narrow viewports with many options, fall back to native `<select>`.
+   * Default true when options.length > 12.
+   */
+  nativeOnMobile?: boolean
+}
+
+function optionText(opt: SelectOption) {
+  if (opt.searchText) return opt.searchText
+  if (typeof opt.label === 'string' || typeof opt.label === 'number') return String(opt.label)
+  return opt.value
 }
 
 export function Select({
@@ -38,15 +55,29 @@ export function Select({
   multiple,
   values,
   onValuesChange,
+  searchable,
+  searchThreshold = 8,
+  nativeOnMobile,
 }: SelectProps) {
   const [open, setOpen] = useState(false)
+  const [query, setQuery] = useState('')
   const [uncontrolled, setUncontrolled] = useState(defaultValue ?? '')
   const [uncontrolledMulti, setUncontrolledMulti] = useState<string[]>(values ?? [])
+  const [useNative, setUseNative] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
   const listId = useId()
 
   const selected = value ?? uncontrolled
   const selectedMulti = values ?? uncontrolledMulti
+  const enableSearch = searchable ?? options.length >= searchThreshold
+  const preferNative = nativeOnMobile ?? options.length > 12
+
+  useEffect(() => {
+    if (!preferNative || multiple) return
+    const coarse = window.matchMedia('(pointer: coarse)').matches
+    const narrow = window.matchMedia('(max-width: 960px)').matches
+    setUseNative(coarse || narrow)
+  }, [preferNative, multiple])
 
   useEffect(() => {
     function onDoc(e: MouseEvent) {
@@ -55,6 +86,16 @@ export function Select({
     document.addEventListener('mousedown', onDoc)
     return () => document.removeEventListener('mousedown', onDoc)
   }, [])
+
+  useEffect(() => {
+    if (!open) setQuery('')
+  }, [open])
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    if (!q) return options
+    return options.filter((o) => optionText(o).toLowerCase().includes(q))
+  }, [options, query])
 
   const display = multiple
     ? selectedMulti.length
@@ -76,6 +117,34 @@ export function Select({
     if (value === undefined) setUncontrolled(next)
     onChange?.(next)
     setOpen(false)
+  }
+
+  if (useNative && !multiple) {
+    return (
+      <select
+        className={cn(
+          'ui-select-native',
+          size === 'sm' && 'ui-select-native-sm',
+          block && 'ui-select-block',
+          invalid && 'is-invalid',
+          className,
+        )}
+        value={selected}
+        disabled={disabled}
+        aria-invalid={invalid || undefined}
+        onChange={(e) => {
+          if (value === undefined) setUncontrolled(e.target.value)
+          onChange?.(e.target.value)
+        }}
+      >
+        {!selected ? <option value="">{placeholder}</option> : null}
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value} disabled={opt.disabled}>
+            {optionText(opt)}
+          </option>
+        ))}
+      </select>
+    )
   }
 
   return (
@@ -105,23 +174,39 @@ export function Select({
         </span>
       </button>
       {open ? (
-        <div className="ui-select-menu" id={listId} role="listbox">
-          {options.map((opt) => {
-            const active = multiple ? selectedMulti.includes(opt.value) : selected === opt.value
-            return (
-              <button
-                key={opt.value}
-                type="button"
-                role="option"
-                aria-selected={active}
-                className={cn('ui-select-option', active && 'active')}
-                disabled={opt.disabled}
-                onClick={() => pick(opt.value)}
-              >
-                {opt.label}
-              </button>
-            )
-          })}
+        <div className="ui-select-menu placement-bottom" id={listId} role="listbox">
+          {enableSearch ? (
+            <div className="ui-select-search" onMouseDown={(e) => e.preventDefault()}>
+              <Search size={14} aria-hidden />
+              <Input
+                size="sm"
+                value={query}
+                placeholder="筛选…"
+                aria-label="筛选选项"
+                onChange={(e) => setQuery(e.target.value)}
+              />
+            </div>
+          ) : null}
+          {filtered.length === 0 ? (
+            <div className="ui-select-empty muted">无匹配项</div>
+          ) : (
+            filtered.map((opt) => {
+              const active = multiple ? selectedMulti.includes(opt.value) : selected === opt.value
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  role="option"
+                  aria-selected={active}
+                  className={cn('ui-select-option', active && 'active')}
+                  disabled={opt.disabled}
+                  onClick={() => pick(opt.value)}
+                >
+                  {opt.label}
+                </button>
+              )
+            })
+          )}
         </div>
       ) : null}
     </div>

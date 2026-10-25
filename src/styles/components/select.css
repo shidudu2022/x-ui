@@ -29,7 +29,7 @@
   border-radius: var(--radius-sm);
   background: var(--control);
   color: var(--text);
-  font-size: 13px;
+  font-size: var(--control-fs);
   font-weight: 450;
   line-height: 1.35;
   cursor: pointer;
@@ -43,7 +43,7 @@
   height: var(--control-h-sm);
   min-width: 56px;
   padding: 0 8px;
-  font-size: 12px;
+  font-size: var(--control-fs-sm);
   border-radius: 6px;
 }
 
@@ -155,4 +155,55 @@
 .ui-select-option:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+.ui-select-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px 8px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: 4px;
+}
+
+.ui-select-search .field,
+.ui-select-search input {
+  flex: 1;
+  min-width: 0;
+}
+
+.ui-select-empty {
+  padding: 10px;
+  font-size: 12px;
+}
+
+.ui-select-native {
+  appearance: none;
+  box-sizing: border-box;
+  min-width: 72px;
+  height: var(--control-h);
+  padding: 0 28px 0 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--control)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")
+    no-repeat right 8px center;
+  color: var(--text);
+  font-size: var(--control-fs);
+}
+
+.ui-select-native-sm {
+  height: var(--control-h-sm);
+  font-size: var(--control-fs-sm);
+  padding: 0 24px 0 8px;
+}
+
+.ui-select-native.ui-select-block {
+  display: block;
+  width: 100%;
+}
+
+.ui-select-native.is-invalid {
+  border-color: var(--danger);
 }

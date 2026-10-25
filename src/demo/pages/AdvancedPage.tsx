@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import {
+  AccentPicker,
   AvatarUpload,
   BreadcrumbNav,
   Button,
@@ -7,6 +8,7 @@ import {
   Cascader,
   Checklist,
   CodeBlock,
+  ColorInput,
   Combobox,
   CopyButton,
   DatePicker,
@@ -14,40 +16,132 @@ import {
   Divider,
   Field,
   FormErrors,
+  ImagePreview,
+  JsonViewer,
+  KeyValueEditor,
   MaintenanceBanner,
   MirrorCard,
   NodePicker,
   NotificationList,
   PageHeader,
+  SettingsRow,
   Sheet,
   Sparkline,
   Stat,
+  StatCard,
   TextLink,
+  TimePicker,
   Transfer,
 } from '@/components/ui'
 import { ShowcaseSection } from '../ShowcaseSection'
 
 export function AdvancedPage() {
   const [date, setDate] = useState('2026-10-25')
+  const [datetime, setDatetime] = useState('2026-10-25T09:30')
+  const [time, setTime] = useState('09:30')
   const [range, setRange] = useState({ start: '2026-10-01', end: '2026-10-12' })
+  const [dateTimeRange, setDateTimeRange] = useState({
+    start: '2026-10-01T09:00',
+    end: '2026-10-12T18:00',
+  })
   const [combo, setCombo] = useState('sh')
   const [sheetOpen, setSheetOpen] = useState(false)
   const [cascade, setCascade] = useState<string[]>(['cn', 'sh'])
   const [transfer, setTransfer] = useState(['b'])
   const [checks, setChecks] = useState({ a: true, b: false, c: false })
+  const [color, setColor] = useState('#0ea5e9')
+  const [kv, setKv] = useState([
+    { key: 'REGION', value: 'cn-east' },
+    { key: 'TIER', value: 'prod' },
+  ])
 
   return (
     <div>
-      <PageHeader title="进阶组件" description="日期、级联、穿梭、Sheet、通知等。" />
+      <PageHeader
+        title="进阶组件"
+        description="双月范围、时间滚轮、AccentPicker、SettingsRow、媒体与配置编辑等。"
+      />
 
-      <ShowcaseSection title="Date / Combobox / Cascader">
+      <ShowcaseSection title="Date / Time / Range">
+        <div className="form-grid">
+          <Field label="日期" hint="禁用周末">
+            <DatePicker
+              mode="date"
+              value={date}
+              onChange={setDate}
+              disabledDate={(iso) => {
+                const d = new Date(`${iso}T00:00:00`)
+                const day = d.getDay()
+                return day === 0 || day === 6
+              }}
+            />
+          </Field>
+          <Field label="日期时间" hint="minuteStep=5">
+            <DatePicker
+              mode="datetime"
+              value={datetime}
+              onChange={setDatetime}
+              minuteStep={5}
+            />
+          </Field>
+          <Field label="仅时间" hint="TimePicker">
+            <TimePicker value={time} onChange={setTime} minuteStep={5} />
+          </Field>
+          <Field label="日期范围" hint="双月日历" className="full">
+            <DateRangePicker mode="date" start={range.start} end={range.end} onChange={setRange} />
+          </Field>
+          <Field
+            label="日期时间范围"
+            hint="布局：左月 | 右月 | 开始时间 | 结束时间"
+            className="full"
+          >
+            <DateRangePicker
+              mode="datetime"
+              start={dateTimeRange.start}
+              end={dateTimeRange.end}
+              onChange={setDateTimeRange}
+              minuteStep={5}
+            />
+          </Field>
+        </div>
+      </ShowcaseSection>
+
+      <ShowcaseSection title="Appearance / Settings">
+        <SettingsRow
+          title="主题色"
+          description="AccentPicker 写入 AppearanceProvider。"
+          control={<AccentPicker />}
+        />
+        <div style={{ marginTop: 12 }}>
+          <Field label="自定义色" hint="ColorInput">
+            <ColorInput value={color} onChange={setColor} />
+          </Field>
+        </div>
+      </ShowcaseSection>
+
+      <ShowcaseSection title="Stat / Media / Config">
         <div className="grid-2">
-          <Field label="日期">
-            <DatePicker value={date} onChange={setDate} />
+          <StatCard label="活跃集群" value="12" hint="较上周 +2" tone="success" />
+          <StatCard label="告警" value="3" hint="需处理" tone="warn" />
+        </div>
+        <div className="grid-2" style={{ marginTop: 16 }}>
+          <Field
+            label="图片预览"
+            hint="ImagePreview：缩略图点击放大（头像/附件场景）"
+          >
+            <ImagePreview src="/demo-preview.svg" alt="示例预览图" />
           </Field>
-          <Field label="日期范围">
-            <DateRangePicker start={range.start} end={range.end} onChange={setRange} />
-          </Field>
+          <JsonViewer
+            value={{ cluster: 'demo', replicas: 3, labels: { env: 'prod' } }}
+          />
+        </div>
+        <div style={{ marginTop: 16 }}>
+          <KeyValueEditor value={kv} onChange={setKv} />
+        </div>
+      </ShowcaseSection>
+
+      <ShowcaseSection title="Combobox / Cascader">
+        <div className="grid-2">
           <Field label="可搜索选择">
             <Combobox
               value={combo}

@@ -27,6 +27,14 @@
   gap: 12px;
 }
 
+.stack-sm {
+  gap: 8px;
+}
+
+.stack-lg {
+  gap: 20px;
+}
+
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -60,7 +68,7 @@
 
 .ui-input,
 .ui-textarea,
-.field input,
+.field input:not(.pin-input-cell):not(.color-input-text),
 .field select,
 .field textarea {
   box-sizing: border-box;
@@ -73,7 +81,7 @@
   padding: 0 12px;
   background: var(--control);
   color: var(--text);
-  font-size: 13px;
+  font-size: var(--control-fs);
   font-weight: 450;
   line-height: 1.35;
   transition:
@@ -82,9 +90,44 @@
     background 0.15s ease;
 }
 
+.ui-input-sm,
+.ui-textarea.ui-input-sm,
+.field input.ui-input-sm:not(.pin-input-cell):not(.color-input-text),
+.field select.ui-input-sm,
+.field textarea.ui-input-sm {
+  height: 28px;
+  padding: 0 10px;
+  font-size: var(--control-fs-sm);
+  border-radius: 6px;
+}
+
+.ui-textarea.ui-input-sm,
+.field textarea.ui-input-sm {
+  height: auto;
+  min-height: 72px;
+  padding: 8px 10px;
+}
+
+.ui-input-lg,
+.ui-textarea.ui-input-lg,
+.field input.ui-input-lg:not(.pin-input-cell):not(.color-input-text),
+.field select.ui-input-lg,
+.field textarea.ui-input-lg {
+  height: 44px;
+  padding: 0 14px;
+  font-size: var(--control-fs-lg);
+}
+
+.ui-textarea.ui-input-lg,
+.field textarea.ui-input-lg {
+  height: auto;
+  min-height: 120px;
+  padding: 12px 14px;
+}
+
 .ui-input::placeholder,
 .ui-textarea::placeholder,
-.field input::placeholder,
+.field input:not(.pin-input-cell)::placeholder,
 .field textarea::placeholder {
   color: var(--text-faint);
   opacity: 1;
@@ -92,7 +135,7 @@
 
 .ui-input:hover:not(:disabled):not([readonly]),
 .ui-textarea:hover:not(:disabled):not([readonly]),
-.field input:hover:not(:disabled):not([readonly]),
+.field input:not(.pin-input-cell):hover:not(:disabled):not([readonly]),
 .field select:hover:not(:disabled),
 .field textarea:hover:not(:disabled):not([readonly]) {
   border-color: color-mix(in srgb, var(--primary) 35%, var(--border-strong));
@@ -100,7 +143,7 @@
 
 .ui-input:focus,
 .ui-textarea:focus,
-.field input:focus,
+.field input:not(.pin-input-cell):focus,
 .field select:focus,
 .field textarea:focus {
   outline: none;
@@ -116,7 +159,7 @@
   padding: 10px 12px;
   resize: vertical;
   font-family: var(--font);
-  font-size: 13px;
+  font-size: var(--control-fs);
   line-height: 1.5;
   overflow-wrap: anywhere;
   word-break: break-word;
@@ -198,7 +241,8 @@
   border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
 }
 
-.node-option.selected {
+.node-option.selected,
+.node-option.active {
   border-color: var(--primary);
   background: var(--primary-soft);
 }
@@ -222,7 +266,7 @@
 /* Field states */
 .ui-input.is-invalid,
 .ui-textarea.is-invalid,
-.field input.is-invalid,
+.field input:not(.pin-input-cell).is-invalid,
 .field select.is-invalid,
 .field textarea.is-invalid,
 .field .ui-select.is-invalid .ui-select-trigger {
@@ -232,12 +276,12 @@
 
 .ui-input:disabled,
 .ui-textarea:disabled,
-.field input:disabled,
+.field input:not(.pin-input-cell):disabled,
 .field select:disabled,
 .field textarea:disabled,
 .ui-input[readonly],
 .ui-textarea[readonly],
-.field input[readonly],
+.field input:not(.pin-input-cell)[readonly],
 .field select[readonly],
 .field textarea[readonly] {
   opacity: 0.65;
@@ -276,7 +320,7 @@
   background: var(--surface-2);
   border: 1px solid var(--border-strong);
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: var(--control-fs);
   line-height: 1;
   white-space: nowrap;
 }
@@ -289,6 +333,73 @@
 .input-group-affix:last-child {
   border-left: 0;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.input-group-sm .input-group-affix {
+  height: 28px;
+  padding: 0 10px;
+  font-size: var(--control-fs-sm);
+}
+
+.input-group-lg .input-group-affix {
+  height: 44px;
+  padding: 0 14px;
+  font-size: var(--control-fs-lg);
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.settings-row:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.settings-row-copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.settings-row-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.settings-row-desc {
+  margin: 4px 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.settings-row-control {
+  flex-shrink: 0;
+}
+
+.danger-zone {
+  border-color: color-mix(in srgb, var(--danger) 35%, var(--border));
+}
+
+.danger-zone-title {
+  display: block;
+  color: var(--danger);
+  font-size: 14px;
+}
+
+.danger-zone-desc {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.danger-zone-actions {
+  margin-top: 12px;
 }
 
 .input-group > input:not(:first-child):not(:last-child) {

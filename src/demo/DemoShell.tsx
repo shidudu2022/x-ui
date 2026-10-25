@@ -60,6 +60,11 @@ const titles: Record<string, string> = {
   '/examples/roles': '角色权限',
   '/examples/notifications': '通知中心',
   '/examples/skeleton': '加载骨架',
+  '/examples/errors': '错误与离线',
+  '/examples/audit': '审计详情',
+  '/examples/onboarding': '开通向导',
+  '/examples/i18n': '文案与密度',
+  '/examples/permissions': '权限策略',
 }
 
 const LIST_SEARCH_PATH = '/examples/list'
@@ -187,6 +192,11 @@ export function DemoShell() {
           { to: '/examples/wizard', label: '向导页', icon: <NavIcon icon={Workflow} /> },
           { to: '/examples/log', label: '日志页', icon: <NavIcon icon={ListTodo} /> },
           { to: '/examples/login', label: '登录页', icon: <NavIcon icon={LogIn} /> },
+          { to: '/examples/errors', label: '错误与离线', icon: <NavIcon icon={CircleSlash} /> },
+          { to: '/examples/audit', label: '审计详情', icon: <NavIcon icon={ListTodo} /> },
+          { to: '/examples/onboarding', label: '开通向导', icon: <NavIcon icon={Workflow} /> },
+          { to: '/examples/i18n', label: '文案与密度', icon: <NavIcon icon={Type} /> },
+          { to: '/examples/permissions', label: '权限策略', icon: <NavIcon icon={Shield} /> },
           { to: '/patterns', label: '组合模式', icon: <NavIcon icon={LayoutTemplate} /> },
         ],
       },

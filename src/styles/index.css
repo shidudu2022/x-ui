@@ -17,7 +17,6 @@
 @import './components/button.css' layer(components);
 @import './components/card.css' layer(components);
 @import './components/form.css' layer(components);
-@import './components/pin-input.css' layer(components);
 @import './components/select.css' layer(components);
 @import './components/checkbox-radio.css' layer(components);
 @import './components/switch.css' layer(components);
@@ -42,11 +41,15 @@
 @import './components/steps.css' layer(components);
 @import './components/search.css' layer(components);
 @import './components/metric.css' layer(components);
+@import './components/resource.css' layer(components);
 @import './components/misc.css' layer(components);
 @import './components/advanced.css' layer(components);
 
 @import './charts/chart.css' layer(charts);
 @import './demo/showcase.css' layer(demo);
+
+/* Pin after form so .field input height does not win */
+@import './components/pin-input.css' layer(components);
 
 /* After components so mobile overrides (e.g. topbar icon size) win */
 @import './layout/responsive.css' layer(responsive);

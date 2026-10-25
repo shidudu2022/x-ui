@@ -8,6 +8,10 @@
   --sidebar-w-collapsed: 64px;
   --control-h: 36px;
   --control-h-sm: 28px;
+  /* Form controls — same on desktop and mobile */
+  --control-fs: 13px;
+  --control-fs-sm: 13px;
+  --control-fs-lg: 13px;
   --font: "Inter", "SF Pro Text", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
   --mono: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, monospace;
 }

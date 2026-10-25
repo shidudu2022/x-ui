@@ -37,7 +37,7 @@ export function FeedbackPage() {
           <Alert tone="warn" title="警告">
             资源即将耗尽。
           </Alert>
-          <Alert tone="error" title="错误">
+          <Alert tone="danger" title="错误">
             请求失败，请重试。
           </Alert>
           <Banner>维护模式进行中，危险操作已锁定。</Banner>

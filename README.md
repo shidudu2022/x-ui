@@ -1,118 +1,116 @@
-# X-UI
+# x-ui
 
-通用 React 设计系统：令牌、组件、布局壳、图表封装与演示站。  
-从业务设计稿抽离，**不含业务逻辑**，可按模块接入任意中后台项目。
-
-仓库：[github.com/shidudu2022/x-ui](https://github.com/shidudu2022/x-ui)
-
-## 特性
-
-- **CSS 变量主题**：`body[data-mode|data-accent|data-density]`，默认跟随系统 + 蓝色强调色
-- **组件齐全**：表单 / 数据表 / 反馈 / 导航 / 进阶（日期、级联、Sheet 等）
-- **布局壳**：`AppShell` + 可折叠侧栏 + 顶栏面包屑 + 用户菜单
-- **图表**：Recharts 封装，语义色 `CHART_STATUS`，圆点图例
-- **演示站**：侧栏分页浏览 Foundations / 组件 / 示例页
-- **AI Skill**：`.cursor/skills/x-ui` 约束 Agent 按本套 UI 规范写界面
+面向运维 / 控制台类产品的 React 设计系统与组件馆。本仓库既是可运行的组件文档站，也可源码拷贝接入业务。
 
 ## 快速开始
 
 ```bash
-npm install
-npm run dev
+pnpm install   # 或 npm / yarn
+pnpm dev
 ```
 
-| 命令 | 说明 |
-|------|------|
-| `npm run dev` | 本地演示站 |
-| `npm run build` | 类型检查 + 生产构建 |
-| `npm run preview` | 预览构建产物 |
-| `npm run lint` | oxlint |
+浏览器打开提示的本地地址。侧栏：**基础 / 组件 / 示例 / 组合**。
 
-## 接入业务项目
+## 在线预览（GitHub Pages）
 
-```tsx
-import '@/styles/index.css'
-import { AppearanceProvider, ToastProvider } from 'x-ui' // 或相对路径导出
-import { AppShell, Button, PageHeader } from 'x-ui'
+推送到 `main` 后，Actions（`.github/workflows/pages.yml`）会构建静态站并部署：
 
-export function App() {
-  return (
-    <AppearanceProvider>
-      <ToastProvider>
-        <AppShell navGroups={…} sidebarFooter={…} topbarTitle={…}>
-          <PageHeader title="页面" description="说明" />
-          <Button variant="primary">操作</Button>
-        </AppShell>
-      </ToastProvider>
-    </AppearanceProvider>
-  )
-}
+**https://shidudu2022.github.io/x-ui/**
+
+首次需在仓库 **Settings → Pages → Source** 选 **GitHub Actions**。本地模拟：
+
+```bash
+npm run preview:pages
+# 打开 http://localhost:4173/x-ui/
 ```
 
-本仓库目前以源码方式复用为主：把 `src/components`、`src/styles`、`src/theme`、`src/lib` 拷入业务仓，或用路径别名 `@/` 直接引用。
+`build:pages` 使用 `VITE_BASE=/x-ui/`，并写入 SPA 回退（`scripts/spa-github-pages.mjs`）。业务资源路径用 `@/lib/baseUrl` 的 `withBase()`。
 
-```tsx
-import { Button } from '@/components/ui'
-import { AppShell } from '@/components/layout'
-import { LineChart, ChartContainer, CHART_STATUS } from '@/components/charts'
-import { AppearanceProvider, useAppearance } from '@/theme/AppearanceProvider'
-```
+## 示例页
 
-入口需引入样式：
-
-```ts
-import '@/styles/index.css'
-```
-
-## 主题
-
-由 `AppearanceProvider` 写入 `document.body`：
-
-| 属性 | 取值 | 说明 |
-|------|------|------|
-| `data-mode` | `light` \| `dark` | 解析后的明暗（`system` 会跟随 OS） |
-| `data-accent` | `teal` `blue` `violet` `rose` `green` `amber` `slate` | 主色 |
-| `data-density` | `comfortable` \| `compact` | 间距密度 |
-
-开发时 CSS 按文件拆分；生产由 Vite 打成**单个** CSS。
-
-## 目录结构
-
-```text
-src/
-  components/
-    ui/          # 通用组件（Button、DataTable、Modal…）
-    layout/      # AppShell、Sidebar、Brand、UserMenu…
-    charts/      # Line/Bar/Pie/Area + ChartContainer
-  styles/        # tokens / layout / components / charts / demo
-  theme/         # AppearanceProvider、accents
-  lib/           # cn、useFocusTrap、useListSearch
-  demo/          # 演示站页面（可删，不影响库）
-  index.ts       # 统一导出
-```
-
-## 页面模式（示例）
-
-演示站侧栏「示例」可对照：
-
-| 模式 | 路径 | 要点 |
+| 场景 | 路径 | 要点 |
 |------|------|------|
 | 仪表盘 | `/examples/dashboard` | Metric/Stat + Chart |
-| 列表 | `/examples/list` | DataTable + 顶栏 `?q=` 搜索 |
+| 列表 | `/examples/list` | 多模板，见下表 |
 | 表单 | `/examples/form` | `page-narrow` + Field |
-| 设置 | `/examples/settings` | SectionCard + Switch + FormErrors |
-| 登录 | `/examples/login` | LoginCard |
+| 设置 | `/examples/settings` | SettingsRow + DangerZone + AccentPicker |
+| 登录 | `/examples/login` | LoginCard + TotpBindPanel（本地 QR） |
 | 向导 | `/examples/wizard` | Steps |
+| 开通 | `/examples/onboarding` | 多步提交完成态 |
+| 搜索 | `/examples/search` | SearchResultList |
+| 页头 | `/examples/page` | PageHeader `actionItems` / overflow |
+| 详情 | `/examples/detail` | PageTabs；右侧操作可收进「更多」 |
+| 错误 | `/examples/errors` | 403 / 500 / 离线 / FormErrors |
+| 审计 | `/examples/audit` | Timeline + DescriptionList + 日志 |
+| 文案 | `/examples/i18n` | 长文案、密度 |
+| 权限 | `/examples/permissions` | 禁用 / 隐藏策略 |
+
+### 列表模板（`/examples/list?tpl=`）
+
+| `tpl` | 说明 |
+|-------|------|
+| `sortable` | 可排序表格（默认） |
+| `static` | 不可排序表格 |
+| `pinned` | 左固定名称 + 右固定操作；多选时勾选列自动一并固定 |
+| `tree` | 树表（`getChildren` / TreeTableCell） |
+| `cards` | 卡片列表 |
+| `compact` | 紧凑密度表格 |
+
+组件馆：`/components/{buttons,forms,data,feedback,navigation,charts,advanced}` · 组合：`/patterns`
+
+## 表格固定列
+
+`Table` / `DataTable` 列设 `pinned: 'left' | 'right'`（建议同时设 `width`）：
+
+- 横向滚动时 sticky；背景不透明，避免内容穿透
+- 有左侧固定列且开启多选时，`__select` 勾选列会自动左固定并计入偏移
+- 最外侧固定列带轻量边缘渐变阴影（`is-pinned-edge`）
+
+```tsx
+columns={[
+  { key: 'name', header: '名称', pinned: 'left', width: 180 },
+  { key: 'status', header: '状态' },
+  { key: 'actions', header: '', pinned: 'right', width: 96 },
+]}
+```
+
+## 近期能力
+
+### 组件增强
+
+| 项 | 说明 |
+|----|------|
+| Select | 选项搜索；窄屏/触控可回退原生 `<select>` |
+| DataTable | `remote`；`columnVisibility`；`resizableColumns`；`pinned` |
+| Table | sticky 固定列 + 边缘阴影；多选与左固定联动 |
+| Drawer | `size` sm\|md\|lg\|xl；`usePresence` 滑动进场 |
+| DatePicker | `minuteStep` / `disabledDate`；范围双月；datetime：日历\|日历\|开始\|结束 |
+| Toast | `info` \| `success` \| `warn` \| `error` |
+| Tree / Transfer | `searchable` |
+| FileUpload | 进度、`maxSizeMb` |
+| CommandPalette | 最近使用、异步查询 |
+| Tooltip / Popover | 视口碰撞；Tooltip 长按 |
+| PageHeader | `actionItems`（`overflow`）收进「更多」；主按钮保持 `md` |
+| ColorInput | 自定义 HSV 面板（非原生 `type=color`） |
+| ImagePreview | `withBase` 资源；本地 demo 图 |
+
+### 新增组件
+
+`TimePicker` · `PageTabs` · `StatCard` · `ResourceState` · `ImagePreview` · `ColorInput` · `JsonViewer` · `KeyValueEditor` · `SearchResultList` · `SettingsRow` / `DangerZone` · `AccentPicker` · `Stack` / `FormGrid` / `CatalogTile` · `TotpBindPanel` · `TreeTableCell`
+
+> 仍按需：Mention / 轻量 RichText；虚拟长列表；Playwright 视觉回归；可选 npm 包形态。
 
 ## AI 使用规范
 
-若用 Cursor Agent 基于本套 UI 写页面，请加载项目 Skill：
+Cursor Agent 请加载：
 
 ```text
 .cursor/skills/x-ui/SKILL.md
 ```
 
-约定摘要：只用现有组件与 CSS 变量；不要引入 Tailwind；图表用 `CHART_STATUS`；布局优先 `AppShell` / `PageHeader` / `page-narrow`。
+组件导出名见 `.cursor/skills/x-ui/reference.md`。
+
+约定摘要：只用现有组件与 CSS 变量；不要引入 Tailwind；图表用 `CHART_STATUS`；布局优先 `AppShell` / `PageHeader` / `page-narrow`；删除用 `StrongConfirm`；日期用弹层 DatePicker；颜色用 `ColorInput`；控件字号令牌 `--control-fs`（13px）。
 
 ## 技术栈
 
@@ -120,7 +118,8 @@ src/
 - 样式：原生 CSS + `@layer` + CSS 变量（非 Tailwind）
 - 图标：`lucide-react`
 - 图表：`recharts`
+- 二维码：`uqr`（TOTP 绑定）
 
 ## License
 
-Private / 按仓库所有者约定使用。
+Private / 按仓库约定。

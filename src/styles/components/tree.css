@@ -33,3 +33,25 @@
   color: var(--text-muted);
 }
 
+.tree.has-search {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tree-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+}
+
+.tree-search input {
+  flex: 1;
+}
+
+.tree-empty {
+  margin: 8px;
+  font-size: 12px;
+}
+

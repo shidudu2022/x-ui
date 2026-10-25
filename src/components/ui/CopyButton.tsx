@@ -31,9 +31,15 @@ export function CopyButton({
   }
 
   return (
-    <Button type="button" variant={variant} size={size} className={cn(className)} onClick={copy}>
-      {ok ? <Check size={14} /> : <Copy size={14} />}
-      <span style={{ marginLeft: 6 }}>{ok ? copiedLabel : label}</span>
+    <Button
+      type="button"
+      variant={variant}
+      size={size}
+      className={cn('copy-btn', className)}
+      onClick={copy}
+    >
+      {ok ? <Check size={14} aria-hidden /> : <Copy size={14} aria-hidden />}
+      <span className="copy-btn-label">{ok ? copiedLabel : label}</span>
     </Button>
   )
 }

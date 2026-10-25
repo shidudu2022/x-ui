@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { ToastProvider } from '@/components/ui'
+import { routerBasename } from '@/lib/baseUrl'
 import { AppearanceProvider } from '@/theme/AppearanceProvider'
 import { DemoShell } from '@/demo/DemoShell'
 import { OverviewPage } from '@/demo/pages/OverviewPage'
@@ -29,12 +30,17 @@ import { ExampleProfilePage } from '@/demo/pages/ExampleProfilePage'
 import { ExampleRolesPage } from '@/demo/pages/ExampleRolesPage'
 import { ExampleNotificationsPage } from '@/demo/pages/ExampleNotificationsPage'
 import { ExampleSkeletonPage } from '@/demo/pages/ExampleSkeletonPage'
+import { ExampleErrorsPage } from '@/demo/pages/ExampleErrorsPage'
+import { ExampleAuditPage } from '@/demo/pages/ExampleAuditPage'
+import { ExampleOnboardingPage } from '@/demo/pages/ExampleOnboardingPage'
+import { ExampleI18nPage } from '@/demo/pages/ExampleI18nPage'
+import { ExamplePermissionsPage } from '@/demo/pages/ExamplePermissionsPage'
 
 export default function App() {
   return (
     <AppearanceProvider>
       <ToastProvider>
-        <BrowserRouter>
+        <BrowserRouter basename={routerBasename()}>
           <Routes>
             <Route element={<DemoShell />}>
               <Route index element={<OverviewPage />} />
@@ -64,6 +70,11 @@ export default function App() {
               <Route path="examples/roles" element={<ExampleRolesPage />} />
               <Route path="examples/notifications" element={<ExampleNotificationsPage />} />
               <Route path="examples/skeleton" element={<ExampleSkeletonPage />} />
+              <Route path="examples/errors" element={<ExampleErrorsPage />} />
+              <Route path="examples/audit" element={<ExampleAuditPage />} />
+              <Route path="examples/onboarding" element={<ExampleOnboardingPage />} />
+              <Route path="examples/i18n" element={<ExampleI18nPage />} />
+              <Route path="examples/permissions" element={<ExamplePermissionsPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
           </Routes>

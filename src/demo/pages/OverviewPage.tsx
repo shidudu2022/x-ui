@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
-import { ACCENTS, ACCENT_COLORS } from '@/theme/accents'
 import { useAppearance } from '@/theme/AppearanceProvider'
-import { Card, PageHeader, Segmented } from '@/components/ui'
+import { AccentPicker, Card, PageHeader, Segmented } from '@/components/ui'
 import { ShowcaseSection } from '../ShowcaseSection'
 
 const COMPONENTS = [
@@ -24,9 +23,14 @@ const EXAMPLES = [
   { label: '角色', to: '/examples/roles', desc: '多选表格' },
   { label: '通知', to: '/examples/notifications', desc: '消息中心' },
   { label: '骨架', to: '/examples/skeleton', desc: '加载占位' },
-  { label: '列表', to: '/examples/list', desc: '筛选 + 行操作' },
+  { label: '列表', to: '/examples/list', desc: '可排序 / 不可排序 / 树 / 卡片' },
   { label: '表单页', to: '/examples/form', desc: '定宽表单' },
   { label: '登录', to: '/examples/login', desc: 'LoginCard' },
+  { label: '错误与离线', to: '/examples/errors', desc: '403 / 500 / ResourceState' },
+  { label: '审计', to: '/examples/audit', desc: 'Timeline + 日志' },
+  { label: '开通', to: '/examples/onboarding', desc: '多步提交完成态' },
+  { label: '文案密度', to: '/examples/i18n', desc: '长文案 / 密度' },
+  { label: '权限', to: '/examples/permissions', desc: '禁用 / 隐藏' },
 ]
 
 function IndexGroup({
@@ -55,8 +59,7 @@ function IndexGroup({
 }
 
 export function OverviewPage() {
-  const { modePreference, setModePreference, accent, density, setAccent, setDensity } =
-    useAppearance()
+  const { modePreference, setModePreference, density, setDensity } = useAppearance()
 
   return (
     <div>
@@ -89,23 +92,7 @@ export function OverviewPage() {
                 ]}
               />
               <strong>强调色</strong>
-              <div className="accent-grid">
-                {ACCENTS.map((a) => (
-                  <button
-                    key={a}
-                    type="button"
-                    className={`accent-swatch${accent === a ? ' active' : ''}`}
-                    onClick={() => setAccent(a)}
-                  >
-                    <span
-                      className="accent-dot"
-                      data-accent={a}
-                      style={{ background: ACCENT_COLORS[a] }}
-                    />
-                    <span className="accent-meta">{a}</span>
-                  </button>
-                ))}
-              </div>
+              <AccentPicker />
             </div>
           </Card>
         </div>

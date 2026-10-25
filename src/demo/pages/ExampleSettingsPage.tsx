@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import {
   Button,
-  Card,
-  Divider,
+  DangerZone,
   Field,
   FormErrors,
   Input,
   PageHeader,
   SectionCard,
+  SettingsRow,
   Switch,
   Textarea,
 } from '@/components/ui'
@@ -32,24 +32,15 @@ export function ExampleSettingsPage() {
       </SectionCard>
       <div style={{ marginTop: 16 }}>
         <SectionCard title="通知">
-          <div className="switch-row">
-            <div>
-              <strong>邮件通知</strong>
-              <p className="muted" style={{ margin: '4px 0 0', fontSize: 12 }}>
-                构建失败与证书到期提醒
-              </p>
-            </div>
-            <Switch checked={notify} onChange={(e) => setNotify(e.target.checked)} />
-          </div>
+          <SettingsRow
+            title="邮件通知"
+            description="构建失败与证书到期提醒"
+            control={<Switch checked={notify} onChange={(e) => setNotify(e.target.checked)} />}
+          />
         </SectionCard>
       </div>
-      <Divider />
-      <Card padded>
-        <strong style={{ color: 'var(--danger)' }}>危险区域</strong>
-        <p className="muted" style={{ fontSize: 13 }}>
-          删除工作区不可恢复。
-        </p>
-        <div className="actions" style={{ marginTop: 12 }}>
+      <div style={{ marginTop: 16 }}>
+        <DangerZone description="删除工作区不可恢复。">
           <Button
             variant="danger"
             onClick={() => setErrors(['请先输入工作区名称确认删除'])}
@@ -64,8 +55,8 @@ export function ExampleSettingsPage() {
           >
             保存更改
           </Button>
-        </div>
-      </Card>
+        </DangerZone>
+      </div>
     </div>
   )
 }

@@ -39,6 +39,46 @@
   padding: 8px 12px 4px;
 }
 
+/* List page card template */
+.list-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.list-card-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 168px;
+}
+
+.list-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.list-card-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 0;
+}
+
+.list-card-meta dt {
+  margin: 0;
+  font-size: 11px;
+  color: var(--text-faint);
+}
+
+.list-card-meta dd {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--text);
+}
+
 /* Overview catalog index */
 .index-catalog {
   display: flex;
@@ -113,6 +153,19 @@
   margin: 28px 0 0;
   padding-top: 4px;
   font-size: 13px;
+}
+
+/* PinInput demo — content width by digit count */
+.pin-demo {
+  max-width: 100%;
+}
+
+.pin-demo-6 {
+  width: min(320px, 100%);
+}
+
+.pin-demo-4 {
+  width: min(208px, 100%);
 }
 
 @media (max-width: 640px) {
