@@ -23,6 +23,7 @@ import { ExampleLoginPage } from '@/demo/pages/ExampleLoginPage'
 import { ExampleRegisterPage } from '@/demo/pages/ExampleRegisterPage'
 import { ExampleVerifyEmailPage } from '@/demo/pages/ExampleVerifyEmailPage'
 import { ExampleStrongConfirmPage } from '@/demo/pages/ExampleStrongConfirmPage'
+import { ExampleListDetailPage } from '@/demo/pages/ExampleListDetailPage'
 import { ExampleTypographyPage } from '@/demo/pages/ExampleTypographyPage'
 import { ExampleDashboardPage } from '@/demo/pages/ExampleDashboardPage'
 import { ExampleSettingsPage } from '@/demo/pages/ExampleSettingsPage'
@@ -58,6 +59,7 @@ export default function App() {
               <Route path="patterns" element={<PatternsPage />} />
               <Route path="examples/page" element={<ExamplePageHeaderPage />} />
               <Route path="examples/list" element={<ExampleListPage />} />
+              <Route path="examples/list-detail" element={<ExampleListDetailPage />} />
               <Route path="examples/form" element={<ExampleFormPage />} />
               <Route path="examples/detail" element={<ExampleDetailPage />} />
               <Route path="examples/wizard" element={<ExampleWizardPage />} />

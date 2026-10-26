@@ -40,6 +40,7 @@ description: >-
 | 定宽业务表单 | `/examples/form` | `ExampleFormPage.tsx` |
 | 分区设置 / DangerZone | `/examples/settings` | `ExampleSettingsPage.tsx` |
 | 列表（排序/固定列/树/卡片） | `/examples/list?tpl=` | `ExampleListPage.tsx` + `list/List*Template.tsx` |
+| 列表点详情 → 抽屉 | `/examples/list-detail` | `ExampleListDetailPage.tsx` |
 | 详情 + 页头溢出菜单 | `/examples/detail` | `ExampleDetailPage.tsx` |
 | 页头 actions / overflow | `/examples/page` | `ExamplePageHeaderPage.tsx` |
 | 仪表盘指标图 | `/examples/dashboard` | `ExampleDashboardPage.tsx` |

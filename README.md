@@ -34,6 +34,7 @@ npm run preview:pages
 |------|------|------|
 | 仪表盘 | `/examples/dashboard` | Metric/Stat + Chart |
 | 列表 | `/examples/list` | 多模板，见下表 |
+| 列表详情 | `/examples/list-detail` | 点「详情」拉出 Drawer 摘要 |
 | 表单 | `/examples/form` | `page-narrow` + Field |
 | 设置 | `/examples/settings` | SettingsRow + DangerZone + AccentPicker |
 | 登录 | `/examples/login` | LoginCard + TotpBindPanel（本地 QR） |

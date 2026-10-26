@@ -90,6 +90,7 @@ Agent 实现业务页时：**先按场景打开对应文件照抄结构**，再�
 | 定宽表单 | `/examples/form` | `ExampleFormPage.tsx` |
 | 设置 / DangerZone | `/examples/settings` | `ExampleSettingsPage.tsx` |
 | 列表入口 | `/examples/list` | `ExampleListPage.tsx` |
+| 列表 → 抽屉详情 | `/examples/list-detail` | `ExampleListDetailPage.tsx` |
 | 列表·可排序 | `?tpl=sortable` | `list/ListTableTemplate.tsx` |
 | 列表·不可排序 | `?tpl=static` | `list/ListTableTemplate.tsx` |
 | 列表·固定列 | `?tpl=pinned` | `list/ListPinnedTemplate.tsx` |

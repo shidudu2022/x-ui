@@ -24,6 +24,7 @@ const EXAMPLES = [
   { label: '通知', to: '/examples/notifications', desc: '消息中心' },
   { label: '骨架', to: '/examples/skeleton', desc: '加载占位' },
   { label: '列表', to: '/examples/list', desc: '可排序 / 不可排序 / 树 / 卡片' },
+  { label: '列表详情', to: '/examples/list-detail', desc: '详情按钮 → 抽屉' },
   { label: '表单页', to: '/examples/form', desc: '定宽表单' },
   { label: '登录', to: '/examples/login', desc: 'LoginCard' },
   { label: '注册', to: '/examples/register', desc: '注册 → 邮箱验证码' },
