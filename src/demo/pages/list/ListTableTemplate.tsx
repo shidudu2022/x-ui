@@ -8,6 +8,7 @@ import {
   Tag,
   TagGroup,
   Text,
+  emptyCell,
   useToast,
   type DataTableColumn,
 } from '@/components/ui'
@@ -38,7 +39,7 @@ export function ListTableTemplate({
           <>
             <Text variant="strong">{r.name}</Text>
             <Muted as="div" style={{ marginTop: 2 }}>
-              {r.note}
+              {emptyCell(r.note)}
             </Muted>
           </>
         ),
@@ -77,17 +78,20 @@ export function ListTableTemplate({
         header: '标签',
         render: (r) => (
           <TagGroup>
-            {r.tags.map((t) => (
-              <Tag key={t} tone="neutral">
-                {t}
-              </Tag>
-            ))}
+            {r.tags
+              .filter((t) => t.trim())
+              .map((t) => (
+                <Tag key={t} tone="neutral">
+                  {t}
+                </Tag>
+              ))}
           </TagGroup>
         ),
       },
       {
         key: 'actions',
         header: '操作',
+        emptyPlaceholder: false,
         render: (r) => (
           <div className="actions" onClick={(e) => e.stopPropagation()}>
             <Button size="sm" onClick={() => toast(`打开 ${r.name}`, 'info')}>

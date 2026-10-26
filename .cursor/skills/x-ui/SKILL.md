@@ -126,7 +126,7 @@ GitHub Pages / 子路径：`withBase()`（`@/lib/baseUrl`）；`npm run build:pa
 - **登录** `LoginCard` + `TotpBindPanel` / `PinInput` → 读 `ExampleLoginPage`  
 - **注册 / 验证码** → `ExampleRegisterPage` / `ExampleVerifyEmailPage`  
 - **日期** `DatePicker` / `DateRangePicker`（双月；datetime：日历\|日历\|开始\|结束）  
-- **表格** `DataTable`：`pinned` / `remote` / `columnVisibility` / 树 → 读 list 模板  
+- **表格** `DataTable`：`pinned` / `remote` / `columnVisibility` / 树 → 读 list 模板；空值（空串 / 空 TagGroup 等）默认显示 `—`（`emptyCell`）；操作列设 `emptyPlaceholder: false`  
 - **强确认** Modal：`StrongConfirm`；抽屉：`StrongConfirmDrawer` → `ExampleStrongConfirmPage`  
 - **图表** `CHART_STATUS` · 完整导出 → [reference.md](reference.md)
 

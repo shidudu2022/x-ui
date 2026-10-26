@@ -22,6 +22,7 @@ Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner
   - 列 `sortable` + `sortValue`；`pinned: 'left'|'right'`（建议 `width`）
   - 左固定 + 多选：`__select` 自动左固定并参与 sticky 偏移
   - 边缘列 `is-pinned-edge` 轻量渐变阴影；背景不透明
+  - 空单元格默认 `—`（`emptyCell` / `EMPTY_CELL`）；列可设 `emptyPlaceholder` 或 `false` 关闭
   - `remote` + `total`/`page`/`onPageChange`；`columnVisibility`；`resizableColumns`
   - `defaultSortKey` / 受控 `sortKey`+`onSortChange`；树：`getChildren` + `TreeTableCell`
 - **Select**：长列表可搜索；触控/窄屏可原生兜底（`nativeOnMobile`）

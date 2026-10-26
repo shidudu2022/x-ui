@@ -107,7 +107,7 @@ export function ExampleVerifyEmailPage() {
         >
           {cooldown > 0 ? `${cooldown}s 后可重发` : '重新发送'}
         </Button>
-        <Button variant="primary" type="submit" loading={submitting} style={{ flex: 1 }}>
+        <Button variant="primary" size="lg" type="submit" loading={submitting} style={{ flex: 1 }}>
           验证并继续
         </Button>
       </div>

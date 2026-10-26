@@ -24,11 +24,11 @@ export type TreeRow = {
 export const FLAT_SEED: ClusterRow[] = Array.from({ length: 18 }, (_, i) => ({
   id: String(i + 1),
   name: `cluster-${String(i + 1).padStart(2, '0')}`,
-  note: i % 3 === 0 ? '生产环境' : i % 3 === 1 ? '预发' : '开发调试',
+  note: i % 5 === 0 ? '' : i % 3 === 0 ? '生产环境' : i % 3 === 1 ? '预发' : '开发调试',
   status: (['running', 'degraded', 'stopped'] as const)[i % 3],
-  version: i % 2 === 0 ? 'v1.31.3+k3s1' : 'v1.30.6+k3s1',
+  version: i % 7 === 0 ? '' : i % 2 === 0 ? 'v1.31.3+k3s1' : 'v1.30.6+k3s1',
   nodes: 1 + (i % 5),
-  tags: i % 2 === 0 ? ['prod', 'edge'] : ['dev'],
+  tags: i % 5 === 0 ? [] : i % 2 === 0 ? ['prod', 'edge'] : i % 3 === 0 ? ['', '  '] : ['dev'],
 }))
 
 export const TREE_SEED: TreeRow[] = [

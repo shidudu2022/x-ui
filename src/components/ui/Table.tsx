@@ -1,6 +1,7 @@
 import { useMemo, useRef, type CSSProperties, type MouseEvent as ReactMouseEvent, type ReactNode } from 'react'
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { EMPTY_CELL, emptyCell } from '@/lib/emptyCell'
 import { Checkbox } from './Checkbox'
 
 export type SortDir = 'asc' | 'desc' | null
@@ -20,6 +21,11 @@ export type TableColumn<T> = {
   resizable?: boolean
   /** Sticky pin while the table scrolls horizontally */
   pinned?: TableColumnPin
+  /**
+   * Placeholder when `render` yields empty (null / blank / empty TagGroup…).
+   * Default `—`. Pass `false` to keep blanks (e.g. action columns).
+   */
+  emptyPlaceholder?: ReactNode | false
   render: (row: T) => ReactNode
 }
 
@@ -254,7 +260,9 @@ export function Table<T>({
                             : undefined),
                         }}
                       >
-                        {col.render(row)}
+                        {col.emptyPlaceholder === false
+                          ? col.render(row)
+                          : emptyCell(col.render(row), col.emptyPlaceholder ?? EMPTY_CELL)}
                       </td>
                     )
                   })}

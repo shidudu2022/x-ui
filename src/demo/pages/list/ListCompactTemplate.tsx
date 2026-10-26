@@ -61,6 +61,7 @@ export function ListCompactTemplate({ q, onClear }: { q: string; onClear: () => 
           {
             key: 'actions',
             header: '',
+            emptyPlaceholder: false,
             render: (r) => (
               <div className="actions" onClick={(e) => e.stopPropagation()}>
                 <Button size="sm" onClick={() => toast(`打开 ${r.name}`, 'info')}>

@@ -117,7 +117,7 @@ export function ExampleRegisterPage() {
           </>
         }
       />
-      <Button variant="primary" type="submit" loading={submitting}>
+      <Button variant="primary" size="lg" block type="submit" loading={submitting}>
         注册并验证邮箱
       </Button>
     </LoginCard>

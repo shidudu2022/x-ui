@@ -19,6 +19,7 @@
 .login-card .btn-primary {
   width: 100%;
   justify-content: center;
+  min-height: 44px;
 }
 
 .login-card .pin-input {

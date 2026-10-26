@@ -8,6 +8,7 @@ import {
   Tag,
   TagGroup,
   Text,
+  emptyCell,
   useToast,
 } from '@/components/ui'
 import { countLeaves, filterTree, TREE_SEED, type TreeRow } from './listSeed'
@@ -65,7 +66,7 @@ export function ListTreeTemplate({ q, onClear }: { q: string; onClear: () => voi
               <>
                 <Text variant="strong">{r.name}</Text>
                 <Muted as="div" style={{ marginTop: 2 }}>
-                  {r.note}
+                  {emptyCell(r.note)}
                 </Muted>
               </>
             ),
@@ -107,11 +108,13 @@ export function ListTreeTemplate({ q, onClear }: { q: string; onClear: () => voi
             header: '标签',
             render: (r) => (
               <TagGroup>
-                {r.tags.map((t) => (
-                  <Tag key={t} tone="neutral">
-                    {t}
-                  </Tag>
-                ))}
+                {r.tags
+                  .filter((t) => t.trim())
+                  .map((t) => (
+                    <Tag key={t} tone="neutral">
+                      {t}
+                    </Tag>
+                  ))}
               </TagGroup>
             ),
           },

@@ -8,6 +8,7 @@ import {
   Tag,
   TagGroup,
   Text,
+  emptyCell,
   useToast,
   type DataTableColumn,
 } from '@/components/ui'
@@ -50,7 +51,7 @@ export function ListPinnedTemplate({ q, onClear }: { q: string; onClear: () => v
         <>
           <Text variant="strong">{r.name}</Text>
           <Muted as="div" style={{ marginTop: 2 }}>
-            {r.note}
+            {emptyCell(r.note)}
           </Muted>
         </>
       ),
@@ -115,11 +116,13 @@ export function ListPinnedTemplate({ q, onClear }: { q: string; onClear: () => v
       width: 140,
       render: (r) => (
         <TagGroup>
-          {r.tags.map((t) => (
-            <Tag key={t} tone="neutral">
-              {t}
-            </Tag>
-          ))}
+          {r.tags
+            .filter((t) => t.trim())
+            .map((t) => (
+              <Tag key={t} tone="neutral">
+                {t}
+              </Tag>
+            ))}
         </TagGroup>
       ),
     },
@@ -128,6 +131,7 @@ export function ListPinnedTemplate({ q, onClear }: { q: string; onClear: () => v
       header: '操作',
       pinned: 'right',
       width: 200,
+      emptyPlaceholder: false,
       render: (r) => (
         <div className="actions" onClick={(e) => e.stopPropagation()}>
           <Button size="sm" onClick={() => toast(`打开 ${r.name}`, 'info')}>

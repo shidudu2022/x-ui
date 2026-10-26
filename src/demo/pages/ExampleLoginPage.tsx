@@ -141,7 +141,7 @@ export function ExampleLoginPage() {
           aria-label="谷歌验证码"
         />
       </Field>
-      <Button variant="primary" type="submit" loading={submitting} style={{ width: '100%' }}>
+      <Button variant="primary" size="lg" block type="submit" loading={submitting}>
         登录
       </Button>
     </LoginCard>

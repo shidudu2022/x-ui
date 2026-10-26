@@ -8,6 +8,7 @@ import {
   Tag,
   TagGroup,
   Text,
+  emptyCell,
   useToast,
 } from '@/components/ui'
 import { filterFlat, FLAT_SEED } from './listSeed'
@@ -47,7 +48,7 @@ export function ListCardsTemplate({ q, onClear }: { q: string; onClear: () => vo
                 <div>
                   <Text variant="strong">{r.name}</Text>
                   <Muted as="div" style={{ marginTop: 2 }}>
-                    {r.note}
+                    {emptyCell(r.note)}
                   </Muted>
                 </div>
                 <Badge
@@ -65,20 +66,24 @@ export function ListCardsTemplate({ q, onClear }: { q: string; onClear: () => vo
               <dl className="list-card-meta">
                 <div>
                   <dt>版本</dt>
-                  <dd className="mono">{r.version}</dd>
+                  <dd className="mono">{emptyCell(r.version)}</dd>
                 </div>
                 <div>
                   <dt>节点</dt>
                   <dd>{r.nodes}</dd>
                 </div>
               </dl>
-              <TagGroup>
-                {r.tags.map((t) => (
-                  <Tag key={t} tone="neutral">
-                    {t}
-                  </Tag>
-                ))}
-              </TagGroup>
+              {emptyCell(
+                <TagGroup>
+                  {r.tags
+                    .filter((t) => t.trim())
+                    .map((t) => (
+                      <Tag key={t} tone="neutral">
+                        {t}
+                      </Tag>
+                    ))}
+                </TagGroup>,
+              )}
               <div className="actions" style={{ marginTop: 12 }}>
                 <Button size="sm" variant="primary" onClick={() => toast(`打开 ${r.name}`, 'info')}>
                   打开
