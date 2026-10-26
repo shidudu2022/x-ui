@@ -5,6 +5,8 @@
 @import './tokens/accents.css' layer(tokens);
 @import './tokens/typography.css' layer(tokens);
 @import './tokens/charts.css' layer(tokens);
+@import './tokens/themes/classic.css' layer(tokens);
+@import './tokens/themes/glass.css' layer(tokens);
 
 @import './reset.css' layer(reset);
 
@@ -44,6 +46,7 @@
 @import './components/resource.css' layer(components);
 @import './components/misc.css' layer(components);
 @import './components/advanced.css' layer(components);
+@import './components/theme-glass.css' layer(components);
 
 @import './charts/chart.css' layer(charts);
 @import './demo/showcase.css' layer(demo);

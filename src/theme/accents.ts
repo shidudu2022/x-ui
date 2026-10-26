@@ -33,6 +33,8 @@ export const STORAGE_KEYS = {
   mode: 'xui-mode',
   accent: 'xui-accent',
   density: 'xui-density',
+  theme: 'xui-theme',
+  wallpaper: 'xui-wallpaper',
 } as const
 
 export function resolveColorMode(preference: ColorModePreference): ColorMode {

@@ -11,4 +11,5 @@ export {
   type ColorModePreference,
   type Density,
 } from '@/theme/accents'
+export { THEMES, THEME_IDS, getTheme, type ThemeId } from '@/theme/themes'
 export { cn } from '@/lib/cn'

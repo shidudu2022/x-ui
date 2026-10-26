@@ -4,13 +4,13 @@ import { ACCENTS, ACCENT_COLORS, type Accent } from '@/theme/accents'
 import { useAppearance } from '@/theme/AppearanceProvider'
 
 const LABELS: Record<Accent, string> = {
-  teal: 'Teal',
-  blue: 'Blue',
-  violet: 'Violet',
-  rose: 'Rose',
-  green: 'Green',
-  amber: 'Amber',
-  slate: 'Slate',
+  teal: '青绿',
+  blue: '蓝色',
+  violet: '紫色',
+  rose: '玫红',
+  green: '绿色',
+  amber: '琥珀',
+  slate: '石板',
 }
 
 export function AccentPicker({

@@ -1,6 +1,13 @@
 import { Link } from 'react-router-dom'
 import { useAppearance } from '@/theme/AppearanceProvider'
-import { AccentPicker, Card, PageHeader, Segmented } from '@/components/ui'
+import {
+  AccentPicker,
+  Card,
+  PageHeader,
+  Segmented,
+  ThemePicker,
+  WallpaperPicker,
+} from '@/components/ui'
 import { ShowcaseSection } from '../ShowcaseSection'
 
 const COMPONENTS = [
@@ -63,7 +70,7 @@ function IndexGroup({
 }
 
 export function OverviewPage() {
-  const { modePreference, setModePreference, density, setDensity } = useAppearance()
+  const { modePreference, setModePreference, density, setDensity, theme } = useAppearance()
 
   return (
     <div>
@@ -72,34 +79,40 @@ export function OverviewPage() {
         description="从设计稿抽离的通用 React UI 框架。侧栏分页浏览组件，可按模块接入业务项目。"
       />
 
-      <ShowcaseSection title="外观" description="明暗 / 强调色 / 密度会写入 body[data-*] 与 localStorage。">
-        <div className="stack">
-          <Card padded>
-            <div className="stack">
-              <strong>色彩模式</strong>
-              <Segmented
-                value={modePreference}
-                onChange={setModePreference}
-                options={[
-                  { value: 'system', label: '跟随系统' },
-                  { value: 'light', label: '浅色' },
-                  { value: 'dark', label: '深色' },
-                ]}
-              />
-              <strong>密度</strong>
-              <Segmented
-                value={density}
-                onChange={setDensity}
-                options={[
-                  { value: 'comfortable', label: '舒适' },
-                  { value: 'compact', label: '紧凑' },
-                ]}
-              />
-              <strong>强调色</strong>
-              <AccentPicker />
-            </div>
-          </Card>
-        </div>
+      <ShowcaseSection title="外观" description="深浅色 / 主题 / 壁纸 / 强调色 / 密度写入 body[data-*] 与 localStorage。">
+        <Card padded className="appearance-demo-card">
+          <div className="stack">
+            <strong>深浅色</strong>
+            <Segmented
+              value={modePreference}
+              onChange={setModePreference}
+              options={[
+                { value: 'system', label: '跟随系统' },
+                { value: 'light', label: '浅色' },
+                { value: 'dark', label: '深色' },
+              ]}
+            />
+            <strong>主题</strong>
+            <ThemePicker />
+            {theme === 'glass' ? (
+              <>
+                <strong>壁纸</strong>
+                <WallpaperPicker />
+              </>
+            ) : null}
+            <strong>强调色</strong>
+            <AccentPicker />
+            <strong>密度</strong>
+            <Segmented
+              value={density}
+              onChange={setDensity}
+              options={[
+                { value: 'comfortable', label: '舒适' },
+                { value: 'compact', label: '紧凑' },
+              ]}
+            />
+          </div>
+        </Card>
       </ShowcaseSection>
 
       <ShowcaseSection

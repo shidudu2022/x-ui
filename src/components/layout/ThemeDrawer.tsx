@@ -1,15 +1,22 @@
 import { useAppearance } from '@/theme/AppearanceProvider'
-import { AccentPicker, Button, Drawer, Segmented, StepHeading } from '@/components/ui'
+import {
+  AccentPicker,
+  Drawer,
+  Segmented,
+  StepHeading,
+  ThemePicker,
+  WallpaperPicker,
+} from '@/components/ui'
 
-/** Appearance drawer — matches k3s-start/web topbar「外观」panel */
+/** Appearance drawer — 深浅色 / 主题 / 壁纸 / 强调色 / 密度 */
 export function ThemeDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { modePreference, setModePreference, density, setDensity } = useAppearance()
+  const { modePreference, setModePreference, density, setDensity, theme } = useAppearance()
 
   return (
     <Drawer open={open} onClose={onClose} title="外观" size="sm">
       <div className="stack">
         <div>
-          <StepHeading title="主题" />
+          <StepHeading title="深浅色" />
           <Segmented
             value={modePreference}
             onChange={setModePreference}
@@ -22,7 +29,19 @@ export function ThemeDrawer({ open, onClose }: { open: boolean; onClose: () => v
         </div>
 
         <div>
-          <StepHeading title="配色" />
+          <StepHeading title="主题" />
+          <ThemePicker />
+        </div>
+
+        {theme === 'glass' ? (
+          <div>
+            <StepHeading title="壁纸" />
+            <WallpaperPicker />
+          </div>
+        ) : null}
+
+        <div>
+          <StepHeading title="强调色" />
           <AccentPicker />
         </div>
 
@@ -36,10 +55,6 @@ export function ThemeDrawer({ open, onClose }: { open: boolean; onClose: () => v
               { value: 'compact', label: '紧凑' },
             ]}
           />
-        </div>
-
-        <div className="actions">
-          <Button onClick={onClose}>完成</Button>
         </div>
       </div>
     </Drawer>

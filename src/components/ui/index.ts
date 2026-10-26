@@ -75,6 +75,8 @@ export { StatCard } from './StatCard'
 export { StepHeading } from './StepHeading'
 export { Steps, type StepItem } from './Steps'
 export { Switch } from './Switch'
+export { ThemePicker } from './ThemePicker'
+export { WallpaperPicker } from './WallpaperPicker'
 export { TimePicker } from './TimePicker'
 export {
   Table,

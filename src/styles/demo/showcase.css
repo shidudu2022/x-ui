@@ -26,6 +26,10 @@
   gap: 16px;
 }
 
+.appearance-demo-card {
+  max-width: 420px;
+}
+
 .demo-nav-group {
   margin-top: 8px;
 }

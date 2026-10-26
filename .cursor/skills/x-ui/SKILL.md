@@ -104,7 +104,10 @@ GitHub Pages / 子路径：`withBase()`（`@/lib/baseUrl`）；`npm run build:pa
 
 ## 主题与令牌
 
-- `useAppearance()` → `modePreference` / `accent` / `density`；`body[data-mode][data-accent][data-density]`。  
+- `useAppearance()` → `modePreference`（深浅色）/ `theme`（主题包）/ `accent`（强调色）/ `density`。  
+- 文档属性：`body[data-theme][data-mode][data-accent][data-density]`。  
+- **主题包**（可扩展）：注册表 `src/theme/themes.ts` + CSS `src/styles/tokens/themes/<id>.css`。内置 `classic`（经典，默认）与 `glass`（透明）。新主题只加注册项与 CSS，勿散改组件。  
+- **深浅色** ≠ 主题包：`system` / `light` / `dark` 只控制明暗。外观抽屉：`ThemeDrawer`（`ThemePicker` + `AccentPicker`）。  
 - 紧凑密度：`styles/tokens/density.css`，勿散落 `!important`。  
 - **控件字号**：`--control-fs: 13px`（及 sm/lg），勿按断点在 13↔16 间切换。  
 - 弹层进场：`usePresence`（Drawer/Modal）。

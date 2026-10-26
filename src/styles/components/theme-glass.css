@@ -1,0 +1,357 @@
+/* Glass — one fullscreen wallpaper; content cards stay clear.
+   Lives in components layer so it wins over reset/layout opaque backgrounds. */
+
+html:has(body[data-theme='glass']) {
+  background: transparent;
+}
+
+body[data-theme='glass'] {
+  background-color: #eef2ff;
+  background-image: var(--glass-wallpaper);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+body[data-theme='glass'][data-mode='dark'] {
+  background-color: #121826;
+}
+
+body[data-theme='glass'] #root,
+body[data-theme='glass'] .app,
+body[data-theme='glass'] .main,
+body[data-theme='glass'] .content,
+body[data-theme='glass'] .login-screen,
+body[data-theme='glass'] .sidebar,
+body[data-theme='glass'] .topbar,
+body[data-theme='glass'] .sidebar-foot {
+  background: transparent;
+  background-color: transparent;
+  border: none;
+  border-color: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* Collapse tab — light wash only */
+body[data-theme='glass'] .sidebar-collapse-btn {
+  width: 14px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  border: none;
+  border-left: 0;
+  border-radius: 0 12px 12px 0;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+body[data-theme='glass'][data-mode='dark'] .sidebar-collapse-btn {
+  background: rgba(255, 255, 255, 0.06);
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+body[data-theme='glass'] .sidebar-collapse-btn:hover,
+body[data-theme='glass'] .sidebar-collapse-btn:focus-visible {
+  width: 16px;
+  background: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--primary);
+  border: none;
+  box-shadow: none;
+}
+
+body[data-theme='glass'][data-mode='dark'] .sidebar-collapse-btn:hover,
+body[data-theme='glass'][data-mode='dark'] .sidebar-collapse-btn:focus-visible {
+  background: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+body[data-theme='glass'] .sidebar:has(.sidebar-collapse-btn:hover),
+body[data-theme='glass'] .sidebar:has(.sidebar-collapse-btn:focus-visible),
+body[data-theme='glass'] .sidebar:has(.sidebar-collapse-btn:hover) .sidebar-collapse-btn,
+body[data-theme='glass'] .sidebar:has(.sidebar-collapse-btn:focus-visible) .sidebar-collapse-btn {
+  border: none;
+  border-color: transparent;
+}
+
+/* ── Content cards / tiles — no fill; soft float on wallpaper ── */
+body[data-theme='glass'] .card,
+body[data-theme='glass'] .section-card,
+body[data-theme='glass'] .login-card,
+body[data-theme='glass'] .alert,
+body[data-theme='glass'] .metric,
+body[data-theme='glass'] .stat,
+body[data-theme='glass'] .index-tile,
+body[data-theme='glass'] .theme-card,
+body[data-theme='glass'] .accent-swatch,
+body[data-theme='glass'] .wallpaper-card,
+body[data-theme='glass'] .chart-panel,
+body[data-theme='glass'] .chart-container,
+body[data-theme='glass'] .showcase-section,
+body[data-theme='glass'] .accordion-item {
+  background: transparent;
+  background-color: transparent;
+  border: none;
+  border-color: transparent;
+  box-shadow: var(--glass-shadow);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+body[data-theme='glass'] .showcase-section {
+  box-shadow: none;
+}
+
+body[data-theme='glass'] .wallpaper-card-preview {
+  border: none;
+}
+
+body[data-theme='glass'] .card,
+body[data-theme='glass'] .section-card,
+body[data-theme='glass'] .login-card {
+  overflow: visible;
+}
+
+body[data-theme='glass'] .card:has(.data-table),
+body[data-theme='glass'] .card:has(.table),
+body[data-theme='glass'] .section-card:has(.data-table),
+body[data-theme='glass'] .section-card:has(.table) {
+  overflow: hidden;
+}
+
+/* Overlays still need a surface so floating UI stays readable */
+body[data-theme='glass'] .drawer,
+body[data-theme='glass'] .modal,
+body[data-theme='glass'] .sheet,
+body[data-theme='glass'] .popover,
+body[data-theme='glass'] .dropdown-menu,
+body[data-theme='glass'] .toast,
+body[data-theme='glass'] .user-menu-panel,
+body[data-theme='glass'] .command-dialog,
+body[data-theme='glass'] .cmdk-root,
+body[data-theme='glass'] .select-menu,
+body[data-theme='glass'] .menu {
+  background: var(--glass-panel);
+  background-color: var(--glass-panel);
+  border: none;
+  border-color: transparent;
+  box-shadow: var(--glass-shadow-lg);
+  -webkit-backdrop-filter: saturate(190%) blur(28px);
+  backdrop-filter: saturate(190%) blur(28px);
+}
+
+/* Tips stay solid inverted — never translucent on wallpaper */
+body[data-theme='glass'] .tooltip {
+  background: #18181b;
+  background-color: #18181b;
+  color: #fafafa;
+  border: 0;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+body[data-theme='glass'][data-mode='dark'] .tooltip {
+  background: #f4f4f5;
+  background-color: #f4f4f5;
+  color: #18181b;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
+body[data-theme='glass'][data-mode='light'] .chart-tooltip {
+  color: #fafafa;
+}
+
+body[data-theme='glass'][data-mode='dark'] .chart-tooltip {
+  color: #18181b;
+}
+
+body[data-theme='glass'][data-mode='light'] .drawer,
+body[data-theme='glass'][data-mode='light'] .modal,
+body[data-theme='glass'][data-mode='light'] .sheet {
+  background-color: rgba(255, 255, 255, 0.72);
+}
+
+body[data-theme='glass'][data-mode='dark'] .drawer,
+body[data-theme='glass'][data-mode='dark'] .modal,
+body[data-theme='glass'][data-mode='dark'] .sheet {
+  background-color: rgba(24, 24, 27, 0.72);
+}
+
+body[data-theme='glass'] .drawer-header,
+body[data-theme='glass'] .modal-header,
+body[data-theme='glass'] .drawer-footer,
+body[data-theme='glass'] .modal-footer {
+  border: none;
+  border-color: transparent;
+  background: transparent;
+}
+
+/* Interactive controls keep a light fill + soft edge */
+body[data-theme='glass'] .search-trigger,
+body[data-theme='glass'] .pill,
+body[data-theme='glass'] .pill-action,
+body[data-theme='glass'] .topbar-menu-btn,
+body[data-theme='glass'] .segmented,
+body[data-theme='glass'] .btn:not(.btn-primary):not(.btn-danger),
+body[data-theme='glass'] .toggle-btn,
+body[data-theme='glass'] .field input,
+body[data-theme='glass'] .field textarea,
+body[data-theme='glass'] .field select,
+body[data-theme='glass'] .tags-input,
+body[data-theme='glass'] .select-trigger,
+body[data-theme='glass'] .date-field,
+body[data-theme='glass'] .number-stepper,
+body[data-theme='glass'] .pin-input input,
+body[data-theme='glass'] .tablist,
+body[data-theme='glass'] .pagination,
+body[data-theme='glass'] .skeleton,
+body[data-theme='glass'] .badge:not([class*='badge-']) {
+  background: var(--surface);
+  background-color: var(--surface);
+  border: none;
+  border-color: transparent;
+  box-shadow: var(--glass-shadow-sm);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+body[data-theme='glass'] .topbar .search-trigger,
+body[data-theme='glass'] .topbar .pill-action,
+body[data-theme='glass'] .topbar .topbar-menu-btn {
+  background: var(--surface);
+  border: none;
+  box-shadow: var(--glass-shadow-sm);
+}
+
+body[data-theme='glass'] .btn-primary,
+body[data-theme='glass'] .btn-danger,
+body[data-theme='glass'] .segmented button.active {
+  box-shadow: var(--glass-shadow-sm);
+}
+
+body[data-theme='glass'] .search-trigger-kbd,
+body[data-theme='glass'] .kbd,
+body[data-theme='glass'] .code-chip {
+  background: var(--surface-2);
+  border: none;
+  border-color: transparent;
+}
+
+/* Hover / active — soft wash only, no blur slabs */
+body[data-theme='glass'] .nav-item:hover,
+body[data-theme='glass'] .nav-scroll-btn:hover,
+body[data-theme='glass'] .user-menu-trigger:hover,
+body[data-theme='glass'] .user-menu.open .user-menu-trigger,
+body[data-theme='glass'] .user-menu-panel button:hover,
+body[data-theme='glass'] .search-trigger:hover,
+body[data-theme='glass'] button.pill-action:hover,
+body[data-theme='glass'] .topbar-menu-btn:hover,
+body[data-theme='glass'] .segmented button:hover:not(.active),
+body[data-theme='glass'] .btn:hover:not(:disabled):not(.btn-primary):not(.btn-danger):not(.btn-ghost):not(.toggle-btn),
+body[data-theme='glass'] .btn-ghost:hover:not(:disabled),
+body[data-theme='glass'] .toggle-btn:hover:not(:disabled),
+body[data-theme='glass'] .tab:hover,
+body[data-theme='glass'] .theme-card:hover,
+body[data-theme='glass'] .accent-swatch:hover,
+body[data-theme='glass'] .wallpaper-card:hover,
+body[data-theme='glass'] .index-tile:hover,
+body[data-theme='glass'] .search-result-item:hover,
+body[data-theme='glass'] .node-option:hover,
+body[data-theme='glass'] .command-item[aria-selected='true'],
+body[data-theme='glass'] .cmdk-item[aria-selected='true'],
+body[data-theme='glass'] .dropdown-item:hover,
+body[data-theme='glass'] .menu-item:hover,
+body[data-theme='glass'] .select-option:hover,
+body[data-theme='glass'] .select-option[data-highlighted],
+body[data-theme='glass'] .table tbody tr:hover td {
+  background: var(--hover);
+  background-color: var(--hover);
+  border: none;
+  border-color: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+body[data-theme='glass'] .nav-item.active {
+  background: var(--sidebar-active);
+  background-color: var(--sidebar-active);
+  border: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+body[data-theme='glass'] .theme-card.active,
+body[data-theme='glass'] .accent-swatch.active,
+body[data-theme='glass'] .wallpaper-card.active,
+body[data-theme='glass'] .search-trigger.has-query,
+body[data-theme='glass'] .toggle-btn.checked {
+  background: var(--primary-soft);
+  background-color: var(--primary-soft);
+  border: none;
+  border-color: transparent;
+  box-shadow: var(--glass-shadow);
+}
+
+body[data-theme='glass'] .segmented button.active {
+  background: color-mix(in srgb, var(--primary) 72%, transparent);
+  box-shadow: var(--glass-shadow-sm);
+}
+
+body[data-theme='glass'] .index-tile:hover,
+body[data-theme='glass'] .theme-card:hover,
+body[data-theme='glass'] .accent-swatch:hover {
+  background: var(--primary-soft);
+  box-shadow: var(--glass-shadow);
+}
+
+body[data-theme='glass'] .btn-primary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--primary-hover) 82%, transparent);
+}
+
+body[data-theme='glass'] .btn-danger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--danger) 82%, transparent);
+}
+
+/* Table — clear */
+body[data-theme='glass'] .table,
+body[data-theme='glass'] .data-table,
+body[data-theme='glass'] .table th,
+body[data-theme='glass'] .data-table th,
+body[data-theme='glass'] .table td,
+body[data-theme='glass'] .data-table td {
+  background: transparent;
+  border: none;
+  border-color: transparent;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  body[data-theme='glass'] .drawer,
+  body[data-theme='glass'] .modal,
+  body[data-theme='glass'] .sheet,
+  body[data-theme='glass'] .popover,
+  body[data-theme='glass'] .dropdown-menu,
+  body[data-theme='glass'] .toast,
+  body[data-theme='glass'] .user-menu-panel {
+    background: #ffffff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  body[data-theme='glass'][data-mode='dark'] .drawer,
+  body[data-theme='glass'][data-mode='dark'] .modal,
+  body[data-theme='glass'][data-mode='dark'] .sheet,
+  body[data-theme='glass'][data-mode='dark'] .popover,
+  body[data-theme='glass'][data-mode='dark'] .dropdown-menu,
+  body[data-theme='glass'][data-mode='dark'] .toast,
+  body[data-theme='glass'][data-mode='dark'] .user-menu-panel {
+    background: #18181b;
+  }
+}

@@ -1,0 +1,6 @@
+/* Classic theme — base tokens in tokens/base.css already define the look.
+   This file is a hook for classic-only tweaks; keep empty unless needed. */
+
+body[data-theme='classic'] {
+  /* intentional no-op: classic === default surface system */
+}

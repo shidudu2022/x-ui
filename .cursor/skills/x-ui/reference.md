@@ -4,7 +4,7 @@ Agent 需要具体导出名时查阅本文件。源码以 `src/components/**/ind
 
 ## `@/components/ui`
 
-Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner, BreadcrumbNav, Button, Calendar, Callout, Card, StatusBar, Cascader, CatalogGroup, CatalogTile, Checkbox, Checklist, CodeBlock, ColorInput, Combobox, CommandPalette, ConfirmModal, StrongConfirm, StrongConfirmDrawer, CopyButton, DangerZone, DataTable, DatePicker, DateRangePicker, DescriptionList, MetaRow, Divider, Drawer, DropdownMenu, EmptyState, Field, FormGrid, Input, InputGroup, NativeSelect, Textarea, FileUpload, FilterBar, FormErrors, FormPage, Heading, ImagePreview, JsonViewer, Kbd, KeyValueEditor, TextLink, ListFilterBar, ListPage, LoginCard, LogViewer, MaintenanceBanner, Metric, MetricGrid, MirrorCard, Modal, NodePicker, NotificationList, NumberStepper, PageHeader, PageTabs, Pagination, PinInput, Pill, Popover, Progress, Radio, RadioGroup, RangeSlider, ResourceState, SearchInput, SearchResultList, SearchResultItem, SectionCard, Segmented, Select, SettingsRow, Sheet, Skeleton, SkeletonCard, SkeletonTable, Sparkline, Stat, StatCard, Spinner, SplitPane, Stack, StepHeading, Steps, Switch, Table, DataTableFooter, Tabs, Tag, TagGroup, TagsInput, Text, Muted, Mono, TimePicker, Timeline, ToastProvider, useToast, ToggleButton, Tooltip, TotpBindPanel, buildTotpOtpauth, Transfer, Tree, TreeTableCell
+Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner, BreadcrumbNav, Button, Calendar, Callout, Card, StatusBar, Cascader, CatalogGroup, CatalogTile, Checkbox, Checklist, CodeBlock, ColorInput, Combobox, CommandPalette, ConfirmModal, StrongConfirm, StrongConfirmDrawer, CopyButton, DangerZone, DataTable, DatePicker, DateRangePicker, DescriptionList, MetaRow, Divider, Drawer, DropdownMenu, EmptyState, Field, FormGrid, Input, InputGroup, NativeSelect, Textarea, FileUpload, FilterBar, FormErrors, FormPage, Heading, ImagePreview, JsonViewer, Kbd, KeyValueEditor, TextLink, ListFilterBar, ListPage, LoginCard, LogViewer, MaintenanceBanner, Metric, MetricGrid, MirrorCard, Modal, NodePicker, NotificationList, NumberStepper, PageHeader, PageTabs, Pagination, PinInput, Pill, Popover, Progress, Radio, RadioGroup, RangeSlider, ResourceState, SearchInput, SearchResultList, SearchResultItem, SectionCard, Segmented, Select, SettingsRow, Sheet, Skeleton, SkeletonCard, SkeletonTable, Sparkline, Stat, StatCard, Spinner, SplitPane, Stack, StepHeading, Steps, Switch, Table, DataTableFooter, Tabs, Tag, TagGroup, TagsInput, Text, Muted, Mono, ThemePicker, TimePicker, Timeline, ToastProvider, useToast, ToggleButton, Tooltip, TotpBindPanel, buildTotpOtpauth, Transfer, Tree, TreeTableCell
 
 ### 常用 tone / variant / 行为
 
@@ -26,6 +26,7 @@ Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner
   - `remote` + `total`/`page`/`onPageChange`；`columnVisibility`；`resizableColumns`
   - `defaultSortKey` / 受控 `sortKey`+`onSortChange`；树：`getChildren` + `TreeTableCell`
 - **SearchInput**：左侧搜索图标；`allowClear` / `loading` / `size` sm\|md\|lg；CommandPalette 已改用此组件
+- **ThemePicker**：主题包（经典 / 透明）；写入 `body[data-theme]`
 - **Select**：长列表可搜索；触控/窄屏可原生兜底（`nativeOnMobile`）
 - **Tree / Transfer**：`searchable`
 - **FileUpload**：`files` 进度、`maxSizeMb`
@@ -43,7 +44,7 @@ AppShell, Brand, Breadcrumbs, NavIcon, Sidebar, ThemeDrawer, Topbar, UserMenu
 
 - `AppShell`：侧栏折叠 `localStorage` key `x-ui.sidebar-collapsed`；窄屏抽屉导航
 - `NavGroup` / `NavItem`：`{ label?, items: { to, label, icon?, end? }[] }`
-- `ThemeDrawer`：内置 `AccentPicker`
+- `ThemeDrawer`：深浅色 / 主题（`ThemePicker`）/ 强调色（`AccentPicker`）/ 密度；无「完成」按钮
 
 ## `@/components/charts`
 
@@ -56,7 +57,10 @@ CHART_STATUS = { success, warn, danger, info, neutral, primary }
 ## `@/theme` / `@/lib`
 
 - `AppearanceProvider`, `useAppearance`, `ACCENTS`, `ACCENT_COLORS`, `resolveColorMode`
-- Types: `Accent`, `ColorMode`, `ColorModePreference`, `Density`
+- `THEMES`, `THEME_IDS`, `getTheme`, `ThemeId`（`classic` | `glass`）
+- Types: `Accent`, `ColorMode`, `ColorModePreference`, `Density`, `ThemeId`
+- Body：`data-theme` + `data-mode` + `data-accent` + `data-density`；storage `xui-theme`
+- 加主题：`themes.ts` 注册 + `styles/tokens/themes/<id>.css` 引入 `index.css`
 - `cn`, `useFocusTrap`, `usePresence`, `useListSearch`, `qrSvgDataUri`, `withBase`
 
 ## 样式目录
@@ -64,7 +68,7 @@ CHART_STATUS = { success, warn, danger, info, neutral, primary }
 ```text
 src/styles/
   index.css          # @layer + @import
-  tokens/            # base (--control-fs), accents, typography, charts, density
+  tokens/            # base, accents, typography, charts, density, themes/
   reset.css
   layout/            # shell, brand, nav, breadcrumbs, user-menu, responsive
   components/        # 按组件拆分（含 resource.css、table 固定列）
