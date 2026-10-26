@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
-import { Search } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { Drawer } from './Drawer'
-import { Input } from './Field'
+import { SearchInput } from './SearchInput'
 import { Spinner } from './Spinner'
 
 export type CommandItem = {
@@ -136,23 +135,23 @@ export function CommandPalette({
   return (
     <Drawer open={open} onClose={onClose} title={title} size="md">
       <div className="stack search-drawer">
-        <div className="cmdk-search">
-          <span className="cmdk-search-icon" aria-hidden>
-            <Search size={15} strokeWidth={2} />
-          </span>
-          <Input
-            autoFocus
-            value={query}
-            onChange={(e) => {
-              const next = e.target.value
-              setQuery(next)
-              setActive(0)
-              onQueryChange?.(next)
-            }}
-            placeholder={placeholder}
-            aria-label={placeholder}
-          />
-        </div>
+        <SearchInput
+          autoFocus
+          value={query}
+          onChange={(e) => {
+            const next = e.target.value
+            setQuery(next)
+            setActive(0)
+            onQueryChange?.(next)
+          }}
+          onClear={() => {
+            setQuery('')
+            setActive(0)
+            onQueryChange?.('')
+          }}
+          placeholder={placeholder}
+          aria-label={placeholder}
+        />
         <div className="search-drawer-results">
           {loading ? (
             <div className="resource-state-spinner">

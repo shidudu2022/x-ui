@@ -1,3 +1,110 @@
+/* SearchInput — icon + field + clear */
+.search-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.search-input-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  color: var(--text-faint);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.search-input-sm .search-input-icon {
+  left: 10px;
+}
+
+.search-input-lg .search-input-icon {
+  left: 14px;
+}
+
+/* Beat .field input / .ui-input shorthand padding */
+.field .search-input input.search-input-field,
+.search-input input.search-input-field.ui-input,
+.search-input .search-input-field {
+  width: 100%;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 36px;
+  padding-right: 36px;
+}
+
+.field .search-input-sm input.search-input-field,
+.search-input-sm input.search-input-field.ui-input,
+.search-input-sm .search-input-field {
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.field .search-input-lg input.search-input-field,
+.search-input-lg input.search-input-field.ui-input,
+.search-input-lg .search-input-field {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.search-input-field[type='search']::-webkit-search-decoration,
+.search-input-field[type='search']::-webkit-search-cancel-button,
+.search-input-field[type='search']::-webkit-search-results-button,
+.search-input-field[type='search']::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.search-input-clear,
+.search-input-trailing,
+.search-input-suffix {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.search-input-clear {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-faint);
+  cursor: pointer;
+}
+
+.search-input-clear:hover {
+  color: var(--text);
+  background: var(--hover);
+}
+
+.search-input-trailing {
+  color: var(--text-faint);
+  pointer-events: none;
+}
+
+.search-input-suffix {
+  right: 10px;
+  pointer-events: none;
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+.search-input.is-disabled {
+  opacity: 0.65;
+  pointer-events: none;
+}
+
 .search-trigger {
   display: inline-flex;
   align-items: center;

@@ -68,7 +68,7 @@
 
 .ui-input,
 .ui-textarea,
-.field input:not(.pin-input-cell):not(.color-input-text),
+.field input:not(.pin-input-cell):not(.color-input-text):not(.search-input-field),
 .field select,
 .field textarea {
   box-sizing: border-box;
@@ -92,7 +92,7 @@
 
 .ui-input-sm,
 .ui-textarea.ui-input-sm,
-.field input.ui-input-sm:not(.pin-input-cell):not(.color-input-text),
+.field input.ui-input-sm:not(.pin-input-cell):not(.color-input-text):not(.search-input-field),
 .field select.ui-input-sm,
 .field textarea.ui-input-sm {
   height: 28px;
@@ -110,7 +110,7 @@
 
 .ui-input-lg,
 .ui-textarea.ui-input-lg,
-.field input.ui-input-lg:not(.pin-input-cell):not(.color-input-text),
+.field input.ui-input-lg:not(.pin-input-cell):not(.color-input-text):not(.search-input-field),
 .field select.ui-input-lg,
 .field textarea.ui-input-lg {
   height: 44px;
@@ -189,7 +189,7 @@
   padding: 3px;
   border: 1px solid var(--border);
   border-radius: 999px;
-  background: var(--surface-2);
+  background: var(--surface);
   box-sizing: border-box;
 }
 

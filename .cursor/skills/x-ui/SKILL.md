@@ -123,7 +123,7 @@ GitHub Pages / 子路径：`withBase()`（`@/lib/baseUrl`）；`npm run build:pa
 
 ## 组件选用速查
 
-- **按钮** `Button` · **表单** `Field` + Input/Select/… · **颜色** `ColorInput`（非原生 color）  
+- **按钮** `Button` · **表单** `Field` + Input/Select/… · **搜索框** `SearchInput`（图标 + 清除，勿手拼）· **颜色** `ColorInput`（非原生 color）  
 - **登录** `LoginCard` + `TotpBindPanel` / `PinInput` → 读 `ExampleLoginPage`  
 - **注册 / 验证码** → `ExampleRegisterPage` / `ExampleVerifyEmailPage`  
 - **日期** `DatePicker` / `DateRangePicker`（双月；datetime：日历\|日历\|开始\|结束）  

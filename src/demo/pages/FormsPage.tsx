@@ -14,6 +14,7 @@ import {
   Radio,
   RadioGroup,
   RangeSlider,
+  SearchInput,
   Segmented,
   Select,
   Switch,
@@ -30,6 +31,8 @@ export function FormsPage() {
   const [multi, setMulti] = useState<string[]>(['a'])
   const [otp, setOtp] = useState('')
   const [pin4, setPin4] = useState('')
+  const [search, setSearch] = useState('')
+  const [searchSm, setSearchSm] = useState('edge')
   const [date, setDate] = useState('2026-10-25')
   const [datetime, setDatetime] = useState('2026-10-25T14:30')
   const [dateRange, setDateRange] = useState({ start: '2026-10-01', end: '2026-10-12' })
@@ -61,6 +64,23 @@ export function FormsPage() {
               <InputGroup prefix="https://" suffix=".com">
                 <Input id="url" placeholder="example" />
               </InputGroup>
+            </Field>
+            <Field label="搜索" htmlFor="search-demo" hint="SearchInput · 图标 + 清除">
+              <SearchInput
+                id="search-demo"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="名称 / 标签…"
+              />
+            </Field>
+            <Field label="搜索 sm" htmlFor="search-sm" hint="size=sm">
+              <SearchInput
+                id="search-sm"
+                size="sm"
+                value={searchSm}
+                onChange={(e) => setSearchSm(e.target.value)}
+                onClear={() => setSearchSm('')}
+              />
             </Field>
             <Field label="多行" htmlFor="notes" className="full">
               <Textarea id="notes" rows={3} placeholder="备注" />

@@ -4,7 +4,7 @@ Agent 需要具体导出名时查阅本文件。源码以 `src/components/**/ind
 
 ## `@/components/ui`
 
-Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner, BreadcrumbNav, Button, Calendar, Callout, Card, StatusBar, Cascader, CatalogGroup, CatalogTile, Checkbox, Checklist, CodeBlock, ColorInput, Combobox, CommandPalette, ConfirmModal, StrongConfirm, StrongConfirmDrawer, CopyButton, DangerZone, DataTable, DatePicker, DateRangePicker, DescriptionList, MetaRow, Divider, Drawer, DropdownMenu, EmptyState, Field, FormGrid, Input, InputGroup, NativeSelect, Textarea, FileUpload, FilterBar, FormErrors, FormPage, Heading, ImagePreview, JsonViewer, Kbd, KeyValueEditor, TextLink, ListFilterBar, ListPage, LoginCard, LogViewer, MaintenanceBanner, Metric, MetricGrid, MirrorCard, Modal, NodePicker, NotificationList, NumberStepper, PageHeader, PageTabs, Pagination, PinInput, Pill, Popover, Progress, Radio, RadioGroup, RangeSlider, ResourceState, SearchResultList, SearchResultItem, SectionCard, Segmented, Select, SettingsRow, Sheet, Skeleton, SkeletonCard, SkeletonTable, Sparkline, Stat, StatCard, Spinner, SplitPane, Stack, StepHeading, Steps, Switch, Table, DataTableFooter, Tabs, Tag, TagGroup, TagsInput, Text, Muted, Mono, TimePicker, Timeline, ToastProvider, useToast, ToggleButton, Tooltip, TotpBindPanel, buildTotpOtpauth, Transfer, Tree, TreeTableCell
+Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner, BreadcrumbNav, Button, Calendar, Callout, Card, StatusBar, Cascader, CatalogGroup, CatalogTile, Checkbox, Checklist, CodeBlock, ColorInput, Combobox, CommandPalette, ConfirmModal, StrongConfirm, StrongConfirmDrawer, CopyButton, DangerZone, DataTable, DatePicker, DateRangePicker, DescriptionList, MetaRow, Divider, Drawer, DropdownMenu, EmptyState, Field, FormGrid, Input, InputGroup, NativeSelect, Textarea, FileUpload, FilterBar, FormErrors, FormPage, Heading, ImagePreview, JsonViewer, Kbd, KeyValueEditor, TextLink, ListFilterBar, ListPage, LoginCard, LogViewer, MaintenanceBanner, Metric, MetricGrid, MirrorCard, Modal, NodePicker, NotificationList, NumberStepper, PageHeader, PageTabs, Pagination, PinInput, Pill, Popover, Progress, Radio, RadioGroup, RangeSlider, ResourceState, SearchInput, SearchResultList, SearchResultItem, SectionCard, Segmented, Select, SettingsRow, Sheet, Skeleton, SkeletonCard, SkeletonTable, Sparkline, Stat, StatCard, Spinner, SplitPane, Stack, StepHeading, Steps, Switch, Table, DataTableFooter, Tabs, Tag, TagGroup, TagsInput, Text, Muted, Mono, TimePicker, Timeline, ToastProvider, useToast, ToggleButton, Tooltip, TotpBindPanel, buildTotpOtpauth, Transfer, Tree, TreeTableCell
 
 ### 常用 tone / variant / 行为
 
@@ -25,6 +25,7 @@ Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner
   - 空单元格默认 `—`（`emptyCell` / `EMPTY_CELL`）；列可设 `emptyPlaceholder` 或 `false` 关闭
   - `remote` + `total`/`page`/`onPageChange`；`columnVisibility`；`resizableColumns`
   - `defaultSortKey` / 受控 `sortKey`+`onSortChange`；树：`getChildren` + `TreeTableCell`
+- **SearchInput**：左侧搜索图标；`allowClear` / `loading` / `size` sm\|md\|lg；CommandPalette 已改用此组件
 - **Select**：长列表可搜索；触控/窄屏可原生兜底（`nativeOnMobile`）
 - **Tree / Transfer**：`searchable`
 - **FileUpload**：`files` 进度、`maxSizeMb`
