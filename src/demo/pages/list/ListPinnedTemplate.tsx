@@ -8,7 +8,6 @@ import {
   Tag,
   TagGroup,
   Text,
-  CellEllipsis,
   CellStack,
   emptyCell,
   useToast,
@@ -51,11 +50,11 @@ export function ListPinnedTemplate({ q, onClear }: { q: string; onClear: () => v
       sortValue: (r) => r.name,
       render: (r) => (
         <CellStack>
-          <CellEllipsis title={r.name}>
-            <Text variant="strong">{r.name}</Text>
-          </CellEllipsis>
-          <Muted as="div">
-            <CellEllipsis title={r.note || undefined}>{emptyCell(r.note)}</CellEllipsis>
+          <Text variant="strong" title={r.name}>
+            {r.name}
+          </Text>
+          <Muted as="div" title={r.note || undefined}>
+            {emptyCell(r.note)}
           </Muted>
         </CellStack>
       ),

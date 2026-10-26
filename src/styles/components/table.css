@@ -85,7 +85,7 @@
   vertical-align: middle;
 }
 
-/* Keep long text from stretching row height */
+/* Long text: no wrap, fixed max width, ellipsis */
 .data-table .table {
   table-layout: fixed;
   width: 100%;
@@ -93,21 +93,28 @@
 
 .data-table .table th,
 .data-table .table td {
+  max-width: 240px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .data-table .table td:has(.actions) {
+  max-width: none;
   width: 1%;
-  white-space: nowrap;
   overflow: visible;
+  white-space: nowrap;
+}
+
+.data-table .table td:has(.cell-stack) {
+  white-space: normal;
 }
 
 .data-table .table td .ui-tag-group {
+  display: flex;
   flex-wrap: nowrap;
-  overflow: hidden;
   max-width: 100%;
+  overflow: hidden;
 }
 
 .cell-stack {
@@ -119,16 +126,13 @@
   white-space: normal;
 }
 
-.cell-ellipsis-tip.tooltip-wrap {
+.cell-stack > * {
   display: block;
   min-width: 0;
   max-width: 100%;
-}
-
-.cell-ellipsis-tip.tooltip-wrap > span:first-child {
-  display: block;
-  min-width: 0;
-  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .cell-ellipsis {
