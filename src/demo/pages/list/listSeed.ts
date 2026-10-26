@@ -23,12 +23,33 @@ export type TreeRow = {
 
 export const FLAT_SEED: ClusterRow[] = Array.from({ length: 18 }, (_, i) => ({
   id: String(i + 1),
-  name: `cluster-${String(i + 1).padStart(2, '0')}`,
-  note: i % 5 === 0 ? '' : i % 3 === 0 ? '生产环境' : i % 3 === 1 ? '预发' : '开发调试',
+  name:
+    i % 4 === 0
+      ? `cluster-${String(i + 1).padStart(2, '0')}-apac-production-shared-control-plane`
+      : `cluster-${String(i + 1).padStart(2, '0')}`,
+  note:
+    i % 5 === 0
+      ? ''
+      : i % 4 === 0
+        ? '用于亚太区生产流量与灰度发布的共享控制面，备注很长时表格应单行省略而不是撑高整行'
+        : i % 3 === 0
+          ? '生产环境'
+          : i % 3 === 1
+            ? '预发'
+            : '开发调试',
   status: (['running', 'degraded', 'stopped'] as const)[i % 3],
   version: i % 7 === 0 ? '' : i % 2 === 0 ? 'v1.31.3+k3s1' : 'v1.30.6+k3s1',
   nodes: 1 + (i % 5),
-  tags: i % 5 === 0 ? [] : i % 2 === 0 ? ['prod', 'edge'] : i % 3 === 0 ? ['', '  '] : ['dev'],
+  tags:
+    i % 5 === 0
+      ? []
+      : i % 4 === 0
+        ? ['prod', 'edge', 'apac', 'shared', 'canary']
+        : i % 2 === 0
+          ? ['prod', 'edge']
+          : i % 3 === 0
+            ? ['', '  ']
+            : ['dev'],
 }))
 
 export const TREE_SEED: TreeRow[] = [

@@ -1,6 +1,7 @@
 import {
   Badge,
   Button,
+  CellEllipsis,
   DataTable,
   ListFilterBar,
   Text,
@@ -34,7 +35,11 @@ export function ListCompactTemplate({ q, onClear }: { q: string; onClear: () => 
           {
             key: 'name',
             header: '名称',
-            render: (r: ClusterRow) => <Text variant="strong">{r.name}</Text>,
+            render: (r: ClusterRow) => (
+              <CellEllipsis title={r.name}>
+                <Text variant="strong">{r.name}</Text>
+              </CellEllipsis>
+            ),
           },
           {
             key: 'status',

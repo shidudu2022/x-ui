@@ -86,6 +86,7 @@ export {
   type TableColumn,
   type TableColumnPin,
 } from './Table'
+export { CellEllipsis, CellStack } from './CellEllipsis'
 export { EMPTY_CELL, emptyCell, isEmptyCellValue } from '@/lib/emptyCell'
 export { Tabs, type TabItem } from './Tabs'
 export { Tag, TagGroup, type TagTone } from './Tag'

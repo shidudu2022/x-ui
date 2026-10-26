@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react'
 import {
   Badge,
   Button,
+  CellEllipsis,
+  CellStack,
   DataTable,
   ListFilterBar,
   Muted,
@@ -36,12 +38,14 @@ export function ListTableTemplate({
         sortable,
         sortValue: (r) => r.name,
         render: (r) => (
-          <>
-            <Text variant="strong">{r.name}</Text>
-            <Muted as="div" style={{ marginTop: 2 }}>
-              {emptyCell(r.note)}
+          <CellStack>
+            <CellEllipsis title={r.name}>
+              <Text variant="strong">{r.name}</Text>
+            </CellEllipsis>
+            <Muted as="div">
+              <CellEllipsis title={r.note || undefined}>{emptyCell(r.note)}</CellEllipsis>
             </Muted>
-          </>
+          </CellStack>
         ),
       },
       {

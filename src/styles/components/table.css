@@ -85,6 +85,61 @@
   vertical-align: middle;
 }
 
+/* Keep long text from stretching row height */
+.data-table .table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.data-table .table th,
+.data-table .table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.data-table .table td:has(.actions) {
+  width: 1%;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.data-table .table td .ui-tag-group {
+  flex-wrap: nowrap;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.cell-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+}
+
+.cell-ellipsis-tip.tooltip-wrap {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.cell-ellipsis-tip.tooltip-wrap > span:first-child {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.cell-ellipsis {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .table .cell-empty {
   color: var(--text-faint);
   font-weight: 400;
