@@ -183,6 +183,7 @@
   line-height: 1;
   border-radius: 6px;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .table .actions .btn-secondary {

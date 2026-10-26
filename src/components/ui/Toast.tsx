@@ -32,10 +32,13 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
   const toast = useCallback((message: string, tone: ToastTone = 'info') => {
     const id = Date.now() + Math.random()
-    setItems((prev) => [...prev, { id, message, tone: resolveTone(tone) }])
+    const resolved = resolveTone(tone)
+    setItems((prev) => [...prev, { id, message, tone: resolved }])
+    const ms =
+      resolved === 'error' || resolved === 'warn' ? 8000 : 2800
     window.setTimeout(() => {
       setItems((prev) => prev.filter((t) => t.id !== id))
-    }, 2800)
+    }, ms)
   }, [])
 
   const value = useMemo(() => ({ toast }), [toast])

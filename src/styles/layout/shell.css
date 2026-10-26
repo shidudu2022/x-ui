@@ -437,7 +437,23 @@ button.pill-action:hover {
   align-items: center;
 }
 
+.table .actions,
+.status-bar .actions {
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.page-header .actions {
+  flex-wrap: nowrap;
+}
+
 .table .actions {
   gap: 5px;
+}
+
+.table td:has(> .actions),
+.table th:last-child {
+  white-space: nowrap;
+  width: 1%;
 }
 
