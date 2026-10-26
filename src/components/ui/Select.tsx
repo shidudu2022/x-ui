@@ -1,4 +1,14 @@
-import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react'
+import {
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from 'react'
+import { createPortal } from 'react-dom'
 import { ChevronDown, Search } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { Input } from './Field'
@@ -35,10 +45,41 @@ type SelectProps = {
   nativeOnMobile?: boolean
 }
 
+const MENU_GAP = 4
+const MENU_MAX_H = 240
+
 function optionText(opt: SelectOption) {
   if (opt.searchText) return opt.searchText
   if (typeof opt.label === 'string' || typeof opt.label === 'number') return String(opt.label)
   return opt.value
+}
+
+/** Position from trigger only; prefer below, flip above when short on space. */
+function placeMenu(trigger: DOMRect, menuHeight: number): CSSProperties {
+  const vw = window.innerWidth
+  const vh = window.innerHeight
+  const height = Math.min(MENU_MAX_H, Math.max(menuHeight, 0) || MENU_MAX_H)
+  const spaceBelow = vh - trigger.bottom - 8
+  const spaceAbove = trigger.top - 8
+  const openUp = spaceBelow < height && spaceAbove > spaceBelow
+
+  let left = trigger.left
+  left = Math.min(Math.max(8, left), Math.max(8, vw - trigger.width - 8))
+
+  const top = openUp
+    ? Math.max(8, trigger.top - MENU_GAP - height)
+    : trigger.bottom + MENU_GAP
+
+  return {
+    position: 'fixed',
+    top,
+    left,
+    right: 'auto',
+    bottom: 'auto',
+    minWidth: trigger.width,
+    maxHeight: MENU_MAX_H,
+    zIndex: 200,
+  }
 }
 
 export function Select({
@@ -64,13 +105,21 @@ export function Select({
   const [uncontrolled, setUncontrolled] = useState(defaultValue ?? '')
   const [uncontrolledMulti, setUncontrolledMulti] = useState<string[]>(values ?? [])
   const [useNative, setUseNative] = useState(false)
+  const [menuStyle, setMenuStyle] = useState<CSSProperties | null>(null)
   const rootRef = useRef<HTMLDivElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
   const listId = useId()
 
   const selected = value ?? uncontrolled
   const selectedMulti = values ?? uncontrolledMulti
   const enableSearch = searchable ?? options.length >= searchThreshold
   const preferNative = nativeOnMobile ?? options.length > 12
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    if (!q) return options
+    return options.filter((o) => optionText(o).toLowerCase().includes(q))
+  }, [options, query])
 
   useEffect(() => {
     if (!preferNative || multiple) return
@@ -81,7 +130,9 @@ export function Select({
 
   useEffect(() => {
     function onDoc(e: MouseEvent) {
-      if (!rootRef.current?.contains(e.target as Node)) setOpen(false)
+      const t = e.target as Node
+      if (rootRef.current?.contains(t) || menuRef.current?.contains(t)) return
+      setOpen(false)
     }
     document.addEventListener('mousedown', onDoc)
     return () => document.removeEventListener('mousedown', onDoc)
@@ -91,11 +142,38 @@ export function Select({
     if (!open) setQuery('')
   }, [open])
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase()
-    if (!q) return options
-    return options.filter((o) => optionText(o).toLowerCase().includes(q))
-  }, [options, query])
+  function updateMenuPos() {
+    const trigger = rootRef.current?.querySelector('.ui-select-trigger')
+    const menu = menuRef.current
+    if (!trigger || !menu) return
+    setMenuStyle(placeMenu(trigger.getBoundingClientRect(), menu.getBoundingClientRect().height))
+  }
+
+  useLayoutEffect(() => {
+    if (!open) {
+      setMenuStyle(null)
+      return
+    }
+    // First pass with estimated height, then refine after paint.
+    const trigger = rootRef.current?.querySelector('.ui-select-trigger')
+    if (trigger) {
+      setMenuStyle(placeMenu(trigger.getBoundingClientRect(), MENU_MAX_H))
+    }
+    requestAnimationFrame(() => updateMenuPos())
+  }, [open, query, filtered.length])
+
+  useEffect(() => {
+    if (!open) return
+    function onScrollOrResize() {
+      updateMenuPos()
+    }
+    window.addEventListener('scroll', onScrollOrResize, true)
+    window.addEventListener('resize', onScrollOrResize)
+    return () => {
+      window.removeEventListener('scroll', onScrollOrResize, true)
+      window.removeEventListener('resize', onScrollOrResize)
+    }
+  }, [open])
 
   const display = multiple
     ? selectedMulti.length
@@ -147,6 +225,49 @@ export function Select({
     )
   }
 
+  const menu = open ? (
+    <div
+      ref={menuRef}
+      className={cn('ui-select-menu', 'ui-select-menu-portal', size === 'sm' && 'ui-select-sm')}
+      id={listId}
+      role="listbox"
+      style={menuStyle ?? { position: 'fixed', top: 0, left: 0, visibility: 'hidden' }}
+    >
+      {enableSearch ? (
+        <div className="ui-select-search" onMouseDown={(e) => e.preventDefault()}>
+          <Search size={14} aria-hidden />
+          <Input
+            size="sm"
+            value={query}
+            placeholder="筛选…"
+            aria-label="筛选选项"
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
+      ) : null}
+      {filtered.length === 0 ? (
+        <div className="ui-select-empty muted">无匹配项</div>
+      ) : (
+        filtered.map((opt) => {
+          const active = multiple ? selectedMulti.includes(opt.value) : selected === opt.value
+          return (
+            <button
+              key={opt.value}
+              type="button"
+              role="option"
+              aria-selected={active}
+              className={cn('ui-select-option', active && 'active')}
+              disabled={opt.disabled}
+              onClick={() => pick(opt.value)}
+            >
+              {opt.label}
+            </button>
+          )
+        })
+      )}
+    </div>
+  ) : null
+
   return (
     <div
       className={cn(
@@ -173,42 +294,7 @@ export function Select({
           <ChevronDown size={16} />
         </span>
       </button>
-      {open ? (
-        <div className="ui-select-menu placement-bottom" id={listId} role="listbox">
-          {enableSearch ? (
-            <div className="ui-select-search" onMouseDown={(e) => e.preventDefault()}>
-              <Search size={14} aria-hidden />
-              <Input
-                size="sm"
-                value={query}
-                placeholder="筛选…"
-                aria-label="筛选选项"
-                onChange={(e) => setQuery(e.target.value)}
-              />
-            </div>
-          ) : null}
-          {filtered.length === 0 ? (
-            <div className="ui-select-empty muted">无匹配项</div>
-          ) : (
-            filtered.map((opt) => {
-              const active = multiple ? selectedMulti.includes(opt.value) : selected === opt.value
-              return (
-                <button
-                  key={opt.value}
-                  type="button"
-                  role="option"
-                  aria-selected={active}
-                  className={cn('ui-select-option', active && 'active')}
-                  disabled={opt.disabled}
-                  onClick={() => pick(opt.value)}
-                >
-                  {opt.label}
-                </button>
-              )
-            })
-          )}
-        </div>
-      ) : null}
+      {menu ? createPortal(menu, document.body) : null}
     </div>
   )
 }

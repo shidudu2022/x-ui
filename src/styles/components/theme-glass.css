@@ -135,7 +135,8 @@ body[data-theme='glass'] .user-menu-panel,
 body[data-theme='glass'] .command-dialog,
 body[data-theme='glass'] .cmdk-root,
 body[data-theme='glass'] .select-menu,
-body[data-theme='glass'] .menu {
+body[data-theme='glass'] .menu,
+body[data-theme='glass'] .ui-select-menu {
   background: var(--glass-panel);
   background-color: var(--glass-panel);
   border: none;
