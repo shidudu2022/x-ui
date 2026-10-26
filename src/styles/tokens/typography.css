@@ -197,6 +197,12 @@
 .content .heading-card {
   font-size: var(--fs-xl);
 }
+.content .section-card-head .heading-card,
+.content .table-card-head .heading-card {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
 .content .kv,
 .content .meta-row,
 .content .hint-inline {

@@ -362,6 +362,12 @@ button.pill-action:hover {
 .content .card h3 {
   font-size: 16px;
 }
+.content .section-card-head h3,
+.content .table-card-head h3 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
 .content .kv,
 .content .meta-row,
 .content .status-line,

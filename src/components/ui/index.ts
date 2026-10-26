@@ -62,6 +62,7 @@ export { ResourceState, ResourceEmptyIcon, type ResourceStatus } from './Resourc
 export { SearchInput, type SearchInputProps } from './SearchInput'
 export { SearchResultList, SearchResultItem, type SearchResultItemData } from './SearchResultList'
 export { SectionCard } from './SectionCard'
+export { TableCard } from './TableCard'
 export { Segmented, type SegmentedOption } from './Segmented'
 export { Select, type SelectOption } from './Select'
 export { SettingsRow, DangerZone } from './SettingsRow'

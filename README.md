@@ -66,11 +66,12 @@ npm run preview:pages
 
 ## 表格固定列
 
-`Table` / `DataTable` 列设 `pinned: 'left' | 'right'`（建议同时设 `width`）：
+`Table` / `DataTable` 列设 `pinned: 'left' | 'right'`：
 
 - 横向滚动时 sticky；背景不透明，避免内容穿透
 - 有左侧固定列且开启多选时，`__select` 勾选列会自动左固定并计入偏移
-- 最外侧固定列带轻量边缘渐变阴影（`is-pinned-edge`）
+- 最外侧固定列用边框分隔（`is-pinned-edge`），无阴影
+- 未设 `width` 的固定列（如操作列）按内容自适应；需要锁宽时再显式传 `width`
 
 ```tsx
 columns={[
@@ -87,8 +88,8 @@ columns={[
 | 项 | 说明 |
 |----|------|
 | Select | 选项搜索；窄屏/触控可回退原生 `<select>` |
-| DataTable | `remote`；`columnVisibility`；`resizableColumns`；`pinned` |
-| Table | sticky 固定列 + 边缘阴影；多选与左固定联动 |
+| DataTable | `remote`；`hideFooter` / `hideHeader`；`columnVisibility`；`resizableColumns`；`pinned` |
+| Table | sticky 固定列 + 边缘边框；多选与左固定联动 |
 | Drawer | `size` sm\|md\|lg\|xl；`usePresence` 滑动进场 |
 | DatePicker | `minuteStep` / `disabledDate`；范围双月；datetime：日历\|日历\|开始\|结束 |
 | Toast | `info` \| `success` \| `warn` \| `error` |

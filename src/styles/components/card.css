@@ -10,6 +10,65 @@
   padding: 18px;
 }
 
+.section-card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.section-card-title-row {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+/* Dedicated title class — avoids global .content h3 / .heading-card */
+.section-card-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0;
+  color: var(--text);
+}
+
+.section-card-subtitle {
+  font-size: 11px;
+  font-weight: 450;
+  line-height: 1.35;
+  color: var(--text-muted);
+}
+
+/* TableCard — titled shell around Table / EmptyState */
+.table-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--hairline);
+  background: var(--surface-2);
+}
+
+.table-card-head .section-card-subtitle {
+  font-size: 11px;
+}
+
+.table-card > .empty {
+  padding: 28px 16px;
+}
+
+.table-card > .skeleton-table {
+  padding: 16px 14px;
+}
+
 .data-table-footer {
   display: flex;
   align-items: center;

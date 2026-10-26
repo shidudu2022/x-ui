@@ -333,7 +333,7 @@ body[data-theme='glass'] .data-table td {
   border-color: transparent;
 }
 
-/* Pinned cols — transparent; only the freeze-side edge gets a shadow */
+/* Pinned cols — stay transparent; light freeze-edge border (beat table.css !important) */
 body[data-theme='glass'] .table th.is-pinned-left,
 body[data-theme='glass'] .table td.is-pinned-left,
 body[data-theme='glass'] .table th.is-pinned-right,
@@ -343,11 +343,13 @@ body[data-theme='glass'] .table thead th.is-pinned-right,
 body[data-theme='glass'] .table tr:hover td.is-pinned-left,
 body[data-theme='glass'] .table tr:hover td.is-pinned-right,
 body[data-theme='glass'] .table tr.clickable:hover td.is-pinned-left,
-body[data-theme='glass'] .table tr.clickable:hover td.is-pinned-right {
+body[data-theme='glass'] .table tr.clickable:hover td.is-pinned-right,
+body[data-theme='glass'] .table tbody tr:hover td.is-pinned-left,
+body[data-theme='glass'] .table tbody tr:hover td.is-pinned-right {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
-  box-shadow: none;
+  box-shadow: none !important;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
@@ -356,55 +358,58 @@ body[data-theme='glass'] .table td.is-pinned-left::before,
 body[data-theme='glass'] .table td.is-pinned-right::before,
 body[data-theme='glass'] .table th.is-pinned-left::before,
 body[data-theme='glass'] .table th.is-pinned-right::before {
-  background-color: transparent;
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+body[data-theme='glass'] .table th.is-pinned-left.is-pinned-edge,
+body[data-theme='glass'] .table td.is-pinned-left.is-pinned-edge,
+body[data-theme='glass'] .table th.is-pinned-right.is-pinned-edge,
+body[data-theme='glass'] .table td.is-pinned-right.is-pinned-edge {
+  border-left: none !important;
+  border-right: none !important;
 }
 
 body[data-theme='glass'] .table th.is-pinned-left.is-pinned-edge::after,
 body[data-theme='glass'] .table td.is-pinned-left.is-pinned-edge::after {
-  display: block;
-  width: 18px;
-  right: -18px;
-  left: auto;
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -12px;
+  bottom: 0;
+  width: 12px;
+  pointer-events: none;
   background: linear-gradient(
     to right,
-    rgba(15, 23, 42, 0.1) 0%,
-    rgba(15, 23, 42, 0.04) 45%,
-    transparent 100%
+    color-mix(in srgb, var(--text) 5%, transparent),
+    transparent
   );
 }
 
 body[data-theme='glass'] .table th.is-pinned-right.is-pinned-edge::after,
 body[data-theme='glass'] .table td.is-pinned-right.is-pinned-edge::after {
-  display: block;
-  width: 18px;
-  left: -18px;
-  right: auto;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -12px;
+  bottom: 0;
+  width: 12px;
+  pointer-events: none;
   background: linear-gradient(
     to left,
-    rgba(15, 23, 42, 0.1) 0%,
-    rgba(15, 23, 42, 0.04) 45%,
-    transparent 100%
+    color-mix(in srgb, var(--text) 5%, transparent),
+    transparent
   );
 }
 
 body[data-theme='glass'][data-mode='dark'] .table th.is-pinned-left.is-pinned-edge::after,
 body[data-theme='glass'][data-mode='dark'] .table td.is-pinned-left.is-pinned-edge::after {
-  background: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0.22) 0%,
-    rgba(0, 0, 0, 0.08) 45%,
-    transparent 100%
-  );
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.14), transparent);
 }
 
 body[data-theme='glass'][data-mode='dark'] .table th.is-pinned-right.is-pinned-edge::after,
 body[data-theme='glass'][data-mode='dark'] .table td.is-pinned-right.is-pinned-edge::after {
-  background: linear-gradient(
-    to left,
-    rgba(0, 0, 0, 0.22) 0%,
-    rgba(0, 0, 0, 0.08) 45%,
-    transparent 100%
-  );
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.14), transparent);
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {

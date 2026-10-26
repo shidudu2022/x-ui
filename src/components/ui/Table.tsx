@@ -1,4 +1,12 @@
-import { useMemo, useRef, type CSSProperties, type MouseEvent as ReactMouseEvent, type ReactNode } from 'react'
+import {
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type MouseEvent as ReactMouseEvent,
+  type ReactNode,
+} from 'react'
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { EMPTY_CELL, emptyCell } from '@/lib/emptyCell'
@@ -17,6 +25,10 @@ export type TableColumn<T> = {
   sortable?: boolean
   /** Value used when sorting; defaults to `(row as any)[key]` */
   sortValue?: (row: T) => SortValue
+  /**
+   * Fixed column width. Omit on pinned action columns to size to content
+   * (e.g. button count); sticky offsets are measured automatically.
+   */
   width?: string | number
   resizable?: boolean
   /** Sticky pin while the table scrolls horizontally */
@@ -44,6 +56,8 @@ type TableProps<T> = {
   rowClassName?: (row: T) => string | undefined
   className?: string
   empty?: ReactNode
+  /** Hide the column header row (`thead`) */
+  hideHeader?: boolean
 }
 
 function widthPx(width: string | number | undefined, fallback: number) {
@@ -57,14 +71,27 @@ function widthPx(width: string | number | undefined, fallback: number) {
 
 const SELECT_COL_WIDTH = 48
 
-function columnWidthPx<T>(col: TableColumn<T> | undefined, key: string) {
+function isAutoPinnedWidth<T>(col: TableColumn<T> | undefined, key: string) {
+  if (key === '__select') return false
+  return Boolean(col?.pinned && col.width == null)
+}
+
+function columnWidthPx<T>(
+  col: TableColumn<T> | undefined,
+  key: string,
+  measured: Record<string, number>,
+) {
   if (key === '__select') return widthPx(col?.width, SELECT_COL_WIDTH)
-  return widthPx(col?.width, key === 'actions' ? 220 : 160)
+  if (col?.width != null) return widthPx(col.width, 160)
+  if (measured[key]) return measured[key]
+  // Provisional until ResizeObserver measures content-sized pinned cols
+  return key === 'actions' ? 120 : 160
 }
 
 function buildPinStyles<T>(
   columns: TableColumn<T>[],
   selectable: boolean | undefined,
+  measured: Record<string, number>,
 ): Map<string, { side: TableColumnPin; offset: number; edge: boolean }> {
   const map = new Map<string, { side: TableColumnPin; offset: number; edge: boolean }>()
   const leftKeys: string[] = []
@@ -99,14 +126,14 @@ function buildPinStyles<T>(
   uniqueLeft.forEach((key, i) => {
     map.set(key, { side: 'left', offset: left, edge: i === uniqueLeft.length - 1 })
     const col = columns.find((c) => c.key === key)
-    left += columnWidthPx(col, key)
+    left += columnWidthPx(col, key, measured)
   })
 
   let right = 0
   for (let i = rightKeys.length - 1; i >= 0; i--) {
     const key = rightKeys[i]!
     const col = columns.find((c) => c.key === key)
-    const w = columnWidthPx(col, key)
+    const w = columnWidthPx(col, key, measured)
     map.set(key, { side: 'right', offset: right, edge: i === 0 })
     right += w
   }
@@ -127,6 +154,12 @@ function pinCellStyle(
   }
 }
 
+function widthsEqual(a: Record<string, number>, b: Record<string, number>) {
+  const keys = Object.keys(b)
+  if (Object.keys(a).length !== keys.length) return false
+  return keys.every((k) => a[k] === b[k])
+}
+
 export function Table<T>({
   columns,
   rows,
@@ -142,11 +175,48 @@ export function Table<T>({
   rowClassName,
   className,
   empty,
+  hideHeader = false,
 }: TableProps<T>) {
+  const rootRef = useRef<HTMLDivElement>(null)
+  const [measured, setMeasured] = useState<Record<string, number>>({})
   const allKeys = rows.map(rowKey)
   const allSelected = allKeys.length > 0 && allKeys.every((k) => selectedKeys.includes(k))
-  const pinMap = useMemo(() => buildPinStyles(columns, selectable), [columns, selectable])
+  const pinMap = useMemo(
+    () => buildPinStyles(columns, selectable, measured),
+    [columns, selectable, measured],
+  )
   const hasPin = pinMap.size > 0
+  const autoPinKeys = useMemo(
+    () => columns.filter((c) => isAutoPinnedWidth(c, c.key)).map((c) => c.key),
+    [columns],
+  )
+
+  useLayoutEffect(() => {
+    const root = rootRef.current
+    if (!root || autoPinKeys.length === 0) return
+
+    const read = () => {
+      const next: Record<string, number> = {}
+      for (const key of autoPinKeys) {
+        const cells = root.querySelectorAll<HTMLElement>(`[data-col-key="${CSS.escape(key)}"]`)
+        let max = 0
+        cells.forEach((el) => {
+          max = Math.max(max, el.getBoundingClientRect().width)
+        })
+        if (max > 0) next[key] = Math.ceil(max)
+      }
+      setMeasured((prev) => (widthsEqual(prev, next) ? prev : next))
+    }
+
+    read()
+    const ro = new ResizeObserver(read)
+    for (const key of autoPinKeys) {
+      root.querySelectorAll<HTMLElement>(`[data-col-key="${CSS.escape(key)}"]`).forEach((el) => {
+        ro.observe(el)
+      })
+    }
+    return () => ro.disconnect()
+  }, [autoPinKeys, columns, rows, hideHeader, selectable])
 
   function toggleAll() {
     onSelectedChange?.(allSelected ? [] : allKeys)
@@ -159,44 +229,47 @@ export function Table<T>({
   }
 
   return (
-    <div className={cn('data-table-scroll', hasPin && 'has-pinned-cols')}>
+    <div ref={rootRef} className={cn('data-table-scroll', hasPin && 'has-pinned-cols')}>
       <table className={cn('table', hasPin && 'has-pinned-cols', className)}>
-        <thead>
-          <tr>
-            {selectable ? (
-              <th
-                className={cn('row-check', pinMap.has('__select') && 'is-pinned-left is-pinned-edge')}
-                style={{
-                  ...pinCellStyle(pinMap.get('__select'), { header: true }),
-                  ...(pinMap.has('__select')
-                    ? {
-                        width: SELECT_COL_WIDTH,
-                        minWidth: SELECT_COL_WIDTH,
-                        maxWidth: SELECT_COL_WIDTH,
-                      }
-                    : undefined),
-                }}
-              >
-                <Checkbox checked={allSelected} onChange={toggleAll} aria-label="全选" />
-              </th>
-            ) : null}
-            {columns.map((col) => (
-              <TableHeaderCell
-                key={col.key}
-                col={
-                  col.key === '__select' && pinMap.has('__select')
-                    ? { ...col, width: col.width ?? SELECT_COL_WIDTH, pinned: col.pinned ?? 'left' }
-                    : col
-                }
-                sortKey={sortKey}
-                sortDir={sortDir}
-                onSort={onSort}
-                onColumnResize={onColumnResize}
-                pin={pinMap.get(col.key)}
-              />
-            ))}
-          </tr>
-        </thead>
+        {hideHeader ? null : (
+          <thead>
+            <tr>
+              {selectable ? (
+                <th
+                  className={cn('row-check', pinMap.has('__select') && 'is-pinned-left is-pinned-edge')}
+                  style={{
+                    ...pinCellStyle(pinMap.get('__select'), { header: true }),
+                    ...(pinMap.has('__select')
+                      ? {
+                          width: SELECT_COL_WIDTH,
+                          minWidth: SELECT_COL_WIDTH,
+                          maxWidth: SELECT_COL_WIDTH,
+                        }
+                      : undefined),
+                  }}
+                >
+                  <Checkbox checked={allSelected} onChange={toggleAll} aria-label="全选" />
+                </th>
+              ) : null}
+              {columns.map((col) => (
+                <TableHeaderCell
+                  key={col.key}
+                  col={
+                    col.key === '__select' && pinMap.has('__select')
+                      ? { ...col, width: col.width ?? SELECT_COL_WIDTH, pinned: col.pinned ?? 'left' }
+                      : col
+                  }
+                  sortKey={sortKey}
+                  sortDir={sortDir}
+                  onSort={onSort}
+                  onColumnResize={onColumnResize}
+                  pin={pinMap.get(col.key)}
+                  autoWidth={isAutoPinnedWidth(col, col.key)}
+                />
+              ))}
+            </tr>
+          </thead>
+        )}
         <tbody>
           {rows.length === 0 ? (
             <tr>
@@ -238,16 +311,19 @@ export function Table<T>({
                   ) : null}
                   {columns.map((col) => {
                     const pin = pinMap.get(col.key)
+                    const autoWidth = isAutoPinnedWidth(col, col.key)
                     const w =
                       col.width ??
                       (col.key === '__select' && pin ? SELECT_COL_WIDTH : undefined)
                     return (
                       <td
                         key={col.key}
+                        data-col-key={autoWidth ? col.key : undefined}
                         className={cn(
                           col.key === '__select' && 'row-check',
                           pin && `is-pinned-${pin.side}`,
                           pin?.edge && 'is-pinned-edge',
+                          autoWidth && 'is-pinned-auto',
                         )}
                         style={{
                           ...pinCellStyle(pin),
@@ -283,6 +359,7 @@ function TableHeaderCell<T>({
   onSort,
   onColumnResize,
   pin,
+  autoWidth,
 }: {
   col: TableColumn<T>
   sortKey?: string | null
@@ -290,6 +367,7 @@ function TableHeaderCell<T>({
   onSort?: (key: string) => void
   onColumnResize?: (key: string, width: number) => void
   pin?: { side: TableColumnPin; offset: number; edge: boolean }
+  autoWidth?: boolean
 }) {
   const thRef = useRef<HTMLTableCellElement>(null)
   const canResize = Boolean(onColumnResize && col.resizable)
@@ -314,11 +392,13 @@ function TableHeaderCell<T>({
   return (
     <th
       ref={thRef}
+      data-col-key={autoWidth ? col.key : undefined}
       className={cn(
         col.sortable && 'sortable',
         canResize && 'is-resizable',
         pin && `is-pinned-${pin.side}`,
         pin?.edge && 'is-pinned-edge',
+        autoWidth && 'is-pinned-auto',
       )}
       style={{
         ...pinCellStyle(pin, { header: true }),

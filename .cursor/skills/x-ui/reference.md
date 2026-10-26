@@ -4,7 +4,7 @@ Agent 需要具体导出名时查阅本文件。源码以 `src/components/**/ind
 
 ## `@/components/ui`
 
-Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner, BreadcrumbNav, Button, Calendar, Callout, Card, StatusBar, Cascader, CatalogGroup, CatalogTile, Checkbox, Checklist, CodeBlock, ColorInput, Combobox, CommandPalette, ConfirmModal, StrongConfirm, StrongConfirmDrawer, CopyButton, DangerZone, DataTable, DatePicker, DateRangePicker, DescriptionList, MetaRow, Divider, Drawer, DropdownMenu, EmptyState, Field, FormGrid, Input, InputGroup, NativeSelect, Textarea, FileUpload, FilterBar, FormErrors, FormPage, Heading, ImagePreview, JsonViewer, Kbd, KeyValueEditor, TextLink, ListFilterBar, ListPage, LoginCard, LogViewer, MaintenanceBanner, Metric, MetricGrid, MirrorCard, Modal, NodePicker, NotificationList, NumberStepper, PageHeader, PageTabs, Pagination, PinInput, Pill, Popover, Progress, Radio, RadioGroup, RangeSlider, ResourceState, SearchInput, SearchResultList, SearchResultItem, SectionCard, Segmented, Select, SettingsRow, Sheet, Skeleton, SkeletonCard, SkeletonTable, Sparkline, Stat, StatCard, Spinner, SplitPane, Stack, StepHeading, Steps, Switch, Table, DataTableFooter, Tabs, Tag, TagGroup, TagsInput, Text, Muted, Mono, ThemePicker, TimePicker, Timeline, ToastProvider, useToast, ToggleButton, Tooltip, TotpBindPanel, buildTotpOtpauth, Transfer, Tree, TreeTableCell
+Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner, BreadcrumbNav, Button, Calendar, Callout, Card, StatusBar, Cascader, CatalogGroup, CatalogTile, Checkbox, Checklist, CodeBlock, ColorInput, Combobox, CommandPalette, ConfirmModal, StrongConfirm, StrongConfirmDrawer, CopyButton, DangerZone, DataTable, DatePicker, DateRangePicker, DescriptionList, MetaRow, Divider, Drawer, DropdownMenu, EmptyState, Field, FormGrid, Input, InputGroup, NativeSelect, Textarea, FileUpload, FilterBar, FormErrors, FormPage, Heading, ImagePreview, JsonViewer, Kbd, KeyValueEditor, TextLink, ListFilterBar, ListPage, LoginCard, LogViewer, MaintenanceBanner, Metric, MetricGrid, MirrorCard, Modal, NodePicker, NotificationList, NumberStepper, PageHeader, PageTabs, Pagination, PinInput, Pill, Popover, Progress, Radio, RadioGroup, RangeSlider, ResourceState, SearchInput, SearchResultList, SearchResultItem, SectionCard, TableCard, Segmented, Select, SettingsRow, Sheet, Skeleton, SkeletonCard, SkeletonTable, Sparkline, Stat, StatCard, Spinner, SplitPane, Stack, StepHeading, Steps, Switch, Table, DataTableFooter, Tabs, Tag, TagGroup, TagsInput, Text, Muted, Mono, ThemePicker, TimePicker, Timeline, ToastProvider, useToast, ToggleButton, Tooltip, TotpBindPanel, buildTotpOtpauth, Transfer, Tree, TreeTableCell
 
 ### 常用 tone / variant / 行为
 
@@ -19,11 +19,13 @@ Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner
 - **ColorInput**：自定义 HSV（非原生 color）；受控 `value` / `onChange`（`#rrggbb`）
 - **Drawer** `size`: `sm` | `md` | `lg` | `xl`；`side`: `left` | `right`；进场 `usePresence`
 - **Table / DataTable**
-  - 列 `sortable` + `sortValue`；`pinned: 'left'|'right'`（建议 `width`）
+  - 列 `sortable` + `sortValue`；`pinned: 'left'|'right'`（名称等建议 `width`；操作列可省略以按按钮自适应）
   - 左固定 + 多选：`__select` 自动左固定并参与 sticky 偏移
-  - 边缘列 `is-pinned-edge` 轻量渐变阴影；背景不透明
+  - 边缘列 `is-pinned-edge` 用边框分隔（无阴影）；背景不透明
   - 空单元格默认 `—`（`emptyCell` / `EMPTY_CELL`）；列可设 `emptyPlaceholder` 或 `false` 关闭
   - `remote` + `total`/`page`/`onPageChange`；`columnVisibility`；`resizableColumns`
+  - `hideFooter`：隐藏底栏；本地模式同时展示全部行（不分页切片）
+  - `hideHeader`：隐藏列头行（`thead`）；`Table` / `DataTable` 均可
   - `defaultSortKey` / 受控 `sortKey`+`onSortChange`；树：`getChildren` + `TreeTableCell`
 - **SearchInput**：左侧搜索图标；`allowClear` / `loading` / `size` sm\|md\|lg；CommandPalette 已改用此组件
 - **ThemePicker**：主题包（经典 / 透明）；写入 `body[data-theme]`
@@ -31,6 +33,9 @@ Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner
 - **Tree / Transfer**：`searchable`
 - **FileUpload**：`files` 进度、`maxSizeMb`
 - **CommandPalette**：最近使用、`onQueryChange` / `loading`
+- **SectionCard**：`title`；`subtitle`（标题右侧小号灰色字）；`actions`
+- **TableCard**：带标题的单层卡片，内嵌 `Table` / `EmptyState` / `SkeletonTable`（`subtitle` / `actions` / `footer`）；标题栏小号字 + `--surface-2` 底
+- **DataTable** `framed={false}`：去掉外层 Card，便于嵌进 `TableCard`
 - **PageHeader**：`actionItems?: PageHeaderActionItem[]`（`overflow?: true` 收进菜单）；`overflowActions`；`overflowLabel` / `overflowIconOnly`；主操作按钮默认 `md`
 - **PageTabs**：详情子导航（无面板内容）
 - **ResourceState**：`idle` | `loading` | `empty` | `error` | `offline`

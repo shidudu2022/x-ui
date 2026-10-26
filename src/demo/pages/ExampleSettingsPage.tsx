@@ -20,7 +20,7 @@ export function ExampleSettingsPage() {
     <div className="page-narrow">
       <PageHeader title="设置" description="分区表单 + 开关 + 危险操作。" />
       <FormErrors errors={errors} />
-      <SectionCard title="基本信息">
+      <SectionCard title="基本信息" subtitle="显示名称与时区">
         <div className="stack">
           <Field label="显示名称" htmlFor="dn">
             <Input id="dn" defaultValue="X-UI Demo" />

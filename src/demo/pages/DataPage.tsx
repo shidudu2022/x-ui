@@ -14,6 +14,7 @@ import {
   SkeletonCard,
   SkeletonTable,
   Table,
+  TableCard,
   Tag,
   TagGroup,
   Timeline,
@@ -55,8 +56,17 @@ export function DataPage() {
     <div>
       <PageHeader title="数据展示" description="表格、分页、描述列表、树与时间线。" />
 
-      <ShowcaseSection title="Table">
-        <Card>
+      <ShowcaseSection title="TableCard">
+        <TableCard
+          title="节点"
+          subtitle="示例嵌入表"
+          footer={
+            <div className="data-table-footer">
+              <div className="data-table-summary">已选 {selected.length} 项</div>
+              <Pagination page={page} pageCount={5} onChange={setPage} />
+            </div>
+          }
+        >
           <Table
             rows={rows}
             rowKey={(r) => r.id}
@@ -91,11 +101,7 @@ export function DataPage() {
               { key: 'cpu', header: 'CPU', sortable: true, render: (r) => `${r.cpu}%` },
             ]}
           />
-          <div className="data-table-footer">
-            <div className="data-table-summary">已选 {selected.length} 项</div>
-            <Pagination page={page} pageCount={5} onChange={setPage} />
-          </div>
-        </Card>
+        </TableCard>
       </ShowcaseSection>
 
       <ShowcaseSection title="Badge / Tag / Metric / Empty">

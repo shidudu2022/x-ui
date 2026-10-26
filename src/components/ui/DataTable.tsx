@@ -48,6 +48,18 @@ type DataTableProps<T> = {
   pageSize?: number
   onPageChange?: (page: number) => void
   onPageSizeChange?: (pageSize: number) => void
+  /**
+   * Hide the bottom count / page-size / pager bar.
+   * In local mode, also shows all rows (no client slice).
+   */
+  hideFooter?: boolean
+  /** Hide the column header row (`thead`) */
+  hideHeader?: boolean
+  /**
+   * When false, skip the outer Card — embed inside TableCard / SectionCard.
+   * Default true.
+   */
+  framed?: boolean
   /** Show column visibility toggles */
   columnVisibility?: boolean
   visibleKeys?: string[]
@@ -146,6 +158,9 @@ export function DataTable<T>({
   pageSize: pageSizeProp,
   onPageChange,
   onPageSizeChange,
+  hideFooter = false,
+  hideHeader = false,
+  framed = true,
   columnVisibility = false,
   visibleKeys: visibleKeysProp,
   onVisibleKeysChange,
@@ -232,10 +247,10 @@ export function DataTable<T>({
   }, [remote, totalPages, total, pageSize])
 
   const rootPageRows = useMemo(() => {
-    if (remote) return sortedRows
+    if (remote || hideFooter) return sortedRows
     const start = (page - 1) * pageSize
     return sortedRows.slice(start, start + pageSize)
-  }, [remote, sortedRows, page, pageSize])
+  }, [remote, hideFooter, sortedRows, page, pageSize])
 
   const flatPage = useMemo(() => {
     if (!treeMode || !getChildren) {
@@ -382,23 +397,19 @@ export function DataTable<T>({
   ) : null
 
   if (loading) {
-    return (
-      <Card>
-        <SkeletonTable rows={6} />
-      </Card>
-    )
+    const body = <SkeletonTable rows={6} />
+    return framed ? <Card>{body}</Card> : body
   }
 
   if (total === 0) {
-    return (
-      <Card>
-        <EmptyState title={emptyTitle} description={emptyDesc} action={emptyAction} />
-      </Card>
+    const body = (
+      <EmptyState title={emptyTitle} description={emptyDesc} action={emptyAction} />
     )
+    return framed ? <Card>{body}</Card> : body
   }
 
-  return (
-    <Card className="data-table">
+  const body = (
+    <>
       {toolbar || visibilityToolbar ? (
         <div className="data-table-toolbar">
           <div className="data-table-toolbar-main">{toolbar}</div>
@@ -418,6 +429,7 @@ export function DataTable<T>({
         rows={pageRows}
         rowKey={rowKey}
         onRowClick={onRowClick}
+        hideHeader={hideHeader}
         sortKey={sortable ? sortKey : undefined}
         sortDir={sortable ? sortDir : undefined}
         onSort={sortable ? handleSort : undefined}
@@ -432,55 +444,59 @@ export function DataTable<T>({
             : undefined
         }
       />
-      <div className="data-table-footer">
-        <div className="data-table-summary">
-          <span>
-            共 <strong>{total}</strong> {unit}
-            <span className="muted">
-              {' '}
-              · 显示 {from}–{to}
+      {hideFooter ? null : (
+        <div className="data-table-footer">
+          <div className="data-table-summary">
+            <span>
+              共 <strong>{total}</strong> {unit}
+              <span className="muted">
+                {' '}
+                · 显示 {from}–{to}
+              </span>
             </span>
-          </span>
-          <span className="muted data-table-page-label">
-            第 {page} / {totalPages} 页
-          </span>
-        </div>
-        <div className="data-table-controls">
-          <label className="data-table-size">
-            <span className="muted">每页</span>
-            <Select
-              size="sm"
-              value={String(pageSize)}
-              options={pageSizeOptions.map((n) => ({
-                value: String(n),
-                label: String(n),
-              }))}
-              onChange={(v) => {
-                setPageSize(Number(v))
-                setPage(1)
-              }}
-            />
-          </label>
-          <div className="actions">
-            <Button size="sm" disabled={page <= 1} onClick={() => setPage(1)}>
-              首页
-            </Button>
-            <Button size="sm" disabled={page <= 1} onClick={() => setPage(Math.max(1, page - 1))}>
-              上一页
-            </Button>
-            <Button
-              size="sm"
-              disabled={page >= totalPages}
-              onClick={() => setPage(Math.min(totalPages, page + 1))}
-            >
-              下一页
-            </Button>
-            <Button size="sm" disabled={page >= totalPages} onClick={() => setPage(totalPages)}>
-              末页
-            </Button>
+            <span className="muted data-table-page-label">
+              第 {page} / {totalPages} 页
+            </span>
+          </div>
+          <div className="data-table-controls">
+            <label className="data-table-size">
+              <span className="muted">每页</span>
+              <Select
+                size="sm"
+                value={String(pageSize)}
+                options={pageSizeOptions.map((n) => ({
+                  value: String(n),
+                  label: String(n),
+                }))}
+                onChange={(v) => {
+                  setPageSize(Number(v))
+                  setPage(1)
+                }}
+              />
+            </label>
+            <div className="actions">
+              <Button size="sm" disabled={page <= 1} onClick={() => setPage(1)}>
+                首页
+              </Button>
+              <Button size="sm" disabled={page <= 1} onClick={() => setPage(Math.max(1, page - 1))}>
+                上一页
+              </Button>
+              <Button
+                size="sm"
+                disabled={page >= totalPages}
+                onClick={() => setPage(Math.min(totalPages, page + 1))}
+              >
+                下一页
+              </Button>
+              <Button size="sm" disabled={page >= totalPages} onClick={() => setPage(totalPages)}>
+                末页
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
-    </Card>
+      )}
+    </>
   )
+
+  return framed ? <Card className="data-table">{body}</Card> : <div className="data-table">{body}</div>
 }

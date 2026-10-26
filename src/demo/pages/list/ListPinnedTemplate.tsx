@@ -133,7 +133,6 @@ export function ListPinnedTemplate({ q, onClear }: { q: string; onClear: () => v
       key: 'actions',
       header: '操作',
       pinned: 'right',
-      width: 200,
       emptyPlaceholder: false,
       render: (r) => (
         <div className="actions" onClick={(e) => e.stopPropagation()}>

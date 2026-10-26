@@ -31,6 +31,29 @@
   font-family: var(--font);
 }
 
+/* Soft primary info tip */
+.info-box {
+  border: 1px solid color-mix(in srgb, var(--primary) 28%, var(--border));
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  background: var(--primary-soft);
+  font-size: var(--fs-md);
+  line-height: var(--lh-relaxed);
+  color: var(--text-muted);
+  font-family: var(--font);
+}
+
+.info-box strong,
+.info-box .text-strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--primary);
+  font-family: var(--font);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-tight);
+}
+
 .status-bar {
   display: flex;
   align-items: center;
@@ -136,14 +159,46 @@
 
 .log-toolbar {
   display: flex;
-  gap: 6px;
+  align-items: center;
+  gap: 8px;
   padding: 8px 10px;
   border-bottom: 1px solid var(--hairline);
   background: var(--bg-elevated);
 }
 
-.log-toolbar select,
-.log-toolbar input {
+.log-toolbar-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+}
+
+/* Standalone filter row above LogViewer (not nested in .log-toolbar) */
+.card > .log-toolbar-filters {
+  flex: none;
+}
+
+.log-toolbar-filters .ui-select {
+  flex: 0 0 auto;
+}
+
+.log-toolbar-filters .ui-select-trigger {
+  min-width: 8rem;
+}
+
+.log-toolbar > input,
+.log-toolbar-filters > input,
+.log-toolbar > .ui-input,
+.log-toolbar-filters > .ui-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto;
+}
+
+.log-toolbar > input,
+.log-toolbar-filters > input:not(.ui-input) {
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 5px 8px;
@@ -151,10 +206,6 @@
   color: var(--text);
   font-size: 11px;
   font-family: var(--mono);
-}
-
-.log-toolbar input {
-  flex: 1;
 }
 
 .firewall-box {
@@ -168,15 +219,24 @@
   font-family: var(--mono);
 }
 
-.firewall-box strong {
+.firewall-box strong,
+.firewall-box .text-strong {
   display: block;
   margin-bottom: 6px;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
   font-family: var(--font);
+  color: var(--warn);
 }
 
 .firewall-box ol {
   margin: 0;
   padding-left: 16px;
+}
+
+.firewall-box code {
+  font-family: inherit;
+  font-size: inherit;
 }
 
 .theme-picker {

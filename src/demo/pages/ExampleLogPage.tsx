@@ -1,5 +1,14 @@
 import { useMemo, useState } from 'react'
-import { Badge, Button, LogViewer, PageHeader, useToast } from '@/components/ui'
+import {
+  Badge,
+  Button,
+  Card,
+  Input,
+  LogViewer,
+  PageHeader,
+  Select,
+  useToast,
+} from '@/components/ui'
 
 const SAMPLE_LOG = `[info] preflight: checking ssh connectivity
 [ok] edge-01 (10.0.0.1) reachable
@@ -11,16 +20,28 @@ const SAMPLE_LOG = `[info] preflight: checking ssh connectivity
 [ok] cluster ready (degraded)
 `
 
+const NODE_OPTIONS = [
+  { value: 'all', label: '全部节点' },
+  { value: 'edge-01', label: 'edge-01' },
+  { value: 'edge-02', label: 'edge-02' },
+]
+
 export function ExampleLogPage() {
   const { toast } = useToast()
   const [filter, setFilter] = useState('')
+  const [nodeKey, setNodeKey] = useState('all')
 
   const shown = useMemo(() => {
-    if (!filter.trim()) return SAMPLE_LOG
-    return SAMPLE_LOG.split('\n')
-      .filter((l) => l.toLowerCase().includes(filter.toLowerCase()))
-      .join('\n')
-  }, [filter])
+    let lines = SAMPLE_LOG.split('\n')
+    if (nodeKey !== 'all') {
+      lines = lines.filter((l) => l.toLowerCase().includes(nodeKey.toLowerCase()))
+    }
+    const q = filter.trim().toLowerCase()
+    if (q) {
+      lines = lines.filter((l) => l.toLowerCase().includes(q))
+    }
+    return lines.join('\n')
+  }, [filter, nodeKey])
 
   return (
     <section className="page active">
@@ -55,19 +76,29 @@ export function ExampleLogPage() {
         }
       />
 
-      <LogViewer
-        height={360}
-        toolbar={
-          <input
-            type="search"
-            placeholder="搜索日志关键字"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-          />
-        }
-      >
-        {shown || '无匹配行'}
-      </LogViewer>
+      <div className="stack">
+        <Card padded>
+          <div className="log-toolbar-filters">
+            <Select
+              size="sm"
+              value={nodeKey}
+              options={NODE_OPTIONS}
+              onChange={setNodeKey}
+              aria-label="按节点过滤"
+            />
+            <Input
+              size="sm"
+              type="search"
+              placeholder="搜索日志关键字"
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+            />
+          </div>
+        </Card>
+        <LogViewer height={360}>
+          {shown || (nodeKey !== 'all' || filter ? '无匹配行' : '暂无日志')}
+        </LogViewer>
+      </div>
     </section>
   )
 }

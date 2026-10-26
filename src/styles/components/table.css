@@ -85,9 +85,8 @@
   vertical-align: middle;
 }
 
-/* Long text: no wrap, fixed max width, ellipsis */
+/* Long text: no wrap, ellipsis (auto column widths) */
 .data-table .table {
-  table-layout: fixed;
   width: 100%;
 }
 
@@ -99,7 +98,9 @@
   white-space: nowrap;
 }
 
-.data-table .table td:has(.actions) {
+.data-table .table td:has(.actions),
+.table th.is-pinned-auto,
+.table td.is-pinned-auto {
   max-width: none;
   width: 1%;
   overflow: visible;
@@ -316,54 +317,24 @@
   background-color: var(--surface-2) !important;
 }
 
-/* Soft edge fade (not a heavy drop-shadow) */
+/* Pinned edge separator — solid border, no shadow / gradient */
 .table th.is-pinned-left.is-pinned-edge,
-.table td.is-pinned-left.is-pinned-edge,
+.table td.is-pinned-left.is-pinned-edge {
+  box-shadow: none;
+  border-right: 1px solid var(--border);
+}
+
 .table th.is-pinned-right.is-pinned-edge,
 .table td.is-pinned-right.is-pinned-edge {
   box-shadow: none;
+  border-left: 1px solid var(--border);
 }
 
 .table th.is-pinned-left.is-pinned-edge::after,
-.table td.is-pinned-left.is-pinned-edge::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: -10px;
-  bottom: 0;
-  width: 10px;
-  pointer-events: none;
-  background: linear-gradient(
-    to right,
-    color-mix(in srgb, var(--text) 8%, transparent),
-    transparent
-  );
-}
-
+.table td.is-pinned-left.is-pinned-edge::after,
 .table th.is-pinned-right.is-pinned-edge::after,
 .table td.is-pinned-right.is-pinned-edge::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -10px;
-  bottom: 0;
-  width: 10px;
-  pointer-events: none;
-  background: linear-gradient(
-    to left,
-    color-mix(in srgb, var(--text) 8%, transparent),
-    transparent
-  );
-}
-
-body[data-mode='dark'] .table th.is-pinned-left.is-pinned-edge::after,
-body[data-mode='dark'] .table td.is-pinned-left.is-pinned-edge::after {
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.35), transparent);
-}
-
-body[data-mode='dark'] .table th.is-pinned-right.is-pinned-edge::after,
-body[data-mode='dark'] .table td.is-pinned-right.is-pinned-edge::after {
-  background: linear-gradient(to left, rgba(0, 0, 0, 0.35), transparent);
+  content: none;
 }
 
 /* Full-cell opaque underlay — fixes sticky td paint gaps in some engines */

@@ -17,7 +17,7 @@ export function Callout({
   className?: string
 }) {
   const box =
-    variant === 'firewall' ? 'firewall-box' : variant === 'info' ? 'mirror-box' : 'mirror-box'
+    variant === 'firewall' ? 'firewall-box' : variant === 'info' ? 'info-box' : 'mirror-box'
 
   return (
     <div className={cn(box, className)}>
