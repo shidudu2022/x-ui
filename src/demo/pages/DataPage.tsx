@@ -7,8 +7,10 @@ import {
   Card,
   DescriptionList,
   EmptyState,
+  MetaRow,
   Metric,
   MetricGrid,
+  Muted,
   PageHeader,
   Pagination,
   SkeletonCard,
@@ -17,6 +19,7 @@ import {
   TableCard,
   Tag,
   TagGroup,
+  Text,
   Timeline,
   Tree,
   type SortDir,
@@ -104,12 +107,103 @@ export function DataPage() {
         </TableCard>
       </ShowcaseSection>
 
-      <ShowcaseSection title="Badge / Tag / Metric / Empty">
+      <ShowcaseSection
+        title="Badge / Tag / MetaRow"
+        description="Badge 默认有边框；文字与标签混排用 MetaRow（竖直居中）。Tag 也可 size=&quot;sm&quot;。"
+      >
         <div className="stack">
+          <div>
+            <p className="muted" style={{ margin: '0 0 8px', fontSize: 12 }}>
+              bordered（默认）
+            </p>
+            <div className="showcase-row">
+              <Badge tone="success">success</Badge>
+              <Badge tone="warn">warn</Badge>
+              <Badge tone="danger">danger</Badge>
+              <Badge tone="info">info</Badge>
+              <Badge tone="neutral">neutral</Badge>
+            </div>
+          </div>
+          <div>
+            <p className="muted" style={{ margin: '0 0 8px', fontSize: 12 }}>
+              size=&quot;sm&quot;
+            </p>
+            <div className="showcase-row">
+              <Badge tone="success" size="sm">
+                success
+              </Badge>
+              <Badge tone="info" size="sm">
+                Docker
+              </Badge>
+              <Badge tone="neutral" size="sm">
+                3
+              </Badge>
+              <Tag tone="primary" size="sm">
+                primary
+              </Tag>
+              <Tag tone="info" size="sm">
+                info
+              </Tag>
+            </div>
+          </div>
+          <div>
+            <p className="muted" style={{ margin: '0 0 8px', fontSize: 12 }}>
+              bordered={false}
+            </p>
+            <div className="showcase-row">
+              <Badge tone="success" bordered={false}>
+                success
+              </Badge>
+              <Badge tone="warn" bordered={false}>
+                warn
+              </Badge>
+              <Badge tone="danger" bordered={false}>
+                danger
+              </Badge>
+              <Badge tone="info" bordered={false}>
+                info
+              </Badge>
+              <Badge tone="neutral" bordered={false}>
+                neutral
+              </Badge>
+            </div>
+          </div>
+          <div>
+            <p className="muted" style={{ margin: '0 0 8px', fontSize: 12 }}>
+              MetaRow：文字 + Badge / Tag（列表单元格 / 详情顶栏）
+            </p>
+            <div className="stack" style={{ gap: 10 }}>
+              <MetaRow>
+                <Text size="sm" variant="muted">
+                  admin
+                </Text>
+                <Badge tone="info" size="sm">
+                  平台
+                </Badge>
+                <Badge tone="success" size="sm">
+                  200
+                </Badge>
+              </MetaRow>
+              <MetaRow>
+                <Badge tone="success" size="sm">
+                  running
+                </Badge>
+                <Muted>api-gateway · cn-east</Muted>
+              </MetaRow>
+              <MetaRow>
+                <Text size="sm">worker</Text>
+                <TagGroup>
+                  <Tag tone="warn" size="sm">
+                    degraded
+                  </Tag>
+                  <Tag tone="neutral" size="sm">
+                    queue
+                  </Tag>
+                </TagGroup>
+              </MetaRow>
+            </div>
+          </div>
           <div className="showcase-row">
-            <Badge tone="success">success</Badge>
-            <Badge tone="warn">warn</Badge>
-            <Badge tone="danger">danger</Badge>
             <TagGroup>
               <Tag tone="primary">primary</Tag>
               <Tag tone="info">info</Tag>

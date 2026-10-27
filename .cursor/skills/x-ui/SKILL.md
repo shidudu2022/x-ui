@@ -62,6 +62,7 @@ description: >-
 | 字体字号 | `/examples/typography` | `ExampleTypographyPage.tsx` |
 | 组合模式 | `/patterns` | `PatternsPage.tsx` |
 | 令牌 / 色 / 字 | `/foundations` | `FoundationsPage.tsx` |
+| 文字 + Badge/Tag 混排 | `/components/data` | `DataPage.tsx`（`MetaRow`）+ `ExampleListDetailPage.tsx` |
 | 单组件 API 演示 | `/components/{buttons,forms,data,feedback,navigation,charts,advanced}` | 同名 `*Page.tsx` |
 
 列表 `tpl`：`sortable` \| `static` \| `pinned` \| `tree` \| `cards` \| `compact` \| `resource`。  
@@ -133,6 +134,7 @@ GitHub Pages / 子路径：`withBase()`（`@/lib/baseUrl`）；`npm run build:pa
 - **注册 / 验证码** → `ExampleRegisterPage` / `ExampleVerifyEmailPage`  
 - **日期** `DatePicker` / `DateRangePicker`（双月；datetime：日历\|日历\|开始\|结束）  
 - **表格** `DataTable`：`pinned` / `remote` / `hideFooter` / `hideHeader` / `columnVisibility` / 树 → 读 list 模板；空值（空串 / 空 TagGroup 等）默认显示 `—`（`emptyCell`）；操作列设 `emptyPlaceholder: false`  
+- **文字 + 标签混排** `MetaRow` + `Text`/`Muted` + `Badge`/`Tag`（`size="sm"`）→ `/components/data`；勿竖排 flex 拉宽标签  
 - **带标题表** `TableCard` + `Table`（详情内嵌表，勿再套 `SectionCard`）  
 - **强确认** Modal：`StrongConfirm`；抽屉：`StrongConfirmDrawer` → `ExampleStrongConfirmPage`  
 - **图表** `CHART_STATUS` · 完整导出 → [reference.md](reference.md)

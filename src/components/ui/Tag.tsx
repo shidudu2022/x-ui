@@ -13,17 +13,32 @@ function isBlankLabel(children: ReactNode): boolean {
   return false
 }
 
+export type TagSize = 'sm' | 'md'
+
 export function Tag({
   tone = 'neutral',
+  size = 'md',
   className,
   children,
 }: {
   tone?: TagTone
+  size?: TagSize
   className?: string
   children: ReactNode
 }) {
   if (isBlankLabel(children)) return null
-  return <span className={cn('ui-tag', `ui-tag-${tone}`, className)}>{children}</span>
+  return (
+    <span
+      className={cn(
+        'ui-tag',
+        `ui-tag-${tone}`,
+        size === 'sm' ? 'ui-tag-sm' : null,
+        className,
+      )}
+    >
+      {children}
+    </span>
+  )
 }
 Tag.displayName = 'Tag'
 

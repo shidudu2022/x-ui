@@ -13,7 +13,9 @@ Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner
 - **Alert** `tone`: `info` | `success` | `warn` | `danger`（`error` 别名）
 - **Toast** `tone`: `info` | `success` | `warn` | `error`（`danger` 别名）
 - **Steps** `size`: `sm` | `md`
-- **Tag / Badge**: `neutral` | `primary` | `info` | `success` | `warn` | `danger`
+- **Badge**: tone `success` | `warn` | `danger` | `info` | `neutral`；`size` `sm` | `md`；`bordered` 默认 `true`
+- **Tag**: tone `neutral` | `primary` | `info` | `success` | `warn` | `danger`；`size` `sm` | `md`
+- **MetaRow**：文字与 Badge/Tag 横排混用（`align-items: center`）；列表单元格 / 详情顶栏优先用它，勿手写 column flex 以免标签被拉宽
 - **DatePicker / DateRangePicker** `mode`: `date` | `datetime`；`minuteStep`；`disabledDate`；范围双月；datetime：双日历 + 右侧开始/结束时间滚轮
 - **TimePicker**：`HH:mm`，`minuteStep`
 - **ColorInput**：自定义 HSV（非原生 color）；受控 `value` / `onChange`（`#rrggbb`）
@@ -128,7 +130,7 @@ Agent 实现业务页时：**先按场景打开对应文件照抄结构**，再�
 | 文案密度 | `/examples/i18n` | `ExampleI18nPage.tsx` |
 | 日志 | `/examples/log` | `ExampleLogPage.tsx` |
 | 字体 | `/examples/typography` | `ExampleTypographyPage.tsx` |
-| 组件馆 | `/components/*` | `ButtonsPage` / `FormsPage` / `DataPage` / `FeedbackPage` / `NavigationPage` / `ChartsPage` / `AdvancedPage` |
+| 组件馆 | `/components/*` | `ButtonsPage` / `FormsPage` / `DataPage`（含 MetaRow 混排） / `FeedbackPage` / `NavigationPage` / `ChartsPage` / `AdvancedPage` |
 
 路由注册：`src/App.tsx`。侧栏标题：`src/demo/DemoShell.tsx`。
 

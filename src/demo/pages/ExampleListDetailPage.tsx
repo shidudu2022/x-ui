@@ -160,7 +160,10 @@ export function ExampleListDetailPage() {
         {detail ? (
           <div className="stack">
             <MetaRow>
-              <Badge tone={statusTone(detail.status)}>{detail.status}</Badge>
+              <Muted>{detail.name}</Muted>
+              <Badge tone={statusTone(detail.status)} size="sm">
+                {detail.status}
+              </Badge>
               <Muted>{emptyCell(detail.note)}</Muted>
             </MetaRow>
             <DescriptionList

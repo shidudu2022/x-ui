@@ -6,36 +6,64 @@
 .badge {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
   padding: 2px 8px;
   border-radius: 999px;
   font-size: 11px;
   font-weight: 500;
+  line-height: 1.2;
   border: 1px solid transparent;
+  width: max-content;
+  max-width: 100%;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+}
+
+.badge-sm {
+  gap: 3px;
+  padding: 1px 6px;
+  font-size: 10px;
+  line-height: 1.2;
+}
+
+.badge-plain {
+  border-color: transparent;
 }
 
 .badge-success {
   background: var(--success-soft);
   color: var(--success);
-  border-color: color-mix(in srgb, var(--success) 25%, transparent);
 }
 .badge-warn {
   background: var(--warn-soft);
   color: var(--warn);
-  border-color: color-mix(in srgb, var(--warn) 25%, transparent);
 }
 .badge-danger {
   background: var(--danger-soft);
   color: var(--danger);
-  border-color: color-mix(in srgb, var(--danger) 25%, transparent);
 }
 .badge-info {
   background: var(--primary-soft);
   color: var(--primary);
-  border-color: color-mix(in srgb, var(--primary) 25%, transparent);
 }
 .badge-neutral {
   background: var(--surface-2);
   color: var(--text-muted);
+}
+
+.badge-bordered.badge-success {
+  border-color: color-mix(in srgb, var(--success) 25%, transparent);
+}
+.badge-bordered.badge-warn {
+  border-color: color-mix(in srgb, var(--warn) 25%, transparent);
+}
+.badge-bordered.badge-danger {
+  border-color: color-mix(in srgb, var(--danger) 25%, transparent);
+}
+.badge-bordered.badge-info {
+  border-color: color-mix(in srgb, var(--primary) 25%, transparent);
+}
+.badge-bordered.badge-neutral {
   border-color: var(--border);
 }

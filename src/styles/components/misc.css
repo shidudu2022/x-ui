@@ -511,9 +511,26 @@ body[data-mode='dark'] .theme-card-glass .theme-card-preview {
 .meta-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 16px;
+  align-items: center;
+  gap: 6px 8px;
   font-size: 13px;
+  line-height: 1;
   color: var(--text-muted);
+}
+
+/* Keep plain text optically centered with Badge / Tag pills */
+.meta-row > .text,
+.meta-row > .muted,
+.meta-row > .mono,
+.meta-row > .hint {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.meta-row > .ui-tag-group {
+  align-items: center;
 }
 
 /* Tags input (array / multi-value) */
