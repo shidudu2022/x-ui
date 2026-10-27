@@ -34,3 +34,87 @@
   color: var(--text-muted);
   margin-bottom: 6px;
 }
+
+.progress.tone-success .progress-bar {
+  background: var(--success);
+}
+
+.progress.tone-warn .progress-bar {
+  background: var(--warn);
+}
+
+.progress.tone-danger .progress-bar {
+  background: var(--danger);
+}
+
+.progress.tone-info .progress-bar {
+  background: var(--info);
+}
+
+.progress.tone-muted .progress-bar {
+  background: var(--text-muted);
+}
+
+/* Compact utilization bar */
+.meter-bar {
+  height: 6px;
+  width: 100%;
+  min-width: 48px;
+  background: var(--surface-3);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.meter-bar-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--primary);
+  transition: width 0.2s ease;
+}
+
+.meter-bar.tone-success .meter-bar-fill {
+  background: var(--success);
+}
+
+.meter-bar.tone-warn .meter-bar-fill {
+  background: var(--warn);
+}
+
+.meter-bar.tone-danger .meter-bar-fill {
+  background: var(--danger);
+}
+
+.meter-bar.tone-muted .meter-bar-fill {
+  background: var(--text-muted);
+}
+
+/* Status / health dot */
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.status-dot.tone-ok {
+  background: var(--success);
+}
+
+.status-dot.tone-bad {
+  background: var(--danger);
+}
+
+.status-dot.tone-warn {
+  background: var(--warn);
+}
+
+.status-dot.tone-info {
+  background: var(--info);
+}
+
+.status-dot.tone-neutral {
+  background: var(--text-muted);
+}

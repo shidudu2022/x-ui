@@ -1,5 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import { ToastProvider } from '@/components/ui'
+import { ConfirmProvider, ToastProvider } from '@/components/ui'
 import { routerBasename } from '@/lib/baseUrl'
 import { AppearanceProvider } from '@/theme/AppearanceProvider'
 import { DemoShell } from '@/demo/DemoShell'
@@ -44,49 +44,51 @@ export default function App() {
   return (
     <AppearanceProvider>
       <ToastProvider>
-        <BrowserRouter basename={routerBasename()}>
-          <Routes>
-            <Route element={<DemoShell />}>
-              <Route index element={<OverviewPage />} />
-              <Route path="foundations" element={<FoundationsPage />} />
-              <Route path="components/buttons" element={<ButtonsPage />} />
-              <Route path="components/forms" element={<FormsPage />} />
-              <Route path="components/data" element={<DataPage />} />
-              <Route path="components/feedback" element={<FeedbackPage />} />
-              <Route path="components/navigation" element={<NavigationPage />} />
-              <Route path="components/charts" element={<ChartsPage />} />
-              <Route path="components/advanced" element={<AdvancedPage />} />
-              <Route path="patterns" element={<PatternsPage />} />
-              <Route path="examples/page" element={<ExamplePageHeaderPage />} />
-              <Route path="examples/list" element={<ExampleListPage />} />
-              <Route path="examples/list-detail" element={<ExampleListDetailPage />} />
-              <Route path="examples/form" element={<ExampleFormPage />} />
-              <Route path="examples/detail" element={<ExampleDetailPage />} />
-              <Route path="examples/wizard" element={<ExampleWizardPage />} />
-              <Route path="examples/log" element={<ExampleLogPage />} />
-              <Route path="examples/login" element={<ExampleLoginPage />} />
-              <Route path="examples/register" element={<ExampleRegisterPage />} />
-              <Route path="examples/verify-email" element={<ExampleVerifyEmailPage />} />
-              <Route path="examples/strong-confirm" element={<ExampleStrongConfirmPage />} />
-              <Route path="examples/typography" element={<ExampleTypographyPage />} />
-              <Route path="examples/dashboard" element={<ExampleDashboardPage />} />
-              <Route path="examples/settings" element={<ExampleSettingsPage />} />
-              <Route path="examples/empty" element={<ExampleEmptyPage />} />
-              <Route path="examples/search" element={<ExampleSearchPage />} />
-              <Route path="examples/compare" element={<ExampleComparePage />} />
-              <Route path="examples/profile" element={<ExampleProfilePage />} />
-              <Route path="examples/roles" element={<ExampleRolesPage />} />
-              <Route path="examples/notifications" element={<ExampleNotificationsPage />} />
-              <Route path="examples/skeleton" element={<ExampleSkeletonPage />} />
-              <Route path="examples/errors" element={<ExampleErrorsPage />} />
-              <Route path="examples/audit" element={<ExampleAuditPage />} />
-              <Route path="examples/onboarding" element={<ExampleOnboardingPage />} />
-              <Route path="examples/i18n" element={<ExampleI18nPage />} />
-              <Route path="examples/permissions" element={<ExamplePermissionsPage />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
+        <ConfirmProvider>
+          <BrowserRouter basename={routerBasename()}>
+            <Routes>
+              <Route element={<DemoShell />}>
+                <Route index element={<OverviewPage />} />
+                <Route path="foundations" element={<FoundationsPage />} />
+                <Route path="components/buttons" element={<ButtonsPage />} />
+                <Route path="components/forms" element={<FormsPage />} />
+                <Route path="components/data" element={<DataPage />} />
+                <Route path="components/feedback" element={<FeedbackPage />} />
+                <Route path="components/navigation" element={<NavigationPage />} />
+                <Route path="components/charts" element={<ChartsPage />} />
+                <Route path="components/advanced" element={<AdvancedPage />} />
+                <Route path="patterns" element={<PatternsPage />} />
+                <Route path="examples/page" element={<ExamplePageHeaderPage />} />
+                <Route path="examples/list" element={<ExampleListPage />} />
+                <Route path="examples/list-detail" element={<ExampleListDetailPage />} />
+                <Route path="examples/form" element={<ExampleFormPage />} />
+                <Route path="examples/detail" element={<ExampleDetailPage />} />
+                <Route path="examples/wizard" element={<ExampleWizardPage />} />
+                <Route path="examples/log" element={<ExampleLogPage />} />
+                <Route path="examples/login" element={<ExampleLoginPage />} />
+                <Route path="examples/register" element={<ExampleRegisterPage />} />
+                <Route path="examples/verify-email" element={<ExampleVerifyEmailPage />} />
+                <Route path="examples/strong-confirm" element={<ExampleStrongConfirmPage />} />
+                <Route path="examples/typography" element={<ExampleTypographyPage />} />
+                <Route path="examples/dashboard" element={<ExampleDashboardPage />} />
+                <Route path="examples/settings" element={<ExampleSettingsPage />} />
+                <Route path="examples/empty" element={<ExampleEmptyPage />} />
+                <Route path="examples/search" element={<ExampleSearchPage />} />
+                <Route path="examples/compare" element={<ExampleComparePage />} />
+                <Route path="examples/profile" element={<ExampleProfilePage />} />
+                <Route path="examples/roles" element={<ExampleRolesPage />} />
+                <Route path="examples/notifications" element={<ExampleNotificationsPage />} />
+                <Route path="examples/skeleton" element={<ExampleSkeletonPage />} />
+                <Route path="examples/errors" element={<ExampleErrorsPage />} />
+                <Route path="examples/audit" element={<ExampleAuditPage />} />
+                <Route path="examples/onboarding" element={<ExampleOnboardingPage />} />
+                <Route path="examples/i18n" element={<ExampleI18nPage />} />
+                <Route path="examples/permissions" element={<ExamplePermissionsPage />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </ConfirmProvider>
       </ToastProvider>
     </AppearanceProvider>
   )

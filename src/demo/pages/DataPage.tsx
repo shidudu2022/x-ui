@@ -7,19 +7,26 @@ import {
   Card,
   DescriptionList,
   EmptyState,
+  MeterBar,
+  meterToneFromPct,
   Metric,
   MetricGrid,
   PageHeader,
   Pagination,
+  ResourceList,
   SkeletonCard,
   SkeletonTable,
+  StatusDot,
   Table,
   TableCard,
   Tag,
   TagGroup,
   Timeline,
   Tree,
+  defaultFilterRow,
+  slicePage,
   type SortDir,
+  useToast,
 } from '@/components/ui'
 import { ShowcaseSection } from '../ShowcaseSection'
 
@@ -33,11 +40,16 @@ const seed: Row[] = [
 ]
 
 export function DataPage() {
+  const { toast } = useToast()
   const [sortKey, setSortKey] = useState<string | null>('name')
   const [sortDir, setSortDir] = useState<SortDir>('asc')
   const [selected, setSelected] = useState<string[]>([])
   const [page, setPage] = useState(1)
   const [treeId, setTreeId] = useState('ns-default')
+  const [rlPage, setRlPage] = useState(1)
+  const [rlPageSize, setRlPageSize] = useState(10)
+  const [rlDraft, setRlDraft] = useState<Record<string, string>>({ q: '', status: 'all' })
+  const [rlApplied, setRlApplied] = useState<Record<string, string>>({ q: '', status: 'all' })
 
   const rows = useMemo(() => {
     const copy = [...seed]
@@ -52,9 +64,94 @@ export function DataPage() {
     return copy
   }, [sortKey, sortDir])
 
+  const rlFiltered = useMemo(
+    () => seed.filter((row) => defaultFilterRow(row, rlApplied)),
+    [rlApplied],
+  )
+  const rlRows = useMemo(
+    () => slicePage(rlFiltered, rlPage, rlPageSize),
+    [rlFiltered, rlPage, rlPageSize],
+  )
+
   return (
     <div>
       <PageHeader title="数据展示" description="表格、分页、描述列表、树与时间线。" />
+
+      <ShowcaseSection title="ResourceList">
+        <ResourceList
+          framed={false}
+          rows={rlRows}
+          rowKey={(r) => r.id}
+          page={rlPage}
+          pageSize={rlPageSize}
+          total={rlFiltered.length}
+          onPageChange={setRlPage}
+          onPageSizeChange={(size) => {
+            setRlPageSize(size)
+            setRlPage(1)
+          }}
+          filterValues={rlDraft}
+          onFilterChange={setRlDraft}
+          onSearch={() => {
+            setRlApplied({ ...rlDraft })
+            setRlPage(1)
+          }}
+          onRefresh={() => toast('已刷新', 'info')}
+          filters={[
+            { key: 'q', label: '关键词', type: 'text', placeholder: '名称' },
+            {
+              key: 'status',
+              label: '状态',
+              type: 'select',
+              options: [
+                { value: 'all', label: '全部' },
+                { value: 'running', label: 'running' },
+                { value: 'degraded', label: 'degraded' },
+                { value: 'failed', label: 'failed' },
+              ],
+            },
+          ]}
+          columns={[
+            { key: 'name', header: '名称', render: (r) => r.name },
+            {
+              key: 'status',
+              header: '状态',
+              render: (r) => (
+                <span className="showcase-row" style={{ gap: 6 }}>
+                  <StatusDot
+                    tone={
+                      r.status === 'running' ? 'ok' : r.status === 'failed' ? 'bad' : 'warn'
+                    }
+                  />
+                  {r.status}
+                </span>
+              ),
+            },
+            {
+              key: 'cpu',
+              header: 'CPU',
+              render: (r) => (
+                <div style={{ width: 96 }}>
+                  <MeterBar value={r.cpu} tone={meterToneFromPct(r.cpu)} />
+                </div>
+              ),
+            },
+          ]}
+          rowActions={[
+            {
+              key: 'edit',
+              label: '编辑',
+              onClick: (r) => toast(`编辑 ${r.name}`, 'info'),
+            },
+            {
+              key: 'delete',
+              label: '删除',
+              variant: 'danger',
+              onClick: (r) => toast(`删除 ${r.name}`, 'warn'),
+            },
+          ]}
+        />
+      </ShowcaseSection>
 
       <ShowcaseSection title="TableCard">
         <TableCard

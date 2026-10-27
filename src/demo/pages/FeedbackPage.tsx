@@ -5,12 +5,16 @@ import {
   Button,
   ConfirmModal,
   Drawer,
+  MeterBar,
+  meterToneFromPct,
   Modal,
   PageHeader,
   Popover,
   Progress,
+  StatusDot,
   StrongConfirm,
   Tooltip,
+  confirm,
   useToast,
 } from '@/components/ui'
 import { ShowcaseSection } from '../ShowcaseSection'
@@ -19,7 +23,7 @@ export function FeedbackPage() {
   const { toast } = useToast()
   const [modal, setModal] = useState(false)
   const [drawer, setDrawer] = useState(false)
-  const [confirm, setConfirm] = useState(false)
+  const [confirmOpen, setConfirmOpen] = useState(false)
   const [strong, setStrong] = useState(false)
 
   return (
@@ -42,7 +46,22 @@ export function FeedbackPage() {
           </Alert>
           <Banner>维护模式进行中，危险操作已锁定。</Banner>
           <Progress label="上传" value={62} />
+          <Progress label="告警水位" value={82} tone="warn" />
           <Progress label="处理中" indeterminate />
+          <div className="showcase-row" style={{ alignItems: 'center', gap: 16 }}>
+            <div style={{ width: 120 }}>
+              <MeterBar value={32} tone={meterToneFromPct(32)} aria-label="CPU" />
+            </div>
+            <div style={{ width: 120 }}>
+              <MeterBar value={78} tone={meterToneFromPct(78)} aria-label="内存" />
+            </div>
+            <div style={{ width: 120 }}>
+              <MeterBar value={94} tone={meterToneFromPct(94)} aria-label="磁盘" />
+            </div>
+            <StatusDot ok />
+            <StatusDot ok={false} />
+            <StatusDot tone="warn" />
+          </div>
         </div>
       </ShowcaseSection>
 
@@ -52,8 +71,23 @@ export function FeedbackPage() {
           <Button onClick={() => toast('出错了', 'error')}>Toast 错误</Button>
           <Button onClick={() => setModal(true)}>打开 Modal</Button>
           <Button onClick={() => setDrawer(true)}>打开 Drawer</Button>
-          <Button variant="danger" onClick={() => setConfirm(true)}>
+          <Button variant="danger" onClick={() => setConfirmOpen(true)}>
             普通确认
+          </Button>
+          <Button
+            variant="danger"
+            onClick={() => {
+              void confirm({
+                title: '删除节点？',
+                description: '命令式 confirm()，需 ConfirmProvider。',
+                danger: true,
+                confirmText: '删除',
+              }).then((ok) => {
+                if (ok) toast('已确认删除', 'success')
+              })
+            }}
+          >
+            confirm()
           </Button>
           <Button variant="danger" onClick={() => setStrong(true)}>
             强确认删除
@@ -66,8 +100,9 @@ export function FeedbackPage() {
           </Popover>
         </div>
         <p className="muted" style={{ margin: '10px 0 0', fontSize: 12 }}>
-          删除等不可逆操作请用 <code>StrongConfirm</code> / <code>ConfirmModal</code>
-          （居中 Modal + 输入资源名），不要用 Drawer。
+          删除等不可逆操作请用 <code>StrongConfirm</code> / <code>ConfirmModal</code> /{' '}
+          <code>confirm()</code>
+          （居中 Modal），不要用 Drawer。
         </p>
       </ShowcaseSection>
 
@@ -103,8 +138,8 @@ export function FeedbackPage() {
       </Drawer>
 
       <ConfirmModal
-        open={confirm}
-        onClose={() => setConfirm(false)}
+        open={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
         title="确认操作"
         onConfirm={() => toast('已确认', 'info')}
       >

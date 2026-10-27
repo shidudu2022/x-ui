@@ -1,14 +1,18 @@
 import { cn } from '@/lib/cn'
 
+export type ProgressTone = 'default' | 'success' | 'warn' | 'danger' | 'info' | 'muted'
+
 export function Progress({
   value,
   indeterminate,
   label,
+  tone = 'default',
   className,
 }: {
   value?: number
   indeterminate?: boolean
   label?: string
+  tone?: ProgressTone
   className?: string
 }) {
   const pct = Math.max(0, Math.min(100, value ?? 0))
@@ -21,7 +25,11 @@ export function Progress({
         </div>
       ) : null}
       <div
-        className={cn('progress', indeterminate && 'is-indeterminate')}
+        className={cn(
+          'progress',
+          tone !== 'default' && `tone-${tone}`,
+          indeterminate && 'is-indeterminate',
+        )}
         role="progressbar"
         aria-valuenow={indeterminate ? undefined : pct}
         aria-valuemin={0}

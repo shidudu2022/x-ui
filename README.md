@@ -1,10 +1,24 @@
 # x-ui
 
-面向运维 / 控制台类产品的 React 设计系统与组件馆。本仓库既是可运行的组件文档站，也可源码拷贝接入业务。
+面向运维 / 控制台类产品的 React 设计系统与组件馆。本仓库既是可运行的组件文档站，也作为 npm 包 **`@shidudu2022/x-ui`** 供业务接入。
 
 [![X-UI 概览](docs/preview.jpg)](https://shidudu2022.github.io/x-ui/)
 
-## 快速开始
+## 作为 npm 包安装
+
+```bash
+npm install @shidudu2022/x-ui
+# peer: react / react-dom / react-router(-dom) ^19 / ^7
+```
+
+```tsx
+import { AppShell, Button, AppearanceProvider } from '@shidudu2022/x-ui'
+import '@shidudu2022/x-ui/styles.css'
+```
+
+本地构建库产物：`npm run build:lib`（输出 `dist/`）。发布：`npm publish --access public`。
+
+## 文档站开发
 
 ```bash
 pnpm install   # 或 npm / yarn

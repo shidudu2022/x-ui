@@ -2,10 +2,12 @@ import { useState } from 'react'
 import {
   Card,
   Checkbox,
+  ColorField,
   DatePicker,
   DateRangePicker,
   Field,
   FileUpload,
+  ImageUploadField,
   Input,
   InputGroup,
   NumberStepper,
@@ -40,6 +42,8 @@ export function FormsPage() {
     start: '2026-10-01T09:00',
     end: '2026-10-12T18:00',
   })
+  const [brandColor, setBrandColor] = useState('#3b82f6')
+  const [logoUrl, setLogoUrl] = useState<string | null>(null)
 
   return (
     <div>
@@ -183,6 +187,14 @@ export function FormsPage() {
           <NumberStepper value={count} onChange={setCount} min={0} max={10} />
           <RangeSlider label="容量" value={range} onChange={setRange} />
           <FileUpload onFiles={() => undefined} />
+          <ColorField label="品牌色" value={brandColor} onChange={setBrandColor} />
+          <ImageUploadField
+            label="Logo"
+            value={logoUrl}
+            onChange={setLogoUrl}
+            onUpload={async (file) => URL.createObjectURL(file)}
+            hint="演示：本地预览，不上传服务器"
+          />
         </Card>
       </ShowcaseSection>
     </div>
