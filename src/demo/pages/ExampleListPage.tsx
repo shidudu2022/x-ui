@@ -5,6 +5,7 @@ import { useListSearch } from '@/lib/useListSearch'
 import { ListCardsTemplate } from './list/ListCardsTemplate'
 import { ListCompactTemplate } from './list/ListCompactTemplate'
 import { ListPinnedTemplate } from './list/ListPinnedTemplate'
+import { ListResourceTemplate } from './list/ListResourceTemplate'
 import { ListTableTemplate } from './list/ListTableTemplate'
 import { ListTreeTemplate } from './list/ListTreeTemplate'
 import {
@@ -20,6 +21,7 @@ const DESCRIPTIONS: Record<ListTemplateId, string> = {
   tree: '命名空间分组树：展开/折叠子行，分页按根节点计。',
   cards: '卡片网格：适合浏览与少字段摘要，无表格。',
   compact: '紧凑列表：少列、大页容量，偏运维扫读（无排序）。',
+  resource: 'ResourceList：筛选栏 + 表格 + 分页一体，适合业务资源列表页。',
 }
 
 /**
@@ -63,6 +65,7 @@ export function ExampleListPage() {
       {tpl === 'tree' ? <ListTreeTemplate q={q} onClear={clear} /> : null}
       {tpl === 'cards' ? <ListCardsTemplate q={q} onClear={clear} /> : null}
       {tpl === 'compact' ? <ListCompactTemplate q={q} onClear={clear} /> : null}
+      {tpl === 'resource' ? <ListResourceTemplate q={q} onClear={clear} /> : null}
     </ListPage>
   )
 }

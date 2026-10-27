@@ -38,8 +38,9 @@ description: >-
 | 输入匹配字符强确认（抽屉） | `/examples/strong-confirm` | `ExampleStrongConfirmPage.tsx` |
 | 居中强确认 / Modal 确认 | `/components/feedback` | `FeedbackPage.tsx`（`StrongConfirm`） |
 | 定宽业务表单 | `/examples/form` | `ExampleFormPage.tsx` |
+| 大卡片路径选择（推荐 Badge） | `/examples/choice` | `ExampleChoicePage.tsx` |
 | 分区设置 / DangerZone | `/examples/settings` | `ExampleSettingsPage.tsx` |
-| 列表（排序/固定列/树/卡片） | `/examples/list?tpl=` | `ExampleListPage.tsx` + `list/List*Template.tsx` |
+| 列表（排序/固定列/树/卡片/ResourceList） | `/examples/list?tpl=` | `ExampleListPage.tsx` + `list/List*Template.tsx` |
 | 列表点详情 → 抽屉 | `/examples/list-detail` | `ExampleListDetailPage.tsx` |
 | 详情 + 页头溢出菜单 | `/examples/detail` | `ExampleDetailPage.tsx` |
 | 页头 actions / overflow | `/examples/page` | `ExamplePageHeaderPage.tsx` |
@@ -63,7 +64,7 @@ description: >-
 | 令牌 / 色 / 字 | `/foundations` | `FoundationsPage.tsx` |
 | 单组件 API 演示 | `/components/{buttons,forms,data,feedback,navigation,charts,advanced}` | 同名 `*Page.tsx` |
 
-列表 `tpl`：`sortable` \| `static` \| `pinned` \| `tree` \| `cards` \| `compact`。  
+列表 `tpl`：`sortable` \| `static` \| `pinned` \| `tree` \| `cards` \| `compact` \| `resource`。  
 完整路径均在 `src/demo/pages/`（组件馆页同目录）。更细的文件表见 [reference.md](reference.md)#示例页面索引。
 
 ## 硬性约束
@@ -128,6 +129,7 @@ GitHub Pages / 子路径：`withBase()`（`@/lib/baseUrl`）；`npm run build:pa
 
 - **按钮** `Button` · **表单** `Field` + Input/Select/… · **搜索框** `SearchInput`（图标 + 清除，勿手拼）· **颜色** `ColorInput`（非原生 color）  
 - **登录** `LoginCard` + `TotpBindPanel` / `PinInput` → 读 `ExampleLoginPage`  
+- **大卡片选型** `ChoiceCard` + `ChoiceCardGrid`（`recommended` → Badge）；小目录链用 `CatalogTile` → 读 `ExampleChoicePage`  
 - **注册 / 验证码** → `ExampleRegisterPage` / `ExampleVerifyEmailPage`  
 - **日期** `DatePicker` / `DateRangePicker`（双月；datetime：日历\|日历\|开始\|结束）  
 - **表格** `DataTable`：`pinned` / `remote` / `hideFooter` / `hideHeader` / `columnVisibility` / 树 → 读 list 模板；空值（空串 / 空 TagGroup 等）默认显示 `—`（`emptyCell`）；操作列设 `emptyPlaceholder: false`  

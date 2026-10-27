@@ -3,6 +3,7 @@ import { RefreshCw } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { pageCount } from '@/lib/listQuery'
 import { Button, type ButtonVariant } from './Button'
+import { Card } from './Card'
 import { EmptyState } from './EmptyState'
 import { Input } from './Field'
 import { ListPage } from './ListPage'
@@ -31,6 +32,8 @@ export type ResourceColumn<T> = {
   key: string
   header: string
   render: (row: T) => ReactNode
+  /** Fixed / preferred column width (px or CSS length). */
+  width?: number | string
   headerStyle?: CSSProperties
   /** Muted secondary text (ids, timestamps). */
   muted?: boolean
@@ -61,6 +64,8 @@ export type ResourceListProps<T> = {
   searchLabel?: string
   toolbar?: ReactNode
   rowActions?: ResourceRowAction<T>[]
+  /** Sticky right actions column (wide tables). Default off for dense layouts. */
+  pinActions?: boolean
   page: number
   pageSize: number
   total: number
@@ -98,6 +103,7 @@ export function ResourceList<T>({
   searchLabel = '查询',
   toolbar,
   rowActions = [],
+  pinActions = false,
   page,
   pageSize,
   total,
@@ -128,50 +134,46 @@ export function ResourceList<T>({
           onSearch?.()
         }}
       >
-        <div className="resource-list-filters-main">
-          {filters.length ? (
-            <div className="resource-list-filters-fields">
-              {filters.map((filter) => (
-                <label className="resource-list-filter" key={filter.key}>
-                  <span className="resource-list-filter-label">{filter.label}</span>
-                  {filter.type === 'text' ? (
-                    <Input
-                      size="sm"
-                      placeholder={filter.placeholder ?? filter.label}
-                      value={filterValues[filter.key] ?? ''}
-                      onChange={(e) =>
-                        onFilterChange?.({
-                          ...filterValues,
-                          [filter.key]: e.target.value,
-                        })
-                      }
-                    />
-                  ) : (
-                    <Select
-                      size="sm"
-                      block
-                      value={filterValues[filter.key] ?? 'all'}
-                      options={filter.options}
-                      onChange={(value) =>
-                        onFilterChange?.({
-                          ...filterValues,
-                          [filter.key]: value,
-                        })
-                      }
-                    />
-                  )}
-                </label>
-              ))}
-            </div>
+        <div className="resource-list-filters-fields">
+          {filters.map((filter) => (
+            <label className="resource-list-filter" key={filter.key}>
+              <span className="resource-list-filter-label">{filter.label}</span>
+              {filter.type === 'text' ? (
+                <Input
+                  size="sm"
+                  placeholder={filter.placeholder ?? filter.label}
+                  value={filterValues[filter.key] ?? ''}
+                  onChange={(e) =>
+                    onFilterChange?.({
+                      ...filterValues,
+                      [filter.key]: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                <Select
+                  size="sm"
+                  block
+                  value={filterValues[filter.key] ?? 'all'}
+                  options={filter.options}
+                  onChange={(value) =>
+                    onFilterChange?.({
+                      ...filterValues,
+                      [filter.key]: value,
+                    })
+                  }
+                />
+              )}
+            </label>
+          ))}
+        </div>
+        <div className="resource-list-filters-actions">
+          {onSearch ? (
+            <Button type="submit" size="sm" variant="primary">
+              {searchLabel}
+            </Button>
           ) : null}
-          <div className="resource-list-filters-actions">
-            {onSearch ? (
-              <Button type="submit" size="sm" variant="primary">
-                {searchLabel}
-              </Button>
-            ) : null}
-            {toolbar}
-          </div>
+          {toolbar}
         </div>
         {onRefresh ? (
           <Button
@@ -179,6 +181,7 @@ export function ResourceList<T>({
             size="sm"
             variant="secondary"
             iconOnly
+            className="resource-list-refresh"
             aria-label="刷新"
             title="刷新"
             onClick={onRefresh}
@@ -193,30 +196,29 @@ export function ResourceList<T>({
     const cols: TableColumn<T>[] = columns.map((col) => ({
       key: col.key,
       header: col.header,
-      width: col.headerStyle?.width,
+      width: col.width ?? col.headerStyle?.width,
       render: (row: T) =>
         col.muted ? <span className="muted">{col.render(row)}</span> : col.render(row),
     }))
     if (showActions) {
       cols.push({
-        key: '__actions',
+        key: 'actions',
         header: '操作',
         emptyPlaceholder: false,
-        pinned: 'right',
+        pinned: pinActions ? 'right' : undefined,
         render: (row: T) => {
           const visible = rowActions.filter((a) => (a.show ? a.show(row) : true))
           return (
-            <div className="resource-list-row-actions" data-count={visible.length}>
+            <div className="actions" onClick={(e) => e.stopPropagation()}>
               {visible.map((action) => (
                 <Button
                   key={action.key}
                   size="sm"
                   variant={
                     action.variant ??
-                    (action.label.includes('删除') ? 'danger' : 'ghost')
+                    (action.label.includes('删除') ? 'danger' : 'secondary')
                   }
-                  onClick={(e) => {
-                    e.stopPropagation()
+                  onClick={() => {
                     void action.onClick(row)
                   }}
                 >
@@ -229,7 +231,7 @@ export function ResourceList<T>({
       })
     }
     return cols
-  }, [columns, rowActions, showActions])
+  }, [columns, pinActions, rowActions, showActions])
 
   const tableBody = loading ? (
     <SkeletonTable cols={columns.length + (showActions ? 1 : 0)} rows={Math.min(pageSize, 8)} />
@@ -244,17 +246,22 @@ export function ResourceList<T>({
   const footer = (
     <div className="resource-list-footer">
       <div className="resource-list-footer-meta">
-        <span>共 {total} 条</span>
+        <span>
+          共 <strong>{total}</strong> 条
+        </span>
         {onPageSizeChange ? (
-          <Select
-            size="sm"
-            value={String(pageSize)}
-            options={pageSizeOptions.map((n) => ({
-              value: String(n),
-              label: `${n} 条/页`,
-            }))}
-            onChange={(v) => onPageSizeChange(Number(v))}
-          />
+          <label className="resource-list-page-size">
+            <span className="muted">每页</span>
+            <Select
+              size="sm"
+              value={String(pageSize)}
+              options={pageSizeOptions.map((n) => ({
+                value: String(n),
+                label: String(n),
+              }))}
+              onChange={(v) => onPageSizeChange(Number(v))}
+            />
+          </label>
         ) : null}
       </div>
       <Pagination page={safePage} pageCount={pages} onChange={onPageChange} />
@@ -264,10 +271,12 @@ export function ResourceList<T>({
   const body = (
     <div className={cn('resource-list', className)}>
       {filterBar}
-      <div className="resource-list-table" data-loading={loading ? 'true' : undefined}>
-        {tableBody}
-      </div>
-      {footer}
+      <Card className="resource-list-panel">
+        <div className="resource-list-table" data-loading={loading ? 'true' : undefined}>
+          {tableBody}
+        </div>
+        {footer}
+      </Card>
     </div>
   )
 

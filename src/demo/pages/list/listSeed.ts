@@ -136,6 +136,7 @@ export const LIST_TEMPLATES = [
   { id: 'tree', label: '树状分组' },
   { id: 'cards', label: '卡片网格' },
   { id: 'compact', label: '紧凑列表' },
+  { id: 'resource', label: 'ResourceList' },
 ] as const
 
 export type ListTemplateId = (typeof LIST_TEMPLATES)[number]['id']

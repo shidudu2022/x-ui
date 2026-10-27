@@ -723,6 +723,20 @@
   line-height: 1.55;
 }
 
+.code-block.is-compact .code-block-bar {
+  padding: 4px 8px;
+}
+
+.code-block.is-compact .code-block-pre {
+  padding: 8px 10px;
+  max-height: 4.8em;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-all;
+  line-height: 1.45;
+}
+
 /* Stat / sparkline */
 .stat {
   padding: 12px 14px;

@@ -44,6 +44,7 @@
 @import './components/search.css' layer(components);
 @import './components/metric.css' layer(components);
 @import './components/resource.css' layer(components);
+@import './components/choice-card.css' layer(components);
 @import './components/misc.css' layer(components);
 @import './components/advanced.css' layer(components);
 @import './components/theme-glass.css' layer(components);

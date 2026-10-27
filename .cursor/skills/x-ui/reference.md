@@ -4,7 +4,7 @@ Agent 需要具体导出名时查阅本文件。源码以 `src/components/**/ind
 
 ## `@/components/ui`
 
-Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner, BreadcrumbNav, Button, Calendar, Callout, Card, StatusBar, Cascader, CatalogGroup, CatalogTile, Checkbox, Checklist, CodeBlock, ColorInput, Combobox, CommandPalette, ConfirmModal, StrongConfirm, StrongConfirmDrawer, CopyButton, DangerZone, DataTable, DatePicker, DateRangePicker, DescriptionList, MetaRow, Divider, Drawer, DropdownMenu, EmptyState, Field, FormGrid, Input, InputGroup, NativeSelect, Textarea, FileUpload, FilterBar, FormErrors, FormPage, Heading, ImagePreview, JsonViewer, Kbd, KeyValueEditor, TextLink, ListFilterBar, ListPage, LoginCard, LogViewer, MaintenanceBanner, Metric, MetricGrid, MirrorCard, Modal, NodePicker, NotificationList, NumberStepper, PageHeader, PageTabs, Pagination, PinInput, Pill, Popover, Progress, Radio, RadioGroup, RangeSlider, ResourceState, SearchInput, SearchResultList, SearchResultItem, SectionCard, TableCard, Segmented, Select, SettingsRow, Sheet, Skeleton, SkeletonCard, SkeletonTable, Sparkline, Stat, StatCard, Spinner, SplitPane, Stack, StepHeading, Steps, Switch, Table, DataTableFooter, Tabs, Tag, TagGroup, TagsInput, Text, Muted, Mono, ThemePicker, TimePicker, Timeline, ToastProvider, useToast, ToggleButton, Tooltip, TotpBindPanel, buildTotpOtpauth, Transfer, Tree, TreeTableCell
+Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner, BreadcrumbNav, Button, Calendar, Callout, Card, StatusBar, Cascader, CatalogGroup, CatalogTile, Checkbox, Checklist, ChoiceCard, ChoiceCardGrid, CodeBlock, ColorInput, Combobox, CommandPalette, ConfirmModal, StrongConfirm, StrongConfirmDrawer, CopyButton, DangerZone, DataTable, DatePicker, DateRangePicker, DescriptionList, MetaRow, Divider, Drawer, DropdownMenu, EmptyState, Field, FormGrid, Input, InputGroup, NativeSelect, Textarea, FileUpload, FilterBar, FormErrors, FormPage, Heading, ImagePreview, JsonViewer, Kbd, KeyValueEditor, TextLink, ListFilterBar, ListPage, LoginCard, LogViewer, MaintenanceBanner, Metric, MetricGrid, MirrorCard, Modal, NodePicker, NotificationList, NumberStepper, PageHeader, PageTabs, Pagination, PinInput, Pill, Popover, Progress, Radio, RadioGroup, RangeSlider, ResourceState, SearchInput, SearchResultList, SearchResultItem, SectionCard, TableCard, Segmented, Select, SettingsRow, Sheet, Skeleton, SkeletonCard, SkeletonTable, Sparkline, Stat, StatCard, Spinner, SplitPane, Stack, StepHeading, Steps, Switch, Table, DataTableFooter, Tabs, Tag, TagGroup, TagsInput, Text, Muted, Mono, ThemePicker, TimePicker, Timeline, ToastProvider, useToast, ToggleButton, Tooltip, TotpBindPanel, buildTotpOtpauth, Transfer, Tree, TreeTableCell
 
 ### 常用 tone / variant / 行为
 
@@ -42,6 +42,7 @@ Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner
 - **ImagePreview**：`src` 等；部署子路径配合 `withBase`
 - **TotpBindPanel**：`secret` / `account` / `issuer`；可选 `qrSrc`，默认本地 SVG QR（`uqr`）
 - **Stack / FormGrid / CatalogTile / CatalogGroup**：间距与目录布局原语
+- **ChoiceCard / ChoiceCardGrid**：大卡片路径选择（导入/创建/开通）；`recommended` 用 `Badge`（不改描边/底，避免像选中）；勿与小链 `CatalogTile` 混用
 
 ## `@/components/layout`
 
@@ -98,6 +99,7 @@ Agent 实现业务页时：**先按场景打开对应文件照抄结构**，再�
 | 强确认（抽屉） | `/examples/strong-confirm` | `ExampleStrongConfirmPage.tsx` |
 | 强确认（Modal） | `/components/feedback` | `FeedbackPage.tsx` |
 | 定宽表单 | `/examples/form` | `ExampleFormPage.tsx` |
+| 路径选择 / ChoiceCard | `/examples/choice` | `ExampleChoicePage.tsx` |
 | 设置 / DangerZone | `/examples/settings` | `ExampleSettingsPage.tsx` |
 | 列表入口 | `/examples/list` | `ExampleListPage.tsx` |
 | 列表 → 抽屉详情 | `/examples/list-detail` | `ExampleListDetailPage.tsx` |
@@ -107,6 +109,7 @@ Agent 实现业务页时：**先按场景打开对应文件照抄结构**，再�
 | 列表·树表 | `?tpl=tree` | `list/ListTreeTemplate.tsx` |
 | 列表·卡片 | `?tpl=cards` | `list/ListCardsTemplate.tsx` |
 | 列表·紧凑 | `?tpl=compact` | `list/ListCompactTemplate.tsx` |
+| 列表·ResourceList | `?tpl=resource` | `list/ListResourceTemplate.tsx` |
 | 详情 / 页头溢出 | `/examples/detail` | `ExampleDetailPage.tsx` |
 | 页头 | `/examples/page` | `ExamplePageHeaderPage.tsx` |
 | 仪表盘 | `/examples/dashboard` | `ExampleDashboardPage.tsx` |

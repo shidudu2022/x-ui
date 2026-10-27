@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Check, Copy } from 'lucide-react'
+import { copyToClipboard } from '@/lib/clipboard'
 import { cn } from '@/lib/cn'
 import { Button, type ButtonSize, type ButtonVariant } from './Button'
 
@@ -10,6 +11,8 @@ export function CopyButton({
   variant = 'ghost',
   size = 'sm',
   className,
+  onCopied,
+  onFailed,
 }: {
   value: string
   label?: string
@@ -17,16 +20,19 @@ export function CopyButton({
   variant?: ButtonVariant
   size?: ButtonSize
   className?: string
+  onCopied?: () => void
+  onFailed?: () => void
 }) {
   const [ok, setOk] = useState(false)
 
   async function copy() {
-    try {
-      await navigator.clipboard.writeText(value)
+    const success = await copyToClipboard(value)
+    if (success) {
       setOk(true)
+      onCopied?.()
       window.setTimeout(() => setOk(false), 1500)
-    } catch {
-      /* ignore */
+    } else {
+      onFailed?.()
     }
   }
 

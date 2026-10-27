@@ -39,6 +39,7 @@ import { ExampleAuditPage } from '@/demo/pages/ExampleAuditPage'
 import { ExampleOnboardingPage } from '@/demo/pages/ExampleOnboardingPage'
 import { ExampleI18nPage } from '@/demo/pages/ExampleI18nPage'
 import { ExamplePermissionsPage } from '@/demo/pages/ExamplePermissionsPage'
+import { ExampleChoicePage } from '@/demo/pages/ExampleChoicePage'
 
 export default function App() {
   return (
@@ -84,6 +85,7 @@ export default function App() {
                 <Route path="examples/onboarding" element={<ExampleOnboardingPage />} />
                 <Route path="examples/i18n" element={<ExampleI18nPage />} />
                 <Route path="examples/permissions" element={<ExamplePermissionsPage />} />
+                <Route path="examples/choice" element={<ExampleChoicePage />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Route>
             </Routes>

@@ -75,6 +75,7 @@ npm run preview:pages
 | `tree` | 树表（`getChildren` / TreeTableCell） |
 | `cards` | 卡片列表 |
 | `compact` | 紧凑密度表格 |
+| `resource` | ResourceList（筛选 + 表 + 分页一体） |
 
 组件馆：`/components/{buttons,forms,data,feedback,navigation,charts,advanced}` · 组合：`/patterns`
 

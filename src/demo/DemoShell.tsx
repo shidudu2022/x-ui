@@ -31,6 +31,7 @@ import {
   CircleSlash,
   Shield,
   ShieldAlert,
+  LayoutGrid,
 } from 'lucide-react'
 import { AppShell, Breadcrumbs, NavIcon, ThemeDrawer, UserMenu } from '@/components/layout'
 import { Button, CommandPalette, Drawer, EmptyState, type CommandItem } from '@/components/ui'
@@ -73,6 +74,7 @@ const titles: Record<string, string> = {
   '/examples/onboarding': '开通向导',
   '/examples/i18n': '文案与密度',
   '/examples/permissions': '权限策略',
+  '/examples/choice': '路径选择',
 }
 
 const LIST_SEARCH_PATH = '/examples/list'
@@ -197,6 +199,7 @@ export function DemoShell() {
           { to: '/examples/list', label: '列表页', icon: <NavIcon icon={List} /> },
           { to: '/examples/list-detail', label: '列表详情', icon: <NavIcon icon={PanelRight} /> },
           { to: '/examples/form', label: '表单页', icon: <NavIcon icon={FileText} /> },
+          { to: '/examples/choice', label: '路径选择', icon: <NavIcon icon={LayoutGrid} /> },
           { to: '/examples/detail', label: '详情页', icon: <NavIcon icon={Boxes} /> },
           { to: '/examples/wizard', label: '向导页', icon: <NavIcon icon={Workflow} /> },
           { to: '/examples/log', label: '日志页', icon: <NavIcon icon={ListTodo} /> },
