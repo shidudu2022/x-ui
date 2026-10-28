@@ -56,7 +56,8 @@ Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner
 AppShell, Brand, Breadcrumbs, NavIcon, Sidebar, ThemeDrawer, Topbar, UserMenu
 
 - `AppShell`：侧栏折叠 `localStorage` key `x-ui.sidebar-collapsed`；窄屏抽屉导航
-- `NavGroup` / `NavItem`：`{ label?, section?, collapsible?, defaultOpen?, icon?, items: { to, label, icon?, end? }[] }`；`section` 在首个同名分组前渲染分区标题；`collapsible` 渲染可折叠分组（含当前路由自动展开；侧栏折叠成图标栏时变为单个分组图标）
+- `NavGroup` / `NavItem`：`{ label?, section?, collapsible?, defaultOpen?, icon?, items: { to, label, icon?, end? }[] }`；`section` 在首个同名分组前渲染分区标题（业务侧栏应对齐 k3s Manager：分区小标题 + 近黑菜单字）；`collapsible` 渲染可折叠分组（含当前路由自动展开；侧栏折叠成图标栏时变为单个分组图标）
+- 侧栏色：`--sidebar-text` 菜单字（light `#18181b`）；`--sidebar-muted` 仅分区标题等次要信息；`--sidebar-active` 选中软底（light 默认 `#e8edfb`）；选中项文字仍用 `--sidebar-text`，勿改成 `--primary`；业务仓不要本地覆盖 `.nav-item`
 - `ThemeDrawer`：深浅色 / 主题（`ThemePicker`）/ 强调色（`AccentPicker`）/ 密度；无「完成」按钮
 
 ## `@/components/charts`

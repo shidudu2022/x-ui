@@ -83,5 +83,6 @@ body[data-mode="light"] {
   --primary-hover: #0d9488;
   --primary-soft: rgba(15, 118, 110, 0.1);
   --primary-ink: #ffffff;
-  --sidebar-active: rgba(15, 118, 110, 0.1);
+  /* Soft lavender fill like k3s Manager; nav text stays --sidebar-text */
+  --sidebar-active: #e8edfb;
 }

@@ -128,7 +128,7 @@ GitHub Pages / 子路径：`withBase()`（`@/lib/baseUrl`）；`npm run build:pa
 
 | 场景 | 用法 |
 |------|------|
-| 带侧栏应用 | `AppShell` + `navGroups` + `sidebarFooter`（`UserMenu`）；`navGroups` 支持 `section` 分区标题与 `collapsible` 可折叠分组 |
+| 带侧栏应用 | `AppShell` + `navGroups` + `sidebarFooter`（`UserMenu`）。**必须**用 `section` 做分区标题（如「业务 / 交易 / 接入」），勿把全部菜单塞进无 `section` 的单组；`collapsible` 可选。浅色侧栏菜单文字为 `--sidebar-text`（近黑），选中仅软底 `--sidebar-active`（如 `#e8edfb`），**文字不变成 primary**；勿在业务仓覆盖 `.nav-item` 颜色 |
 | 页头 | `PageHeader`：`actions` 常显；`actionItems` + `overflow` 收进「更多」；主按钮默认 `md` |
 | 定宽表单/设置 | `FormPage`（等价 `page-narrow`） |
 | 全宽列表 | `DataTable` / `ListPage`；顶栏 `?q=`；列表 `?tpl=` |

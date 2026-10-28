@@ -96,7 +96,8 @@
 .nav-item {
   border: 0;
   background: transparent;
-  color: var(--sidebar-muted);
+  /* Light: near-black like k3s Manager; dark: sidebar ink — never muted gray */
+  color: var(--sidebar-text);
   text-align: left;
   padding: 9px 12px;
   border-radius: var(--radius-sm);
@@ -118,7 +119,8 @@
 
 .nav-item.active {
   background: var(--sidebar-active);
-  color: var(--primary);
+  /* Keep ink color on active (soft fill only) — match k3s Manager */
+  color: var(--sidebar-text);
 }
 
 .nav-item-label {
@@ -264,7 +266,7 @@
   border: 0;
   border-radius: var(--radius-sm);
   background: transparent;
-  color: var(--sidebar-muted);
+  color: var(--sidebar-text);
   font: inherit;
   font-size: 13.5px;
   font-weight: 500;
