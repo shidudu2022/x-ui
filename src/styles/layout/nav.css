@@ -280,7 +280,7 @@
 }
 
 .nav-group-toggle.has-active {
-  color: var(--primary);
+  color: var(--sidebar-text);
 }
 
 .nav-group-toggle:focus-visible {
