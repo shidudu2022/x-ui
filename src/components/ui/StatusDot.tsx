@@ -1,4 +1,5 @@
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 
 export type StatusDotTone = 'ok' | 'bad' | 'warn' | 'neutral' | 'info'
 
@@ -19,16 +20,17 @@ export function StatusDot({
   label?: string
   className?: string
 }) {
+  const t = useT()
   const resolved: StatusDotTone =
     tone ?? (ok === undefined ? 'neutral' : ok ? 'ok' : 'bad')
   const aria =
     label ??
     ({
-      ok: '正常',
-      bad: '异常',
-      warn: '警告',
-      neutral: '未知',
-      info: '信息',
+      ok: t('status.ok'),
+      bad: t('status.bad'),
+      warn: t('status.warn'),
+      neutral: t('status.neutral'),
+      info: t('status.info'),
     }[resolved] as string)
 
   return (

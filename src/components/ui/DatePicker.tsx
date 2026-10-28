@@ -10,6 +10,7 @@ import {
 } from 'react'
 import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useLocale, useT } from '@/i18n'
 import { Button } from './Button'
 
 export type DatePickerMode = 'date' | 'datetime'
@@ -65,7 +66,6 @@ function formatDisplay(v?: string, mode: DatePickerMode = 'date') {
   return `${date} ${pad(hour)}:${pad(minute)}`
 }
 
-const WEEK = ['日', '一', '二', '三', '四', '五', '六']
 const HOURS = Array.from({ length: 24 }, (_, i) => i)
 
 function minuteOptions(step = 1) {
@@ -211,6 +211,7 @@ function TimeWheels({
   label?: string
   minuteStep?: number
 }) {
+  const t = useT()
   const minutes = minuteOptions(minuteStep)
   const m = snapMinute(minute, minuteStep)
   return (
@@ -221,7 +222,9 @@ function TimeWheels({
           value={hour}
           options={HOURS}
           disabled={disabled}
-          aria-label={label ? `${label}小时` : '小时'}
+          aria-label={
+            label ? t('datePicker.hourAria', { label }) : t('common.hour')
+          }
           onChange={(h) => onChange(h, m)}
         />
         <span className="time-wheel-sep" aria-hidden>
@@ -231,7 +234,9 @@ function TimeWheels({
           value={m}
           options={minutes}
           disabled={disabled}
-          aria-label={label ? `${label}分钟` : '分钟'}
+          aria-label={
+            label ? t('datePicker.minuteAria', { label }) : t('common.minute')
+          }
           onChange={(next) => onChange(hour, next)}
         />
       </div>
@@ -279,6 +284,7 @@ function DateCalendar({
   showNext?: boolean
   className?: string
 }) {
+  const { t, weekdays } = useLocale()
   const selected = parseDateOnly(value)
   const [internalCursor, setInternalCursor] = useState(() => startOfMonth(selected ?? new Date()))
   const cursor = viewMonth ? startOfMonth(viewMonth) : internalCursor
@@ -341,7 +347,7 @@ function DateCalendar({
           <button
             type="button"
             className="btn btn-ghost btn-sm"
-            aria-label="上一月"
+            aria-label={t('datePicker.prevMonth')}
             onClick={() => setCursor(addMonths(cursor, -1))}
           >
             <ChevronLeft size={16} />
@@ -350,13 +356,16 @@ function DateCalendar({
           <span className="date-picker-head-spacer" aria-hidden />
         )}
         <strong>
-          {cursor.getFullYear()} 年 {cursor.getMonth() + 1} 月
+          {t('datePicker.yearMonth', {
+            year: cursor.getFullYear(),
+            month: cursor.getMonth() + 1,
+          })}
         </strong>
         {showNext ? (
           <button
             type="button"
             className="btn btn-ghost btn-sm"
-            aria-label="下一月"
+            aria-label={t('datePicker.nextMonth')}
             onClick={() => setCursor(addMonths(cursor, 1))}
           >
             <ChevronRight size={16} />
@@ -366,7 +375,7 @@ function DateCalendar({
         )}
       </div>
       <div className="date-picker-week">
-        {WEEK.map((w) => (
+        {weekdays.map((w) => (
           <span key={w}>{w}</span>
         ))}
       </div>
@@ -376,12 +385,12 @@ function DateCalendar({
       >
         {cells.map(({ date, inMonth }) => {
           const iso = toDateISO(date)
-          const t = dayTime(date)
+          const ts = dayTime(date)
           const active = !rangeStart && activeDate === iso
-          const isStart = rangeLo ? dayTime(rangeLo) === t : false
-          const isEnd = rangeHi ? dayTime(rangeHi) === t : false
+          const isStart = rangeLo ? dayTime(rangeLo) === ts : false
+          const isEnd = rangeHi ? dayTime(rangeHi) === ts : false
           const inRange =
-            !!rangeLo && !!rangeHi && t > dayTime(rangeLo) && t < dayTime(rangeHi)
+            !!rangeLo && !!rangeHi && ts > dayTime(rangeLo) && ts < dayTime(rangeHi)
           return (
             <button
               key={iso + String(inMonth)}
@@ -523,10 +532,13 @@ export function DatePicker({
   disabledDate?: (dateISO: string) => boolean
   className?: string
 }) {
+  const t = useT()
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
   const parts = splitValue(value)
-  const ph = placeholder ?? (mode === 'datetime' ? '选择日期时间' : '选择日期')
+  const ph =
+    placeholder ??
+    (mode === 'datetime' ? t('datePicker.pickDateTime') : t('datePicker.pickDate'))
   const display = formatDisplay(value, mode)
 
   useDismissible(open, rootRef, () => setOpen(false))
@@ -547,7 +559,7 @@ export function DatePicker({
       <DateCalendar value={value} onChange={commitDate} disabledDate={disabledDate} />
       {mode === 'datetime' ? (
         <div className="date-time-panel">
-          <div className="date-time-panel-title muted">时间</div>
+          <div className="date-time-panel-title muted">{t('datePicker.time')}</div>
           <TimeWheels
             hour={parts.hour}
             minute={parts.minute}
@@ -563,7 +575,7 @@ export function DatePicker({
               disabled={!parts.date && !splitValue(value).date}
               onClick={() => setOpen(false)}
             >
-              确定
+              {t('common.confirm')}
             </Button>
           ) : null}
         </div>
@@ -641,11 +653,14 @@ export function DateRangePicker({
   block?: boolean
   className?: string
 }) {
+  const t = useT()
   const [open, setOpen] = useState(false)
   const [draft, setDraft] = useState<string | undefined>(undefined)
   const [hoverDate, setHoverDate] = useState<string | undefined>()
   const rootRef = useRef<HTMLDivElement>(null)
-  const ph = placeholder ?? (mode === 'datetime' ? '选择时间范围' : '选择日期范围')
+  const ph =
+    placeholder ??
+    (mode === 'datetime' ? t('datePicker.pickTimeRange') : t('datePicker.pickRange'))
 
   useEffect(() => {
     if (!open) {
@@ -772,7 +787,7 @@ export function DateRangePicker({
             {mode === 'datetime' ? (
               <div className="date-range-times">
                 <TimeWheels
-                  label="开始"
+                  label={t('common.start')}
                   hour={startParts.hour}
                   minute={startParts.minute}
                   onChange={setStartTime}
@@ -780,7 +795,7 @@ export function DateRangePicker({
                   minuteStep={minuteStep}
                 />
                 <TimeWheels
-                  label="结束"
+                  label={t('common.end')}
                   hour={endParts.hour}
                   minute={endParts.minute}
                   onChange={setEndTime}
@@ -795,8 +810,10 @@ export function DateRangePicker({
               {start && end && !draft
                 ? `${formatDisplay(start, mode)} → ${formatDisplay(end, mode)}`
                 : draft || start
-                  ? `起始 ${formatDisplay(draft || start, mode)}，再选结束日`
-                  : '选择起止日期'}
+                  ? t('datePicker.pickRangeContinue', {
+                      start: formatDisplay(draft || start, mode),
+                    })
+                  : t('datePicker.pickRangeHint')}
             </p>
             {mode === 'datetime' ? (
               <Button
@@ -805,7 +822,7 @@ export function DateRangePicker({
                 disabled={!startParts.date || !endParts.date}
                 onClick={() => setOpen(false)}
               >
-                确定
+                {t('common.confirm')}
               </Button>
             ) : null}
           </div>

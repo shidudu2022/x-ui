@@ -1,17 +1,20 @@
 import { PolarAngleAxis, RadialBar, RadialBarChart, ResponsiveContainer } from 'recharts'
 import { CHART_STATUS } from './ChartTheme'
+import { useT } from '@/i18n'
 
 export function RadialProgress({
   value,
-  label = '完成度',
+  label,
   color = CHART_STATUS.primary,
 }: {
   value: number
   label?: string
   color?: string
 }) {
+  const t = useT()
+  const resolvedLabel = label ?? t('chart.completion')
   const pct = Math.max(0, Math.min(100, value))
-  const data = [{ name: label, value: pct, fill: color }]
+  const data = [{ name: resolvedLabel, value: pct, fill: color }]
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>

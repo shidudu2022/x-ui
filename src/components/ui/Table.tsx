@@ -11,6 +11,7 @@ import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { EMPTY_CELL, emptyCell } from '@/lib/emptyCell'
 import { Checkbox } from './Checkbox'
+import { useT } from '@/i18n'
 
 export type SortDir = 'asc' | 'desc' | null
 
@@ -177,6 +178,8 @@ export function Table<T>({
   empty,
   hideHeader = false,
 }: TableProps<T>) {
+  const t = useT()
+  const emptyDisplay = empty ?? t('table.empty')
   const rootRef = useRef<HTMLDivElement>(null)
   const [measured, setMeasured] = useState<Record<string, number>>({})
   const allKeys = rows.map(rowKey)
@@ -248,7 +251,7 @@ export function Table<T>({
                       : undefined),
                   }}
                 >
-                  <Checkbox checked={allSelected} onChange={toggleAll} aria-label="全选" />
+                  <Checkbox checked={allSelected} onChange={toggleAll} aria-label={t('table.selectAll')} />
                 </th>
               ) : null}
               {columns.map((col) => (
@@ -273,7 +276,7 @@ export function Table<T>({
         <tbody>
           {rows.length === 0 ? (
             <tr>
-              <td colSpan={columns.length + (selectable ? 1 : 0)}>{empty ?? '暂无数据'}</td>
+              <td colSpan={columns.length + (selectable ? 1 : 0)}>{emptyDisplay}</td>
             </tr>
           ) : (
             rows.map((row) => {
@@ -305,7 +308,7 @@ export function Table<T>({
                       <Checkbox
                         checked={selectedKeys.includes(key)}
                         onChange={() => toggleOne(key)}
-                        aria-label="选择行"
+                        aria-label={t('table.selectRow')}
                       />
                     </td>
                   ) : null}

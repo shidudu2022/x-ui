@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, type ReactNode } from 'react'
 import { X } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 import { useFocusTrap } from '@/lib/useFocusTrap'
 import { usePresence } from '@/lib/usePresence'
 
@@ -15,6 +16,7 @@ type ModalProps = {
 }
 
 export function Modal({ open, onClose, title, children, footer, size = 'md', className }: ModalProps) {
+  const tr = useT()
   const panelRef = useRef<HTMLDivElement>(null)
   const titleId = useId()
   const { present, visible } = usePresence(open, 180)
@@ -54,7 +56,7 @@ export function Modal({ open, onClose, title, children, footer, size = 'md', cla
       >
         <div className="modal-header">
           <strong id={titleId}>{title}</strong>
-          <button type="button" className="btn btn-ghost btn-sm" aria-label="关闭" onClick={onClose}>
+          <button type="button" className="btn btn-ghost btn-sm" aria-label={tr('modal.close')} onClick={onClose}>
             <X size={16} />
           </button>
         </div>

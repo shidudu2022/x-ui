@@ -1,5 +1,6 @@
 import { Plus, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 import { Button } from './Button'
 import { Input } from './Field'
 
@@ -8,9 +9,9 @@ export type KeyValuePair = { key: string; value: string }
 export function KeyValueEditor({
   value,
   onChange,
-  keyPlaceholder = '键',
-  valuePlaceholder = '值',
-  addLabel = '添加',
+  keyPlaceholder,
+  valuePlaceholder,
+  addLabel,
   className,
 }: {
   value: KeyValuePair[]
@@ -20,6 +21,10 @@ export function KeyValueEditor({
   addLabel?: string
   className?: string
 }) {
+  const t = useT()
+  const resolvedKeyPlaceholder = keyPlaceholder ?? t('keyValue.key')
+  const resolvedValuePlaceholder = valuePlaceholder ?? t('keyValue.value')
+  const resolvedAddLabel = addLabel ?? t('keyValue.add')
   function update(index: number, patch: Partial<KeyValuePair>) {
     onChange?.(value.map((row, i) => (i === index ? { ...row, ...patch } : row)))
   }
@@ -34,21 +39,21 @@ export function KeyValueEditor({
         <div key={i} className="kv-editor-row">
           <Input
             value={row.key}
-            placeholder={keyPlaceholder}
+            placeholder={resolvedKeyPlaceholder}
             onChange={(e) => update(i, { key: e.target.value })}
-            aria-label={`键 ${i + 1}`}
+            aria-label={t('keyValue.keyAria', { n: i + 1 })}
           />
           <Input
             value={row.value}
-            placeholder={valuePlaceholder}
+            placeholder={resolvedValuePlaceholder}
             onChange={(e) => update(i, { value: e.target.value })}
-            aria-label={`值 ${i + 1}`}
+            aria-label={t('keyValue.valueAria', { n: i + 1 })}
           />
           <Button
             size="sm"
             variant="ghost"
             iconOnly
-            aria-label="删除行"
+            aria-label={t('keyValue.removeRow')}
             onClick={() => remove(i)}
           >
             <Trash2 size={14} />
@@ -61,7 +66,7 @@ export function KeyValueEditor({
         onClick={() => onChange?.([...value, { key: '', value: '' }])}
       >
         <Plus size={14} />
-        {addLabel}
+        {resolvedAddLabel}
       </Button>
     </div>
   )

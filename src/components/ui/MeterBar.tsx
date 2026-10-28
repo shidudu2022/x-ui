@@ -1,4 +1,5 @@
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 
 export type MeterBarTone = 'default' | 'success' | 'warn' | 'danger' | 'muted'
 
@@ -10,7 +11,7 @@ export function MeterBar({
   value,
   tone = 'default',
   className,
-  'aria-label': ariaLabel = '利用率',
+  'aria-label': ariaLabel,
 }: {
   /** 0–100; null / non-finite → empty bar */
   value: number | null | undefined
@@ -18,6 +19,8 @@ export function MeterBar({
   className?: string
   'aria-label'?: string
 }) {
+  const t = useT()
+  const resolvedAriaLabel = ariaLabel ?? t('meter.aria')
   const pct =
     value == null || !Number.isFinite(value)
       ? 0
@@ -27,7 +30,7 @@ export function MeterBar({
     <div
       className={cn('meter-bar', `tone-${tone}`, className)}
       role="progressbar"
-      aria-label={ariaLabel}
+      aria-label={resolvedAriaLabel}
       aria-valuenow={pct}
       aria-valuemin={0}
       aria-valuemax={100}

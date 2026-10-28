@@ -1,9 +1,15 @@
 import { Card, PageHeader, Skeleton, SkeletonCard, SkeletonTable } from '@/components/ui'
+import { useDemoT } from '@/demo/i18n/useDemoT'
 
 export function ExampleSkeletonPage() {
+  const t = useDemoT()
+
   return (
     <div>
-      <PageHeader title="加载骨架" description="列表 / 详情整页骨架。" />
+      <PageHeader
+        title={t('Loading skeletons', '加载骨架')}
+        description={t('List and detail page skeleton states.', '列表 / 详情整页骨架。')}
+      />
       <div className="grid-2">
         <Card padded>
           <div className="stack">

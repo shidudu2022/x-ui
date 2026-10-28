@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 
 export function SettingsRow({
   title,
@@ -24,7 +25,7 @@ export function SettingsRow({
 }
 
 export function DangerZone({
-  title = '危险区域',
+  title,
   description,
   children,
   className,
@@ -34,9 +35,11 @@ export function DangerZone({
   children: ReactNode
   className?: string
 }) {
+  const t = useT()
+  const resolvedTitle = title ?? t('settingsRow.danger')
   return (
     <div className={cn('card card-pad danger-zone', className)}>
-      <strong className="danger-zone-title">{title}</strong>
+      <strong className="danger-zone-title">{resolvedTitle}</strong>
       {description ? <p className="danger-zone-desc muted">{description}</p> : null}
       <div className="danger-zone-actions actions">{children}</div>
     </div>

@@ -1,6 +1,7 @@
 import { useRef, useState, type DragEvent } from 'react'
 import { Upload } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 import { Progress } from './Progress'
 
 export type FileUploadItem = {
@@ -16,8 +17,8 @@ export function FileUpload({
   maxSizeMb,
   onFiles,
   files,
-  title = '点击或拖拽文件到此处',
-  hint = '支持常见文档与图片',
+  title,
+  hint,
   className,
 }: {
   accept?: string
@@ -31,6 +32,9 @@ export function FileUpload({
   hint?: string
   className?: string
 }) {
+  const t = useT()
+  const resolvedTitle = title ?? t('fileUpload.title')
+  const resolvedHint = hint ?? t('fileUpload.hint')
   const inputRef = useRef<HTMLInputElement>(null)
   const [dragging, setDragging] = useState(false)
   const [local, setLocal] = useState<FileUploadItem[]>([])
@@ -46,7 +50,12 @@ export function FileUpload({
       const rejected = next.filter((f) => f.size > limit)
       next = next.filter((f) => f.size <= limit)
       if (rejected.length) {
-        setRejectHint(`${rejected.map((f) => f.name).join(', ')} 超过 ${maxSizeMb}MB`)
+        setRejectHint(
+          t('fileUpload.tooLarge', {
+            name: rejected.map((f) => f.name).join(', '),
+            max: maxSizeMb,
+          }),
+        )
       }
     }
     if (!next.length) return
@@ -78,9 +87,9 @@ export function FileUpload({
         }}
       >
         <Upload size={20} style={{ marginBottom: 8, color: 'var(--text-muted)' }} />
-        <p className="file-upload-title">{title}</p>
+        <p className="file-upload-title">{resolvedTitle}</p>
         <p className="file-upload-hint">
-          {rejectHint ?? (shown.length ? shown.map((f) => f.name).join(', ') : hint)}
+          {rejectHint ?? (shown.length ? shown.map((f) => f.name).join(', ') : resolvedHint)}
         </p>
         <input
           ref={inputRef}

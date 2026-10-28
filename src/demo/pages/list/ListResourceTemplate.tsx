@@ -7,6 +7,7 @@ import {
   StatusDot,
   useToast,
 } from '@/components/ui'
+import { useDemoT } from '@/demo/i18n/useDemoT'
 import { defaultFilterRow, slicePage } from '@/lib/listQuery'
 import { FLAT_SEED, filterFlat, type ClusterRow } from './listSeed'
 
@@ -16,6 +17,7 @@ function cpuOf(row: ClusterRow) {
 
 /** ResourceList shell — filters + table + pagination (ops console list pattern). */
 export function ListResourceTemplate({ q, onClear }: { q: string; onClear: () => void }) {
+  const t = useDemoT()
   const { toast } = useToast()
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
@@ -35,7 +37,7 @@ export function ListResourceTemplate({ q, onClear }: { q: string; onClear: () =>
         query={q}
         total={FLAT_SEED.length}
         matched={filtered.length}
-        unit="个"
+        unit={t('items', '个')}
         onClear={onClear}
       />
       <ResourceList
@@ -56,15 +58,15 @@ export function ListResourceTemplate({ q, onClear }: { q: string; onClear: () =>
           setApplied({ ...draft })
           setPage(1)
         }}
-        onRefresh={() => toast('已刷新', 'info')}
+        onRefresh={() => toast(t('Refreshed', '已刷新'), 'info')}
         filters={[
-          { key: 'q', label: '关键词', type: 'text', placeholder: '名称' },
+          { key: 'q', label: t('Keyword', '关键词'), type: 'text', placeholder: t('Name', '名称') },
           {
             key: 'status',
-            label: '状态',
+            label: t('Status', '状态'),
             type: 'select',
             options: [
-              { value: 'all', label: '全部' },
+              { value: 'all', label: t('All', '全部') },
               { value: 'running', label: 'running' },
               { value: 'degraded', label: 'degraded' },
               { value: 'stopped', label: 'stopped' },
@@ -74,7 +76,7 @@ export function ListResourceTemplate({ q, onClear }: { q: string; onClear: () =>
         columns={[
           {
             key: 'name',
-            header: '名称',
+            header: t('Name', '名称'),
             render: (r) => (
               <span className="mono" title={r.name}>
                 {r.name}
@@ -83,7 +85,7 @@ export function ListResourceTemplate({ q, onClear }: { q: string; onClear: () =>
           },
           {
             key: 'status',
-            header: '状态',
+            header: t('Status', '状态'),
             width: 120,
             render: (r) => (
               <>
@@ -111,14 +113,14 @@ export function ListResourceTemplate({ q, onClear }: { q: string; onClear: () =>
         rowActions={[
           {
             key: 'edit',
-            label: '编辑',
-            onClick: (r) => toast(`编辑 ${r.name}`, 'info'),
+            label: t('Edit', '编辑'),
+            onClick: (r) => toast(t(`Edit ${r.name}`, `编辑 ${r.name}`), 'info'),
           },
           {
             key: 'delete',
-            label: '删除',
+            label: t('Delete', '删除'),
             variant: 'danger',
-            onClick: (r) => toast(`删除 ${r.name}`, 'warn'),
+            onClick: (r) => toast(t(`Delete ${r.name}`, `删除 ${r.name}`), 'warn'),
           },
         ]}
       />

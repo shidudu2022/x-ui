@@ -10,6 +10,7 @@ import {
   ResourceList,
   useToast,
 } from '@/components/ui'
+import { useDemoT } from '@/demo/i18n/useDemoT'
 import { slicePage } from '@/lib/listQuery'
 
 type ApiKey = { id: string; name: string; prefix: string; createdAt: string }
@@ -21,6 +22,7 @@ const SEED: ApiKey[] = [
 ]
 
 export function ExampleApiKeysPage() {
+  const t = useDemoT()
   const { toast } = useToast()
   const [rows, setRows] = useState(SEED)
   const [page, setPage] = useState(1)
@@ -33,7 +35,7 @@ export function ExampleApiKeysPage() {
 
   function createKey() {
     if (!name.trim()) {
-      toast('请填写名称', 'error')
+      toast(t('Enter a name', '请填写名称'), 'error')
       return
     }
     const secret = `xui_live_${Math.random().toString(36).slice(2, 10)}_${Date.now().toString(36)}`
@@ -46,13 +48,16 @@ export function ExampleApiKeysPage() {
     setRows((r) => [next, ...r])
     setCreatedSecret(secret)
     setName('')
-    toast('已创建 API Key', 'success')
+    toast(t('API Key created', '已创建 API Key'), 'success')
   }
 
   return (
     <ListPage
       title="API Key"
-      description="创建与撤销访问密钥。密钥仅在创建时完整展示一次。"
+      description={t(
+        'Create and revoke access keys. The secret is shown in full only once at creation.',
+        '创建与撤销访问密钥。密钥仅在创建时完整展示一次。',
+      )}
       actions={
         <Button
           variant="primary"
@@ -61,7 +66,7 @@ export function ExampleApiKeysPage() {
             setOpen(true)
           }}
         >
-          新建 Key
+          {t('New key', '新建 Key')}
         </Button>
       }
     >
@@ -77,20 +82,20 @@ export function ExampleApiKeysPage() {
           setPageSize(size)
           setPage(1)
         }}
-        onRefresh={() => toast('已刷新', 'info')}
+        onRefresh={() => toast(t('Refreshed', '已刷新'), 'info')}
         columns={[
-          { key: 'name', header: '名称', render: (r) => r.name },
-          { key: 'prefix', header: '前缀', muted: true, render: (r) => r.prefix },
-          { key: 'createdAt', header: '创建', width: 120, render: (r) => r.createdAt },
+          { key: 'name', header: t('Name', '名称'), render: (r) => r.name },
+          { key: 'prefix', header: t('Prefix', '前缀'), muted: true, render: (r) => r.prefix },
+          { key: 'createdAt', header: t('Created', '创建'), width: 120, render: (r) => r.createdAt },
         ]}
         rowActions={[
           {
             key: 'revoke',
-            label: '撤销',
+            label: t('Revoke', '撤销'),
             variant: 'danger',
             onClick: (r) => {
               setRows((list) => list.filter((x) => x.id !== r.id))
-              toast(`已撤销 ${r.name}`, 'warn')
+              toast(t(`Revoked ${r.name}`, `已撤销 ${r.name}`), 'warn')
             },
           },
         ]}
@@ -99,20 +104,20 @@ export function ExampleApiKeysPage() {
       <Drawer
         open={open}
         onClose={() => setOpen(false)}
-        title="新建 API Key"
+        title={t('New API Key', '新建 API Key')}
         footer={
           <div className="actions">
-            <Button onClick={() => setOpen(false)}>关闭</Button>
+            <Button onClick={() => setOpen(false)}>{t('Close', '关闭')}</Button>
             {!createdSecret ? (
               <Button variant="primary" onClick={createKey}>
-                创建
+                {t('Create', '创建')}
               </Button>
             ) : null}
           </div>
         }
       >
         {!createdSecret ? (
-          <Field label="名称" htmlFor="key-name">
+          <Field label={t('Name', '名称')} htmlFor="key-name">
             <Input
               id="key-name"
               placeholder="ci-bot"
@@ -123,7 +128,10 @@ export function ExampleApiKeysPage() {
         ) : (
           <div className="stack">
             <p className="muted" style={{ margin: 0, fontSize: 13 }}>
-              请立即复制并妥善保存，关闭后无法再次查看完整密钥。
+              {t(
+                'Copy and store this now; the full secret cannot be shown again after closing.',
+                '请立即复制并妥善保存，关闭后无法再次查看完整密钥。',
+              )}
             </p>
             <CodeBlock code={createdSecret} />
             <CopyButton value={createdSecret} />

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { ChevronDown, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 
 export type CascaderOption = {
   value: string
@@ -13,7 +14,7 @@ export function Cascader({
   options,
   value = [],
   onChange,
-  placeholder = '请选择…',
+  placeholder,
   className,
 }: {
   options: CascaderOption[]
@@ -22,6 +23,8 @@ export function Cascader({
   placeholder?: string
   className?: string
 }) {
+  const t = useT()
+  const resolvedPlaceholder = placeholder ?? t('cascader.placeholder')
   const [open, setOpen] = useState(false)
   const [path, setPath] = useState<string[]>(value)
   const rootRef = useRef<HTMLDivElement>(null)
@@ -61,7 +64,7 @@ export function Cascader({
   return (
     <div className={cn('cascader', open && 'open', className)} ref={rootRef}>
       <button type="button" className="cascader-trigger" onClick={() => setOpen((v) => !v)}>
-        <span className={cn(!labels.length && 'muted')}>{labels.length ? labels.join(' / ') : placeholder}</span>
+        <span className={cn(!labels.length && 'muted')}>{labels.length ? labels.join(' / ') : resolvedPlaceholder}</span>
         <ChevronDown size={16} />
       </button>
       {open ? (

@@ -9,12 +9,14 @@ import {
   LoginCard,
   useToast,
 } from '@/components/ui'
+import { useDemoT } from '@/demo/i18n/useDemoT'
 
 function isEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())
 }
 
 export function ExampleRegisterPage() {
+  const t = useDemoT()
   const navigate = useNavigate()
   const { toast } = useToast()
   const [name, setName] = useState('')
@@ -27,23 +29,23 @@ export function ExampleRegisterPage() {
 
   function validate() {
     const next: string[] = []
-    if (!name.trim()) next.push('请填写显示名称')
-    if (!email.trim()) next.push('请填写邮箱')
-    else if (!isEmail(email)) next.push('邮箱格式不正确')
-    if (password.length < 8) next.push('密码至少 8 位')
-    if (password !== confirm) next.push('两次输入的密码不一致')
-    if (!agree) next.push('请阅读并同意服务条款')
+    if (!name.trim()) next.push(t('Enter a display name', '请填写显示名称'))
+    if (!email.trim()) next.push(t('Enter an email', '请填写邮箱'))
+    else if (!isEmail(email)) next.push(t('Invalid email format', '邮箱格式不正确'))
+    if (password.length < 8) next.push(t('Password must be at least 8 characters', '密码至少 8 位'))
+    if (password !== confirm) next.push(t('Passwords do not match', '两次输入的密码不一致'))
+    if (!agree) next.push(t('Read and accept the terms of service', '请阅读并同意服务条款'))
     return next
   }
 
   return (
     <LoginCard
-      subtitle="创建账号"
+      subtitle={t('Create account', '创建账号')}
       hint={
         <>
-          已有账号？{' '}
+          {t('Already have an account? ', '已有账号？')}{' '}
           <Link className="text-link" to="/examples/login">
-            去登录
+            {t('Sign in', '去登录')}
           </Link>
         </>
       }
@@ -55,7 +57,7 @@ export function ExampleRegisterPage() {
         setSubmitting(true)
         window.setTimeout(() => {
           setSubmitting(false)
-          toast('验证码已发送（示例）', 'success')
+          toast(t('Verification code sent (demo)', '验证码已发送（示例）'), 'success')
           navigate(`/examples/verify-email?email=${encodeURIComponent(email.trim())}`, {
             state: { email: email.trim() },
           })
@@ -63,16 +65,20 @@ export function ExampleRegisterPage() {
       }}
     >
       {errors.length ? <FormErrors errors={errors} /> : null}
-      <Field label="显示名称" htmlFor="reg-name">
+      <Field label={t('Display name', '显示名称')} htmlFor="reg-name">
         <Input
           id="reg-name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           autoComplete="nickname"
-          placeholder="例如：运维小王"
+          placeholder={t('e.g. Alex Ops', '例如：运维小王')}
         />
       </Field>
-      <Field label="邮箱" htmlFor="reg-email" hint="用于接收验证码与通知">
+      <Field
+        label={t('Email', '邮箱')}
+        htmlFor="reg-email"
+        hint={t('Used for verification codes and notifications', '用于接收验证码与通知')}
+      >
         <Input
           id="reg-email"
           type="email"
@@ -82,7 +88,7 @@ export function ExampleRegisterPage() {
           placeholder="you@example.com"
         />
       </Field>
-      <Field label="密码" htmlFor="reg-pass" hint="至少 8 位">
+      <Field label={t('Password', '密码')} htmlFor="reg-pass" hint={t('At least 8 characters', '至少 8 位')}>
         <Input
           id="reg-pass"
           type="password"
@@ -91,7 +97,7 @@ export function ExampleRegisterPage() {
           autoComplete="new-password"
         />
       </Field>
-      <Field label="确认密码" htmlFor="reg-pass2">
+      <Field label={t('Confirm password', '确认密码')} htmlFor="reg-pass2">
         <Input
           id="reg-pass2"
           type="password"
@@ -106,19 +112,19 @@ export function ExampleRegisterPage() {
         onChange={(e) => setAgree(e.target.checked)}
         label={
           <>
-            我已阅读并同意{' '}
+            {t('I have read and agree to the ', '我已阅读并同意')}{' '}
             <span className="text-link" role="link" tabIndex={0}>
-              服务条款
+              {t('Terms of Service', '服务条款')}
             </span>{' '}
-            与{' '}
+            {t('and', '与')}{' '}
             <span className="text-link" role="link" tabIndex={0}>
-              隐私政策
+              {t('Privacy Policy', '隐私政策')}
             </span>
           </>
         }
       />
       <Button variant="primary" size="lg" block type="submit" loading={submitting}>
-        注册并验证邮箱
+        {t('Register and verify email', '注册并验证邮箱')}
       </Button>
     </LoginCard>
   )

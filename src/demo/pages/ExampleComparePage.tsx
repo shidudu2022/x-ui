@@ -1,4 +1,5 @@
 import { CodeBlock, PageHeader, SplitPane, Tag } from '@/components/ui'
+import { useDemoT } from '@/demo/i18n/useDemoT'
 
 const left = `apiVersion: v1
 kind: ConfigMap
@@ -16,16 +17,18 @@ data:
   accent: blue`
 
 export function ExampleComparePage() {
+  const t = useDemoT()
+
   return (
     <div>
       <PageHeader
-        title="对比 / Diff"
-        description="SplitPane 双栏对照。"
-        actions={<Tag tone="warn">有差异</Tag>}
+        title={t('Compare / Diff', '对比 / Diff')}
+        description={t('SplitPane two-column comparison.', 'SplitPane 双栏对照。')}
+        actions={<Tag tone="warn">{t('Differs', '有差异')}</Tag>}
       />
       <SplitPane
-        left={<CodeBlock title="当前" language="yaml" code={left} />}
-        right={<CodeBlock title="目标" language="yaml" code={right} />}
+        left={<CodeBlock title={t('Current', '当前')} language="yaml" code={left} />}
+        right={<CodeBlock title={t('Target', '目标')} language="yaml" code={right} />}
       />
     </div>
   )

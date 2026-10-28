@@ -7,6 +7,7 @@ import {
   type ReactNode,
 } from 'react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 
 export type PinInputProps = {
   length?: number
@@ -41,8 +42,10 @@ export function PinInput({
   autoFocus,
   id,
   className,
-  'aria-label': ariaLabel = '验证码',
+  'aria-label': ariaLabel,
 }: PinInputProps) {
+  const t = useT()
+  const resolvedAriaLabel = ariaLabel ?? t('pin.aria')
   const uid = useId()
   const rootId = id ?? uid
   const refs = useRef<Array<HTMLInputElement | null>>([])
@@ -111,7 +114,7 @@ export function PinInput({
     <div
       className={cn('pin-input', invalid && 'is-invalid', disabled && 'is-disabled', className)}
       role="group"
-      aria-label={ariaLabel}
+      aria-label={resolvedAriaLabel}
     >
       {chars.map((ch, i) => (
         <div key={`${rootId}-${i}`} className="pin-input-slot">
@@ -128,7 +131,7 @@ export function PinInput({
             value={ch}
             disabled={disabled}
             aria-invalid={invalid || undefined}
-            aria-label={`${ariaLabel} 第 ${i + 1} 位`}
+            aria-label={t('pin.digit', { label: resolvedAriaLabel, n: i + 1 })}
             onChange={(e) => onInput(i, e.target.value)}
             onKeyDown={(e) => onKeyDown(e, i)}
             onPaste={(e) => onPaste(e, i)}

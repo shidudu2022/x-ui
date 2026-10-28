@@ -4,6 +4,7 @@ import { Menu, X } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { Sidebar, type NavGroup } from './Sidebar'
 import { Topbar } from './Topbar'
+import { useT } from '@/i18n'
 
 const COLLAPSE_KEY = 'x-ui.sidebar-collapsed'
 const MOBILE_MQ = '(max-width: 960px)'
@@ -27,6 +28,7 @@ export function AppShell({
   className?: string
   defaultCollapsed?: boolean
 }) {
+  const t = useT()
   const location = useLocation()
   const [collapsed, setCollapsed] = useState(() => {
     if (typeof window === 'undefined') return Boolean(defaultCollapsed)
@@ -82,7 +84,7 @@ export function AppShell({
     <button
       type="button"
       className="topbar-menu-btn"
-      aria-label={navOpen ? '关闭导航' : '打开导航'}
+      aria-label={navOpen ? t('sidebar.closeNav') : t('sidebar.openNav')}
       aria-expanded={navOpen}
       aria-controls="app-sidebar"
       onClick={() => setNavOpen((v) => !v)}

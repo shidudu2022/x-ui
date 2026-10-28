@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { Button } from './Button'
 import { Tag } from './Tag'
+import { useT } from '@/i18n'
 
 export type SearchResultItemData = {
   id: string
@@ -38,9 +39,11 @@ export function SearchResultItem({
   type,
   href,
   active,
-  actionLabel = '打开',
+  actionLabel,
   onSelect,
 }: SearchResultItemData) {
+  const t = useT()
+  const resolvedActionLabel = actionLabel ?? t('common.open')
   if (onSelect && !href) {
     return (
       <button
@@ -66,7 +69,7 @@ export function SearchResultItem({
       </span>
       {href ? (
         <Button size="sm" href={href} onClick={onSelect}>
-          {actionLabel}
+          {resolvedActionLabel}
         </Button>
       ) : null}
     </div>

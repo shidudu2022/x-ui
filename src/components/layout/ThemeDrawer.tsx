@@ -7,52 +7,66 @@ import {
   ThemePicker,
   WallpaperPicker,
 } from '@/components/ui'
+import { useLocale } from '@/i18n'
 
-/** Appearance drawer — 深浅色 / 主题 / 壁纸 / 强调色 / 密度 */
+/** Appearance drawer — color mode / theme / wallpaper / accent / density */
 export function ThemeDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { modePreference, setModePreference, density, setDensity, theme } = useAppearance()
+  const { locale, setLocale, t } = useLocale()
 
   return (
-    <Drawer open={open} onClose={onClose} title="外观" size="sm">
+    <Drawer open={open} onClose={onClose} title={t('themeDrawer.title')} size="sm">
       <div className="stack">
         <div>
-          <StepHeading title="深浅色" />
+          <StepHeading title={t('themeDrawer.language')} />
           <Segmented
-            value={modePreference}
-            onChange={setModePreference}
+            value={locale}
+            onChange={setLocale}
             options={[
-              { value: 'system', label: '跟随系统' },
-              { value: 'light', label: '浅色' },
-              { value: 'dark', label: '深色' },
+              { value: 'en', label: 'English' },
+              { value: 'zh', label: '中文' },
             ]}
           />
         </div>
 
         <div>
-          <StepHeading title="主题" />
+          <StepHeading title={t('themeDrawer.colorMode')} />
+          <Segmented
+            value={modePreference}
+            onChange={setModePreference}
+            options={[
+              { value: 'system', label: t('themeDrawer.system') },
+              { value: 'light', label: t('themeDrawer.light') },
+              { value: 'dark', label: t('themeDrawer.dark') },
+            ]}
+          />
+        </div>
+
+        <div>
+          <StepHeading title={t('themeDrawer.theme')} />
           <ThemePicker />
         </div>
 
         {theme === 'glass' ? (
           <div>
-            <StepHeading title="壁纸" />
+            <StepHeading title={t('themeDrawer.wallpaper')} />
             <WallpaperPicker />
           </div>
         ) : null}
 
         <div>
-          <StepHeading title="强调色" />
+          <StepHeading title={t('themeDrawer.accent')} />
           <AccentPicker />
         </div>
 
         <div>
-          <StepHeading title="密度" />
+          <StepHeading title={t('themeDrawer.density')} />
           <Segmented
             value={density}
             onChange={setDensity}
             options={[
-              { value: 'comfortable', label: '舒适' },
-              { value: 'compact', label: '紧凑' },
+              { value: 'comfortable', label: t('themeDrawer.comfortable') },
+              { value: 'compact', label: t('themeDrawer.compact') },
             ]}
           />
         </div>

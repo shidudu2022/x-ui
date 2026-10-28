@@ -1,5 +1,6 @@
 import { Minus, Plus } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 
 export function NumberStepper({
   value,
@@ -16,13 +17,14 @@ export function NumberStepper({
   step?: number
   className?: string
 }) {
+  const t = useT()
   function set(next: number) {
     onChange(Math.min(max, Math.max(min, next)))
   }
 
   return (
     <div className={cn('number-stepper', className)}>
-      <button type="button" aria-label="减少" disabled={value <= min} onClick={() => set(value - step)}>
+      <button type="button" aria-label={t('numberStepper.dec')} disabled={value <= min} onClick={() => set(value - step)}>
         <Minus size={14} />
       </button>
       <input
@@ -33,7 +35,7 @@ export function NumberStepper({
         step={step}
         onChange={(e) => set(Number(e.target.value))}
       />
-      <button type="button" aria-label="增加" disabled={value >= max} onClick={() => set(value + step)}>
+      <button type="button" aria-label={t('numberStepper.inc')} disabled={value >= max} onClick={() => set(value + step)}>
         <Plus size={14} />
       </button>
     </div>

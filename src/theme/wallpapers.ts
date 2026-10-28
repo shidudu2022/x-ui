@@ -10,29 +10,30 @@ import type { ColorMode } from './accents'
 export const WALLPAPERS = [
   {
     id: 'none',
-    label: '无壁纸',
-    description: '纯色底，不加背景图',
+    /** @deprecated Prefer i18n keys wallpaper.none.* via WallpaperPicker */
+    label: 'None',
+    description: 'Solid color, no background image',
     light: null,
     dark: null,
   },
   {
     id: 'aurora',
-    label: '极光',
-    description: '蓝紫粉抽象，层次清晰',
+    label: 'Aurora',
+    description: 'Blue–violet–pink abstract layers',
     light: auroraLight,
     dark: auroraDark,
   },
   {
     id: 'ocean',
-    label: '海洋',
-    description: '青蓝海面，干净利落',
+    label: 'Ocean',
+    description: 'Teal sea surface, clean and sharp',
     light: oceanLight,
     dark: oceanDark,
   },
   {
     id: 'dusk',
-    label: '暮色',
-    description: '桃粉薰衣草，偏柔和',
+    label: 'Dusk',
+    description: 'Peach and lavender, softer feel',
     light: duskLight,
     dark: duskDark,
   },

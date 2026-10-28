@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 
 export type StepItem = {
   id: string
@@ -20,6 +21,7 @@ export function Steps({
   size?: 'sm' | 'md'
   className?: string
 }) {
+  const t = useT()
   const trackRef = useRef<HTMLDivElement>(null)
   const [overflow, setOverflow] = useState(false)
   const [canPrev, setCanPrev] = useState(false)
@@ -92,7 +94,7 @@ export function Steps({
         <button
           type="button"
           className="steps-nav steps-nav-prev"
-          aria-label="查看前面的步骤"
+          aria-label={t('steps.prev')}
           onClick={() => scrollByDir(-1)}
         >
           <ChevronLeft size={16} strokeWidth={2} />
@@ -123,7 +125,7 @@ export function Steps({
         <button
           type="button"
           className="steps-nav steps-nav-next"
-          aria-label="查看后面的步骤"
+          aria-label={t('steps.next')}
           onClick={() => scrollByDir(1)}
         >
           <ChevronRight size={16} strokeWidth={2} />

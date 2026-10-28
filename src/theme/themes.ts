@@ -3,13 +3,14 @@
 export const THEMES = [
   {
     id: 'classic',
-    label: '经典',
-    description: '清晰实色表面，适合日常控制台',
+    /** @deprecated Prefer i18n keys theme.classic.* via ThemePicker */
+    label: 'Classic',
+    description: 'Solid surfaces for everyday consoles',
   },
   {
     id: 'glass',
-    label: '透明',
-    description: '表面透明，可配壁纸',
+    label: 'Glass',
+    description: 'Transparent surfaces; pairs with wallpapers',
   },
 ] as const
 

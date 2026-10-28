@@ -3,6 +3,7 @@ import { Alert } from './Alert'
 import { Button } from './Button'
 import { Drawer, type DrawerSize } from './Drawer'
 import { Field, Input } from './Field'
+import { useT } from '@/i18n'
 
 export type StrongConfirmDrawerProps = {
   open: boolean
@@ -33,13 +34,16 @@ export function StrongConfirmDrawer({
   children,
   resourceName,
   confirmValue,
-  confirmText = '删除',
-  cancelText = '取消',
+  confirmText,
+  cancelText,
   danger = true,
   side = 'right',
   size = 'md',
   onConfirm,
 }: StrongConfirmDrawerProps) {
+  const t = useT()
+  const resolvedConfirmText = confirmText ?? t('strongConfirm.delete')
+  const resolvedCancelText = cancelText ?? t('strongConfirm.cancel')
   const [typed, setTyped] = useState('')
   useEffect(() => {
     if (open) setTyped('')
@@ -58,7 +62,7 @@ export function StrongConfirmDrawer({
       className={danger ? 'drawer-danger' : undefined}
       footer={
         <div className="actions">
-          <Button onClick={onClose}>{cancelText}</Button>
+          <Button onClick={onClose}>{resolvedCancelText}</Button>
           <Button
             variant={danger ? 'danger' : 'primary'}
             disabled={!canConfirm}
@@ -67,15 +71,15 @@ export function StrongConfirmDrawer({
               onClose()
             }}
           >
-            {confirmText}
+            {resolvedConfirmText}
           </Button>
         </div>
       }
     >
       <div className="stack confirm-modal-body">
         {danger ? (
-          <Alert tone="danger" title="此操作不可撤销">
-            {children ?? '删除后数据无法恢复，请谨慎确认。'}
+          <Alert tone="danger" title={t('strongConfirm.irreversible')}>
+            {children ?? t('strongConfirm.deleteWarning')}
           </Alert>
         ) : (
           children
@@ -83,7 +87,8 @@ export function StrongConfirmDrawer({
 
         {resourceName ? (
           <p className="confirm-resource">
-            资源：<code className="mono">{resourceName}</code>
+            {t('confirm.resource')}
+            <code className="mono">{resourceName}</code>
           </p>
         ) : null}
 
@@ -91,7 +96,7 @@ export function StrongConfirmDrawer({
           <Field
             label={
               <>
-                请输入 <code className="mono confirm-expect">{expect}</code> 以确认
+                {t('confirm.typeToConfirm', { value: expect })}
               </>
             }
             htmlFor="strong-confirm-drawer-input"

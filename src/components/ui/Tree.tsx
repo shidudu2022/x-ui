@@ -1,6 +1,7 @@
 import { useMemo, useState, type ReactNode } from 'react'
 import { ChevronDown, ChevronRight, Search } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 import { Input } from './Field'
 
 export type TreeNodeData = {
@@ -39,6 +40,7 @@ function Node({
   onSelect?: (id: string) => void
   forceOpen?: boolean
 }) {
+  const t = useT()
   const [open, setOpen] = useState(depth < 1 || Boolean(forceOpen))
   const hasChildren = Boolean(node.children?.length)
   const expanded = forceOpen || open
@@ -53,7 +55,7 @@ function Node({
         <button
           type="button"
           className="tree-chevron"
-          aria-label={expanded ? '折叠' : '展开'}
+          aria-label={expanded ? t('tree.collapse') : t('tree.expand')}
           onClick={(e) => {
             e.stopPropagation()
             setOpen((v) => !v)
@@ -87,7 +89,7 @@ export function Tree({
   activeId,
   onSelect,
   searchable = false,
-  searchPlaceholder = '搜索节点…',
+  searchPlaceholder,
   className,
 }: {
   nodes: TreeNodeData[]
@@ -97,6 +99,8 @@ export function Tree({
   searchPlaceholder?: string
   className?: string
 }) {
+  const t = useT()
+  const resolvedSearchPlaceholder = searchPlaceholder ?? t('tree.search')
   const [query, setQuery] = useState('')
   const q = query.trim().toLowerCase()
   const filtered = useMemo(() => filterNodes(nodes, q), [nodes, q])
@@ -109,14 +113,14 @@ export function Tree({
           <Input
             size="sm"
             value={query}
-            placeholder={searchPlaceholder}
-            aria-label={searchPlaceholder}
+            placeholder={resolvedSearchPlaceholder}
+            aria-label={resolvedSearchPlaceholder}
             onChange={(e) => setQuery(e.target.value)}
           />
         </div>
       ) : null}
       {filtered.length === 0 ? (
-        <p className="muted tree-empty">无匹配节点</p>
+        <p className="muted tree-empty">{t('tree.noMatch')}</p>
       ) : (
         filtered.map((node) => (
           <Node

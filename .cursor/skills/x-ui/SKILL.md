@@ -84,18 +84,23 @@ description: >-
 
 ```tsx
 import '@/styles/index.css'
+import { LocaleProvider } from '@/i18n'
 import { AppearanceProvider } from '@/theme/AppearanceProvider'
 import { ToastProvider } from '@/components/ui'
 import { AppShell } from '@/components/layout'
 
-<AppearanceProvider>
-  <ToastProvider>
-    <AppShell navGroups={…} topbarTitle={…} sidebarFooter={…}>
-      {children}
-    </AppShell>
-  </ToastProvider>
-</AppearanceProvider>
+<LocaleProvider defaultLocale="en">
+  <AppearanceProvider>
+    <ToastProvider>
+      <AppShell navGroups={…} topbarTitle={…} sidebarFooter={…}>
+        {children}
+      </AppShell>
+    </ToastProvider>
+  </AppearanceProvider>
+</LocaleProvider>
 ```
+
+内置文案用 `useT()` / `useLocale()`（`en` 为基准，另有 `zh`）。外观抽屉可切换 Language。
 
 GitHub Pages / 子路径：`withBase()`（`@/lib/baseUrl`）；`npm run build:pages`（`VITE_BASE=/x-ui/`）。
 
@@ -105,6 +110,7 @@ GitHub Pages / 子路径：`withBase()`（`@/lib/baseUrl`）；`npm run build:pa
 | 布局 | `@/components/layout` |
 | 图表 | `@/components/charts` |
 | 主题 | `@/theme/AppearanceProvider` |
+| 国际化 | `@/i18n` → `LocaleProvider` / `useT` / `useLocale` |
 | 类名合并 | `@/lib/cn` |
 | 子路径 | `@/lib/baseUrl` → `withBase` |
 

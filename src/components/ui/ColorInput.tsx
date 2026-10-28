@@ -9,6 +9,7 @@ import {
 } from 'react'
 import { Check, ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 import { ACCENT_COLORS } from '@/theme/accents'
 
 const HEX = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/
@@ -151,6 +152,7 @@ function SvPlane({
   onChange: (next: Hsv) => void
   disabled?: boolean
 }) {
+  const t = useT()
   const ref = useRef<HTMLDivElement>(null)
 
   function pick(clientX: number, clientY: number) {
@@ -179,7 +181,7 @@ function SvPlane({
       className="color-sv"
       style={{ '--hue': hueCss(hsv.h) } as CSSProperties}
       role="slider"
-      aria-label="饱和度与亮度"
+      aria-label={t('color.sv')}
       aria-valuetext={`S ${Math.round(hsv.s * 100)}% V ${Math.round(hsv.v * 100)}%`}
       tabIndex={disabled ? -1 : 0}
       onPointerDown={onPointerDown}
@@ -222,6 +224,7 @@ function HueSlider({
   onChange: (h: number) => void
   disabled?: boolean
 }) {
+  const t = useT()
   const ref = useRef<HTMLDivElement>(null)
 
   function pick(clientX: number) {
@@ -237,7 +240,7 @@ function HueSlider({
       ref={ref}
       className="color-hue"
       role="slider"
-      aria-label="色相"
+      aria-label={t('color.hue')}
       aria-valuemin={0}
       aria-valuemax={360}
       aria-valuenow={Math.round(hue)}
@@ -290,6 +293,7 @@ export function ColorInput({
   /** Quick-pick swatches; pass `[]` to hide */
   presets?: string[]
 }) {
+  const t = useT()
   const autoId = useId()
   const inputId = id ?? autoId
   const rootRef = useRef<HTMLDivElement>(null)
@@ -345,7 +349,7 @@ export function ColorInput({
           className={cn('color-input-swatch', swatchInk)}
           style={{ background: swatch }}
           disabled={disabled}
-          aria-label="打开取色器"
+          aria-label={t('color.open')}
           aria-expanded={open}
           aria-haspopup="dialog"
           onClick={() => setOpen((v) => !v)}
@@ -381,7 +385,7 @@ export function ColorInput({
         </button>
       </div>
       {open && !disabled ? (
-        <div className="color-input-panel" role="dialog" aria-label="取色器">
+        <div className="color-input-panel" role="dialog" aria-label={t('color.dialog')}>
           <SvPlane hsv={hsv} onChange={commitHsv} disabled={disabled} />
           <HueSlider hue={hsv.h} onChange={(h) => commitHsv({ ...hsv, h })} disabled={disabled} />
           <div className="color-input-preview">
@@ -395,7 +399,7 @@ export function ColorInput({
             <span className="color-input-preview-hex">{liveHex}</span>
           </div>
           {presets.length ? (
-            <div className="color-presets" role="listbox" aria-label="预设颜色">
+            <div className="color-presets" role="listbox" aria-label={t('color.presets')}>
               {presets.map((p) => {
                 const active = normalizeHex(p) === hex
                 const light = luminance(p) > 0.85

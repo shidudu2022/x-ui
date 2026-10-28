@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 
 export type NotificationItem = {
   id: string
@@ -13,7 +14,7 @@ export type NotificationItem = {
 export function NotificationList({
   items,
   onItemClick,
-  empty = '暂无通知',
+  empty,
   className,
 }: {
   items: NotificationItem[]
@@ -21,8 +22,10 @@ export function NotificationList({
   empty?: ReactNode
   className?: string
 }) {
+  const t = useT()
+  const resolvedEmpty = empty ?? t('notification.empty')
   if (!items.length) {
-    return <div className={cn('notification-list is-empty muted', className)}>{empty}</div>
+    return <div className={cn('notification-list is-empty muted', className)}>{resolvedEmpty}</div>
   }
   return (
     <ul className={cn('notification-list', className)}>

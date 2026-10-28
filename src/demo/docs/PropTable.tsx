@@ -1,21 +1,28 @@
+import { useDemoMessages } from '../i18n/useDemoT'
+import type { L10n } from '../i18n/types'
+import { pickL10n } from '../i18n/types'
+import { useLocale } from '@/i18n'
+
 export type PropDef = {
   name: string
   type: string
   default?: string
-  desc: string
+  desc: string | L10n
 }
 
 export function PropTable({ props }: { props: PropDef[] }) {
+  const m = useDemoMessages()
+  const { locale } = useLocale()
   if (!props.length) return null
   return (
     <div className="prop-table-wrap">
       <table className="prop-table">
         <thead>
           <tr>
-            <th>属性</th>
-            <th>类型</th>
-            <th>默认</th>
-            <th>说明</th>
+            <th>{m('prop.name')}</th>
+            <th>{m('prop.type')}</th>
+            <th>{m('prop.default')}</th>
+            <th>{m('prop.desc')}</th>
           </tr>
         </thead>
         <tbody>
@@ -26,7 +33,7 @@ export function PropTable({ props }: { props: PropDef[] }) {
                 <code>{p.type}</code>
               </td>
               <td className="prop-default">{p.default ?? '—'}</td>
-              <td>{p.desc}</td>
+              <td>{typeof p.desc === 'string' ? p.desc : pickL10n(locale, p.desc)}</td>
             </tr>
           ))}
         </tbody>

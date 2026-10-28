@@ -2,9 +2,13 @@ import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { Check, X, Lightbulb, ArrowLeft, ArrowRight } from 'lucide-react'
 import { CodeBlock, Text } from '@/components/ui'
+import { useLocale } from '@/i18n'
 import { categoryOfSlug } from '../catalog/categories'
-import { entriesOfCategory, getCatalogEntry } from '../catalog/registry'
+import { entriesOfCategory, entrySummary, getCatalogEntry } from '../catalog/registry'
 import { USAGE } from '../catalog/usage'
+import type { L10n } from '../i18n/types'
+import { pickL10n } from '../i18n/types'
+import { useDemoMessages } from '../i18n/useDemoT'
 import { ShowcaseSection } from '../ShowcaseSection'
 import { DocPage } from './DocPage'
 import { PropTable, type PropDef } from './PropTable'
@@ -12,7 +16,7 @@ import { PropTable, type PropDef } from './PropTable'
 export type ComponentMeta = {
   slug: string
   name: string
-  summary: string
+  summary: L10n
   related?: string[]
 }
 
@@ -57,6 +61,8 @@ export function ComponentDocLayout({
   props?: PropDef[]
   children: ReactNode
 }) {
+  const { locale } = useLocale()
+  const dt = useDemoMessages()
   const entry = getCatalogEntry(meta.slug)
   const category = categoryOfSlug(meta.slug)
   const siblings = category ? entriesOfCategory(category) : []
@@ -67,41 +73,57 @@ export function ComponentDocLayout({
   const related = (meta.related ?? [])
     .map((slug) => getCatalogEntry(slug))
     .filter((e): e is NonNullable<typeof e> => Boolean(e))
+  const categoryLabel = category ? pickL10n(locale, category.label) : undefined
 
   return (
     <DocPage
       className="component-doc"
       eyebrow={
         <>
-          <Link to="/components">组件</Link>
+          <Link to="/components">{dt('doc.components')}</Link>
           {category ? (
             <>
               <span className="doc-eyebrow-sep">/</span>
-              <Link to={`/components#cat-${category.id}`}>{category.label}</Link>
+              <Link to={`/components#cat-${category.id}`}>{categoryLabel}</Link>
             </>
           ) : null}
         </>
       }
       title={meta.name}
-      description={meta.summary}
+      description={pickL10n(locale, meta.summary)}
     >
       <CodeBlock
         compact
         className="doc-import"
         language="tsx"
-        title="引入"
+        title={dt('doc.import')}
         code={importSnippet(entry?.exports ?? [meta.name])}
       />
 
       {usage ? (
-        <ShowcaseSection title="何时使用">
+        <ShowcaseSection title={dt('doc.whenToUse')}>
           <div className="usage-grid">
-            <UsageList icon={<Check size={14} />} tone="ok" title="适用场景" items={usage.when} />
+            <UsageList
+              icon={<Check size={14} />}
+              tone="ok"
+              title={dt('doc.suitableFor')}
+              items={usage.when.map((v) => pickL10n(locale, v))}
+            />
             {usage.avoid?.length ? (
-              <UsageList icon={<X size={14} />} tone="no" title="不适用 / 请换用" items={usage.avoid} />
+              <UsageList
+                icon={<X size={14} />}
+                tone="no"
+                title={dt('doc.avoidUseInstead')}
+                items={usage.avoid.map((v) => pickL10n(locale, v))}
+              />
             ) : null}
             {usage.tips?.length ? (
-              <UsageList icon={<Lightbulb size={14} />} tone="tip" title="使用要点" items={usage.tips} />
+              <UsageList
+                icon={<Lightbulb size={14} />}
+                tone="tip"
+                title={dt('doc.tips')}
+                items={usage.tips.map((v) => pickL10n(locale, v))}
+              />
             ) : null}
           </div>
         </ShowcaseSection>
@@ -109,23 +131,23 @@ export function ComponentDocLayout({
 
       {children}
 
-      <ShowcaseSection title="API" description={props.length ? '常用属性；完整类型见包内导出的 .d.ts。' : undefined}>
+      <ShowcaseSection title={dt('doc.api')} description={props.length ? dt('doc.apiDescription') : undefined}>
         {props.length ? (
           <PropTable props={props} />
         ) : (
           <Text variant="muted" size="md">
-            见包内类型导出；本页以交互示例为主。
+            {dt('doc.apiFallback')}
           </Text>
         )}
       </ShowcaseSection>
 
       {related.length ? (
-        <ShowcaseSection title="相关组件">
+        <ShowcaseSection title={dt('doc.related')}>
           <div className="related-grid">
             {related.map((r) => (
               <Link key={r.slug} to={`/components/${r.slug}`} className="component-index-link">
                 <strong>{r.name}</strong>
-                <span>{r.summary}</span>
+                <span>{entrySummary(r, locale)}</span>
               </Link>
             ))}
           </div>
@@ -133,11 +155,11 @@ export function ComponentDocLayout({
       ) : null}
 
       {prev || next ? (
-        <nav className="doc-pager" aria-label={`${category?.label ?? '组件'}内导航`}>
+        <nav className="doc-pager" aria-label={dt('doc.pagerNavLabel', { category: categoryLabel ?? dt('doc.components') })}>
           {prev ? (
             <Link to={`/components/${prev.slug}`} className="doc-pager-link">
               <span className="doc-pager-hint">
-                <ArrowLeft size={12} /> 上一个
+                <ArrowLeft size={12} /> {dt('doc.previous')}
               </span>
               <strong>{prev.name}</strong>
             </Link>
@@ -147,7 +169,7 @@ export function ComponentDocLayout({
           {next ? (
             <Link to={`/components/${next.slug}`} className="doc-pager-link is-next">
               <span className="doc-pager-hint">
-                下一个 <ArrowRight size={12} />
+                {dt('doc.next')} <ArrowRight size={12} />
               </span>
               <strong>{next.name}</strong>
             </Link>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Button, Checkbox, DataTable, PageHeader, Tag } from '@/components/ui'
+import { useDemoT } from '@/demo/i18n/useDemoT'
 
 type RoleRow = {
   id: string
@@ -15,10 +16,14 @@ const ROWS: RoleRow[] = [
 ]
 
 export function ExampleRolesPage() {
+  const t = useDemoT()
   const [selected, setSelected] = useState<string[]>([])
   return (
     <div>
-      <PageHeader title="角色权限" description="表格多选 + 批量操作栏。" />
+      <PageHeader
+        title={t('Roles and permissions', '角色权限')}
+        description={t('Table multi-select and bulk action bar.', '表格多选 + 批量操作栏。')}
+      />
       <DataTable
         rows={ROWS}
         rowKey={(r) => r.id}
@@ -26,25 +31,25 @@ export function ExampleRolesPage() {
         onSelectedKeysChange={setSelected}
         bulkActions={
           <>
-            <Button size="sm">导出</Button>
+            <Button size="sm">{t('Export', '导出')}</Button>
             <Button size="sm" variant="danger">
-              停用
+              {t('Deactivate', '停用')}
             </Button>
           </>
         }
         toolbar={
           <div className="actions">
             <Button size="sm" variant="primary">
-              新建角色
+              {t('New role', '新建角色')}
             </Button>
           </div>
         }
         columns={[
-          { key: 'name', header: '角色', render: (r) => <strong>{r.name}</strong> },
-          { key: 'users', header: '用户数', render: (r) => r.users },
+          { key: 'name', header: t('Role', '角色'), render: (r) => <strong>{r.name}</strong> },
+          { key: 'users', header: t('Users', '用户数'), render: (r) => r.users },
           {
             key: 'perms',
-            header: '权限',
+            header: t('Permissions', '权限'),
             render: (r) => (
               <span className="showcase-row">
                 {r.perms.map((p) => (
@@ -57,7 +62,7 @@ export function ExampleRolesPage() {
           },
           {
             key: 'admin',
-            header: '管理',
+            header: t('Admin', '管理'),
             render: (r) => (
               <Checkbox checked={r.perms.includes('admin')} disabled label="admin" />
             ),

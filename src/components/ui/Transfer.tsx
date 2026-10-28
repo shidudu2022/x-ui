@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Search } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 import { Button } from './Button'
 import { Input } from './Field'
 
@@ -10,7 +11,7 @@ export function Transfer({
   data,
   targetKeys,
   onChange,
-  titles = ['可选', '已选'],
+  titles,
   searchable = true,
   className,
 }: {
@@ -21,6 +22,8 @@ export function Transfer({
   searchable?: boolean
   className?: string
 }) {
+  const t = useT()
+  const resolvedTitles = titles ?? [t('transfer.available'), t('transfer.selected')]
   const [leftSel, setLeftSel] = useState<string[]>([])
   const [rightSel, setRightSel] = useState<string[]>([])
   const [leftQ, setLeftQ] = useState('')
@@ -36,7 +39,7 @@ export function Transfer({
   return (
     <div className={cn('transfer', className)}>
       <TransferPanel
-        title={titles[0]}
+        title={resolvedTitles[0]}
         items={left}
         selected={leftSel}
         onToggle={(k) => toggle(leftSel, k, setLeftSel)}
@@ -67,7 +70,7 @@ export function Transfer({
         </Button>
       </div>
       <TransferPanel
-        title={titles[1]}
+        title={resolvedTitles[1]}
         items={right}
         selected={rightSel}
         onToggle={(k) => toggle(rightSel, k, setRightSel)}
@@ -96,6 +99,7 @@ function TransferPanel({
   query: string
   onQuery: (q: string) => void
 }) {
+  const t = useT()
   const q = query.trim().toLowerCase()
   const filtered = q ? items.filter((i) => i.label.toLowerCase().includes(q)) : items
 
@@ -111,8 +115,8 @@ function TransferPanel({
           <Input
             size="sm"
             value={query}
-            placeholder="搜索…"
-            aria-label={`${title}搜索`}
+            placeholder={t('transfer.search')}
+            aria-label={t('transfer.searchAria', { title })}
             onChange={(e) => onQuery(e.target.value)}
           />
         </div>

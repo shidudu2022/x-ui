@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, type ReactNode } from 'react'
 import { X } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 import { useFocusTrap } from '@/lib/useFocusTrap'
 import { usePresence } from '@/lib/usePresence'
 
@@ -27,6 +28,7 @@ export function Drawer({
   size = 'lg',
   className,
 }: DrawerProps) {
+  const t = useT()
   const panelRef = useRef<HTMLElement>(null)
   const titleId = useId()
   const { present, visible } = usePresence(open, 200)
@@ -66,7 +68,7 @@ export function Drawer({
       >
         <div className="drawer-header">
           <strong id={titleId}>{title}</strong>
-          <button type="button" className="btn btn-ghost btn-sm" aria-label="关闭" onClick={onClose}>
+          <button type="button" className="btn btn-ghost btn-sm" aria-label={t('drawer.close')} onClick={onClose}>
             <X size={16} />
           </button>
         </div>

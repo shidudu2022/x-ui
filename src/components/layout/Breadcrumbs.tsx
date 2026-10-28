@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 
 /** Parent segment — matches k3s-start/web AppShell crumb shape */
 export type BreadcrumbParent = {
@@ -26,11 +27,12 @@ export function Breadcrumbs({
   parent?: BreadcrumbParent | null
   className?: string
 }) {
+  const t = useT()
   const navigate = useNavigate()
 
   if (parent) {
     return (
-      <nav className={cn('breadcrumbs', className)} aria-label="面包屑">
+      <nav className={cn('breadcrumbs', className)} aria-label={t('breadcrumbs.aria')}>
         <button
           type="button"
           className="crumb-link"
@@ -52,7 +54,7 @@ export function Breadcrumbs({
   }
 
   return (
-    <nav className={cn('breadcrumbs', className)} aria-label="面包屑">
+    <nav className={cn('breadcrumbs', className)} aria-label={t('breadcrumbs.aria')}>
       <span className="crumb-current">
         {currentIcon ? (
           <span className="crumb-icon" aria-hidden>

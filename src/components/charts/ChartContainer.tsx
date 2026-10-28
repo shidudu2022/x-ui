@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/Card'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 
 export function ChartContainer({
   title,
@@ -23,6 +24,7 @@ export function ChartContainer({
   className?: string
   height?: number
 }) {
+  const t = useT()
   return (
     <Card padded className={cn('chart-container', className)}>
       {title || description || action ? (
@@ -38,7 +40,7 @@ export function ChartContainer({
         <Skeleton style={{ height, width: '100%', borderRadius: 12 }} />
       ) : empty ? (
         <div className="chart-empty" style={{ minHeight: height }}>
-          <EmptyState title="暂无数据" description="换个筛选条件再试试" />
+          <EmptyState title={t('common.empty')} description={t('searchResult.empty')} />
         </div>
       ) : (
         <div style={{ width: '100%', height }}>{children}</div>

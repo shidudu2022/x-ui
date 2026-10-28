@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 import { Button } from './Button'
 import { CopyButton } from './CopyButton'
 
@@ -22,6 +23,7 @@ export function JsonViewer({
   maxHeight?: number
   className?: string
 }) {
+  const t = useT()
   const [open, setOpen] = useState(!collapsed)
   const text = useMemo(() => stringify(value, 2), [value])
 
@@ -29,9 +31,9 @@ export function JsonViewer({
     <div className={cn('json-viewer', className)}>
       <div className="json-viewer-toolbar">
         <Button size="sm" variant="ghost" onClick={() => setOpen((v) => !v)}>
-          {open ? '折叠' : '展开'}
+          {open ? t('json.collapse') : t('json.expand')}
         </Button>
-        <CopyButton value={text} label="复制 JSON" />
+        <CopyButton value={text} label={t('json.copy')} />
       </div>
       {open ? (
         <pre className="json-viewer-pre" style={{ maxHeight }}>

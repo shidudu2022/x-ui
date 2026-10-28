@@ -1,3 +1,4 @@
+import { useT } from '@/i18n'
 import { Button } from './Button'
 
 /** Search hit summary — matches k3s-start/web ListFilterBar */
@@ -5,7 +6,7 @@ export function ListFilterBar({
   query,
   total,
   matched,
-  unit = '条',
+  unit,
   onClear,
 }: {
   query: string
@@ -14,16 +15,18 @@ export function ListFilterBar({
   unit?: string
   onClear?: () => void
 }) {
+  const t = useT()
+  const resolvedUnit = unit ?? t('dataTable.unit')
   if (!query) return null
 
   return (
     <div className="list-filter-bar">
       <span>
-        搜索「<strong>{query}</strong>」· 显示 {matched} / {total} {unit}
+        {t('listFilter.summary', { query, matched, total, unit: resolvedUnit })}
       </span>
       {onClear ? (
         <Button size="sm" variant="ghost" onClick={onClear}>
-          清除
+          {t('common.clear')}
         </Button>
       ) : null}
     </div>

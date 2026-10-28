@@ -2,16 +2,17 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { ChevronsUpDown } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import type { SelectOption } from './Select'
+import { useT } from '@/i18n'
 
 export function Combobox({
   options,
   value,
   onChange,
-  placeholder = '搜索或选择…',
+  placeholder,
   disabled,
   invalid,
   className,
-  emptyText = '无匹配项',
+  emptyText,
 }: {
   options: SelectOption[]
   value?: string
@@ -22,6 +23,9 @@ export function Combobox({
   className?: string
   emptyText?: string
 }) {
+  const t = useT()
+  const resolvedPlaceholder = placeholder ?? t('combobox.placeholder')
+  const resolvedEmptyText = emptyText ?? t('combobox.empty')
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const rootRef = useRef<HTMLDivElement>(null)
@@ -49,7 +53,7 @@ export function Combobox({
         <input
           value={open ? query : String(selectedLabel ?? '')}
           disabled={disabled}
-          placeholder={placeholder}
+          placeholder={resolvedPlaceholder}
           aria-expanded={open}
           aria-controls={listId}
           aria-invalid={invalid || undefined}
@@ -69,7 +73,7 @@ export function Combobox({
           className="combobox-caret"
           tabIndex={-1}
           disabled={disabled}
-          aria-label="展开"
+          aria-label={t('common.expand')}
           onClick={() => setOpen((v) => !v)}
         >
           <ChevronsUpDown size={16} />
@@ -78,7 +82,7 @@ export function Combobox({
       {open ? (
         <div className="combobox-menu" id={listId} role="listbox">
           {filtered.length === 0 ? (
-            <div className="combobox-empty muted">{emptyText}</div>
+            <div className="combobox-empty muted">{resolvedEmptyText}</div>
           ) : (
             filtered.map((opt) => (
               <button

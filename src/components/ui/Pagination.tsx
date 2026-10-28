@@ -1,4 +1,5 @@
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 
 function pageWindow(current: number, total: number): Array<number | '…'> {
   if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1)
@@ -25,15 +26,16 @@ export function Pagination({
   onChange: (page: number) => void
   className?: string
 }) {
+  const t = useT()
   const items = pageWindow(page, Math.max(1, pageCount))
   return (
-    <nav className={cn('pagination', className)} aria-label="分页">
+    <nav className={cn('pagination', className)} aria-label={t('pagination.nav')}>
       <button
         type="button"
         className="pagination-btn"
         disabled={page <= 1}
         onClick={() => onChange(page - 1)}
-        aria-label="上一页"
+        aria-label={t('pagination.prev')}
       >
         ‹
       </button>
@@ -59,7 +61,7 @@ export function Pagination({
         className="pagination-btn"
         disabled={page >= pageCount}
         onClick={() => onChange(page + 1)}
-        aria-label="下一页"
+        aria-label={t('pagination.next')}
       >
         ›
       </button>

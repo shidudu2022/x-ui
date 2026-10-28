@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 
 /** Prefer `danger`; `error` kept as alias for compatibility */
 export type AlertTone = 'info' | 'success' | 'warn' | 'danger' | 'error'
@@ -28,6 +29,7 @@ export function Alert({
   onDismiss?: () => void
   className?: string
 }) {
+  const tr = useT()
   const [open, setOpen] = useState(true)
   if (!open) return null
   const resolved = tone === 'error' ? 'danger' : tone
@@ -48,7 +50,7 @@ export function Alert({
         {children ? <div className="alert-desc">{children}</div> : null}
       </div>
       {dismissible ? (
-        <button type="button" className="alert-close" aria-label="关闭" onClick={dismiss}>
+        <button type="button" className="alert-close" aria-label={tr('alert.close')} onClick={dismiss}>
           <X size={14} />
         </button>
       ) : null}

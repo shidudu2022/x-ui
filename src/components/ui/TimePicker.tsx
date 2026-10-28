@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { Clock } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 import { Button } from './Button'
 
 function pad(n: number) {
@@ -64,7 +65,7 @@ export function TimePicker({
   value,
   onChange,
   minuteStep = 1,
-  placeholder = '选择时间',
+  placeholder,
   disabled,
   invalid,
   className,
@@ -78,6 +79,8 @@ export function TimePicker({
   invalid?: boolean
   className?: string
 }) {
+  const t = useT()
+  const resolvedPlaceholder = placeholder ?? t('timePicker.placeholder')
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
   const parts = parseTime(value)
@@ -122,21 +125,21 @@ export function TimePicker({
         aria-haspopup="dialog"
         onClick={() => setOpen((v) => !v)}
       >
-        <span className={cn('date-field-value', !display && 'is-placeholder')}>{display || placeholder}</span>
+        <span className={cn('date-field-value', !display && 'is-placeholder')}>{display || resolvedPlaceholder}</span>
         <span className="date-field-icon" aria-hidden>
           <Clock size={16} strokeWidth={2} />
         </span>
       </button>
       {open ? (
-        <div className="date-field-popover has-time" role="dialog" aria-label={placeholder}>
+        <div className="date-field-popover has-time" role="dialog" aria-label={resolvedPlaceholder}>
           <div className="date-time-panel" style={{ width: 140, borderLeft: 0 }}>
             <div className="time-wheels-body">
-              <Wheel value={hour} options={Array.from({ length: 24 }, (_, i) => i)} onChange={(h) => commit(h, minute)} label="小时" />
+              <Wheel value={hour} options={Array.from({ length: 24 }, (_, i) => i)} onChange={(h) => commit(h, minute)} label={t('common.hour')} />
               <span className="time-wheel-sep">:</span>
-              <Wheel value={minute} options={minutes} onChange={(m) => commit(hour, m)} label="分钟" />
+              <Wheel value={minute} options={minutes} onChange={(m) => commit(hour, m)} label={t('common.minute')} />
             </div>
             <Button size="sm" variant="primary" block onClick={() => setOpen(false)}>
-              确定
+              {t('common.confirm')}
             </Button>
           </div>
         </div>

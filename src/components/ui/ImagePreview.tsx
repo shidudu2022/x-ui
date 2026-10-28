@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { ImageOff, X, ZoomIn } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 import { withBase } from '@/lib/baseUrl'
 import { usePresence } from '@/lib/usePresence'
 
@@ -18,6 +19,7 @@ export function ImagePreview({
   className?: string
   children?: ReactNode
 }) {
+  const tr = useT()
   const [open, setOpen] = useState(false)
   const [broken, setBroken] = useState(false)
   const { present, visible } = usePresence(open, 180)
@@ -46,13 +48,13 @@ export function ImagePreview({
           if (!broken) setOpen(true)
         }}
         disabled={broken}
-        aria-label={alt || '预览图片'}
+        aria-label={alt || tr('imagePreview.preview')}
       >
         {children ??
           (broken ? (
             <span className="image-preview-fallback">
               <ImageOff size={18} aria-hidden />
-              <span>无法加载</span>
+              <span>{tr('imagePreview.loadFailed')}</span>
             </span>
           ) : (
             <>
@@ -68,13 +70,13 @@ export function ImagePreview({
           className={cn('image-preview-lightbox', visible && 'open')}
           role="dialog"
           aria-modal="true"
-          aria-label={alt || '图片预览'}
+          aria-label={alt || tr('imagePreview.dialog')}
           onClick={() => setOpen(false)}
         >
           <button
             type="button"
             className="btn btn-ghost btn-sm image-preview-close"
-            aria-label="关闭"
+            aria-label={tr('imagePreview.close')}
             onClick={() => setOpen(false)}
           >
             <X size={18} />

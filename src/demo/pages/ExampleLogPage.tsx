@@ -9,6 +9,7 @@ import {
   Select,
   useToast,
 } from '@/components/ui'
+import { useDemoT } from '@/demo/i18n/useDemoT'
 
 const SAMPLE_LOG = `[info] preflight: checking ssh connectivity
 [ok] edge-01 (10.0.0.1) reachable
@@ -20,16 +21,20 @@ const SAMPLE_LOG = `[info] preflight: checking ssh connectivity
 [ok] cluster ready (degraded)
 `
 
-const NODE_OPTIONS = [
-  { value: 'all', label: '全部节点' },
-  { value: 'edge-01', label: 'edge-01' },
-  { value: 'edge-02', label: 'edge-02' },
-]
-
 export function ExampleLogPage() {
+  const t = useDemoT()
   const { toast } = useToast()
   const [filter, setFilter] = useState('')
   const [nodeKey, setNodeKey] = useState('all')
+
+  const nodeOptions = useMemo(
+    () => [
+      { value: 'all', label: t('All nodes', '全部节点') },
+      { value: 'edge-01', label: 'edge-01' },
+      { value: 'edge-02', label: 'edge-02' },
+    ],
+    [t],
+  )
 
   const shown = useMemo(() => {
     let lines = SAMPLE_LOG.split('\n')
@@ -46,16 +51,16 @@ export function ExampleLogPage() {
   return (
     <section className="page active">
       <PageHeader
-        title="安装 demo-cluster"
+        title={t('Install demo-cluster', '安装 demo-cluster')}
         description={
           <>
             <Badge tone="warn">running</Badge> · install ·{' '}
             <button
               type="button"
               className="crumb-link"
-              onClick={() => toast('跳转集群（示例）', 'info')}
+              onClick={() => toast(t('Go to cluster (demo)', '跳转集群（示例）'), 'info')}
             >
-              查看集群
+              {t('View cluster', '查看集群')}
             </button>
           </>
         }
@@ -71,7 +76,7 @@ export function ExampleLogPage() {
               URL.revokeObjectURL(url)
             }}
           >
-            下载日志
+            {t('Download log', '下载日志')}
           </Button>
         }
       />
@@ -82,21 +87,22 @@ export function ExampleLogPage() {
             <Select
               size="sm"
               value={nodeKey}
-              options={NODE_OPTIONS}
+              options={nodeOptions}
               onChange={setNodeKey}
-              aria-label="按节点过滤"
+              aria-label={t('Filter by node', '按节点过滤')}
             />
             <Input
               size="sm"
               type="search"
-              placeholder="搜索日志关键字"
+              placeholder={t('Search log keywords', '搜索日志关键字')}
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
             />
           </div>
         </Card>
         <LogViewer height={360}>
-          {shown || (nodeKey !== 'all' || filter ? '无匹配行' : '暂无日志')}
+          {shown ||
+            (nodeKey !== 'all' || filter ? t('No matching lines', '无匹配行') : t('No logs yet', '暂无日志'))}
         </LogViewer>
       </div>
     </section>

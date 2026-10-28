@@ -795,10 +795,10 @@ export const DEMO_EXPANSIONS = {
   }
 >
   <p style={{ margin: 0, fontSize: 13 }}>
-    居中对话框内容（size={size}）。
+    Centered dialog content (size={size}).
   </p>
 </Modal>`,
-        jsx: `<><Button onClick={() => { setSize('md'); setOpen(true) }}>打开 Modal</Button><Modal open={open} onClose={() => setOpen(false)} title="示例弹窗" size={size} footer={<div className="actions"><Button onClick={() => setOpen(false)}>取消</Button><Button variant="primary" onClick={() => setOpen(false)}>确定</Button></div>}><p style={{ margin: 0, fontSize: 13 }}>居中对话框内容（size={size}）。</p></Modal></>`,
+        jsx: `<><Button onClick={() => { setSize('md'); setOpen(true) }}>{d('Open Modal', '打开 Modal')}</Button><Modal open={open} onClose={() => setOpen(false)} title={d('Example dialog', '示例弹窗')} size={size} footer={<div className="actions"><Button onClick={() => setOpen(false)}>{d('Cancel', '取消')}</Button><Button variant="primary" onClick={() => setOpen(false)}>{d('OK', '确定')}</Button></div>}><p style={{ margin: 0, fontSize: 13 }}>{d('Centered dialog content (size=', '居中对话框内容（size=')}{size}{d(').', '）。')}</p></Modal></>`,
       },
       {
         title: '尺寸',
@@ -828,10 +828,10 @@ export const DEMO_EXPANSIONS = {
   footer={<Button onClick={() => setOpen(false)}>关闭</Button>}
 >
   <p className="muted" style={{ margin: 0 }}>
-    侧滑抽屉（side={side} · size={size}）。
+    Slide-in drawer (side={side}, size={size}).
   </p>
 </Drawer>`,
-        jsx: `<><Button onClick={() => { setSide('right'); setSize('lg'); setOpen(true) }}>打开 Drawer</Button><Drawer open={open} onClose={() => setOpen(false)} title="详情" side={side} size={size} footer={<Button onClick={() => setOpen(false)}>关闭</Button>}><p className="muted" style={{ margin: 0 }}>侧滑抽屉（side={side} · size={size}）。</p></Drawer></>`,
+        jsx: `<><Button onClick={() => { setSide('right'); setSize('lg'); setOpen(true) }}>{d('Open Drawer', '打开 Drawer')}</Button><Drawer open={open} onClose={() => setOpen(false)} title={d('Details', '详情')} side={side} size={size} footer={<Button onClick={() => setOpen(false)}>{d('Close', '关闭')}</Button>}><p className="muted" style={{ margin: 0 }}>{d('Slide-in drawer (side=', '侧滑抽屉（side=')}{side}{d(', size=', ' · size=')}{size}{d(').', '）。')}</p></Drawer></>`,
       },
       {
         title: '方向 / 尺寸',
@@ -870,10 +870,10 @@ export const DEMO_EXPANSIONS = {
   footer={<Button onClick={() => setOpen(false)}>关闭</Button>}
 >
   <p className="muted" style={{ margin: 0 }}>
-    薄板内容（side={side}）。
+    Sheet content (side={side}).
   </p>
 </Sheet>`,
-        jsx: `<><Button onClick={() => { setSide('bottom'); setOpen(true) }}>打开 Sheet</Button><Sheet open={open} onClose={() => setOpen(false)} title="面板" side={side} footer={<Button onClick={() => setOpen(false)}>关闭</Button>}><p className="muted" style={{ margin: 0 }}>薄板内容（side={side}）。</p></Sheet></>`,
+        jsx: `<><Button onClick={() => { setSide('bottom'); setOpen(true) }}>{d('Open Sheet', '打开 Sheet')}</Button><Sheet open={open} onClose={() => setOpen(false)} title={d('Panel', '面板')} side={side} footer={<Button onClick={() => setOpen(false)}>{d('Close', '关闭')}</Button>}><p className="muted" style={{ margin: 0 }}>{d('Sheet content (side=', '薄板内容（side=')}{side}{d(').', '）。')}</p></Sheet></>`,
       },
       {
         title: '方向',
@@ -1606,16 +1606,21 @@ toast('出错了', 'error')`,
 
   calendar: {
     imports: `import { Calendar } from '@/components/ui'`,
-    props: `[{ name: 'events', type: 'CalendarEvent[]', desc: '事件点；tone: primary|success|warn|danger' }]`,
+    props: `[{ name: 'events', type: 'CalendarEvent[]', desc: { en: 'Events; optional tone: primary, success, warn, danger', zh: '事件点；tone: primary|success|warn|danger' } }]`,
     demos: [
       {
         title: '事件色调',
+        desc: {
+          en: 'The Today button in the bottom-right jumps to the current date.',
+          zh: '右下角「今天」按钮可快速回到当天。',
+        },
         code: `<Calendar events={[
-  { date: '2026-10-25', label: '发布', tone: 'primary' },
-  { date: '2026-10-28', label: '维护', tone: 'warn' },
-  { date: '2026-10-30', label: '截止', tone: 'danger' },
+  { date: '2026-10-25', label: 'Ship', tone: 'primary' },
+  { date: '2026-10-27', label: 'Done', tone: 'success' },
+  { date: '2026-10-28', label: 'Maint', tone: 'warn' },
+  { date: '2026-10-30', label: 'Due', tone: 'danger' },
 ]} />`,
-        jsx: `<Calendar events={[{ date: '2026-10-25', label: '发布', tone: 'primary' }, { date: '2026-10-27', label: '完成', tone: 'success' }, { date: '2026-10-28', label: '维护', tone: 'warn' }, { date: '2026-10-30', label: '截止', tone: 'danger' }]} />`,
+        jsx: `<Calendar events={[{ date: '2026-10-25', label: d('Ship', '发布'), tone: 'primary' }, { date: '2026-10-27', label: d('Done', '完成'), tone: 'success' }, { date: '2026-10-28', label: d('Maint', '维护'), tone: 'warn' }, { date: '2026-10-30', label: d('Due', '截止'), tone: 'danger' }]} />`,
       },
     ],
   },
@@ -1790,7 +1795,7 @@ toast('出错了', 'error')`,
   const [sortDir, setSortDir] = useState<'asc' | 'desc' | null>('asc')
   const [selected, setSelected] = useState<string[]>([])
 `,
-    props: `[{ name: 'columns', type: 'TableColumn<T>[]', desc: '列；sortable 开启排序' }, { name: 'selectable', type: 'boolean', desc: '多选' }, { name: 'sortKey/sortDir/onSort', type: '受控排序', desc: '排序' }]`,
+    props: `[{ name: 'columns', type: 'TableColumn<T>[]', desc: '列；sortable 开启排序' }, { name: 'selectable', type: 'boolean', desc: '多选' }, { name: 'sortKey/sortDir/onSort', type: 'controlled sort', desc: '排序' }]`,
     demos: [
       {
         title: '基础',
@@ -1862,9 +1867,9 @@ toast('出错了', 'error')`,
   framed={false}
   selectedKeys={selectedKeys}
   onSelectedKeysChange={setSelectedKeys}
-  bulkActions={<span className="muted">已选 {selectedKeys.length}</span>}
+  bulkActions={<span className="muted">Selected {selectedKeys.length}</span>}
 />`,
-        jsx: `<DataTable columns={columns} rows={rows} rowKey={(r) => r.id} framed={false} selectedKeys={selectedKeys} onSelectedKeysChange={setSelectedKeys} bulkActions={<span className="muted">已选 {selectedKeys.length}</span>} />`,
+        jsx: `<DataTable columns={columns} rows={rows} rowKey={(r) => r.id} framed={false} selectedKeys={selectedKeys} onSelectedKeysChange={setSelectedKeys} bulkActions={<span className="muted">{d('Selected', '已选')} {selectedKeys.length}</span>} />`,
       },
       {
         title: '加载',
@@ -2238,12 +2243,12 @@ toast('出错了', 'error')`,
         title: '句中链接',
         desc: '嵌在正文里，而不是单独一行摆按钮。',
         code: `<Text as="p">
-  完整字号阶梯见{' '}
-  <TextLink href="/examples/typography">字体字号</TextLink>
-  ，令牌见{' '}
-  <TextLink href="/foundations">基础</TextLink>。
+  See the full font-size scale at{' '}
+  <TextLink href="/examples/typography">Typography</TextLink>
+  , design tokens at{' '}
+  <TextLink href="/foundations">Foundations</TextLink>.
 </Text>`,
-        jsx: `<Text as="p">完整字号阶梯见 <TextLink href="/examples/typography">字体字号</TextLink>，设计令牌见 <TextLink href="/foundations">基础</TextLink>。</Text>`,
+        jsx: `<Text as="p">{d('See the full font-size scale at ', '完整字号阶梯见 ')}<TextLink href="/examples/typography">{d('Typography', '字体字号')}</TextLink>{d(', design tokens at ', '，设计令牌见 ')}<TextLink href="/foundations">{d('Foundations', '基础')}</TextLink>{d('.', '。')}</Text>`,
       },
       {
         title: '外链 / 弱化',

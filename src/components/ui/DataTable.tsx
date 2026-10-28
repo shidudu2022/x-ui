@@ -9,6 +9,7 @@ import { Select } from './Select'
 import { SkeletonTable } from './Skeleton'
 import { Table, type SortDir, type SortValue, type TableColumn } from './Table'
 import { TreeTableCell } from './TreeTableCell'
+import { useT } from '@/i18n'
 
 export type DataTableColumn<T> = TableColumn<T> & {
   className?: string
@@ -136,13 +137,13 @@ export function DataTable<T>({
   rows,
   rowKey,
   loading = false,
-  emptyTitle = '暂无数据',
+  emptyTitle,
   emptyDesc,
   emptyAction,
   onRowClick,
   pageSizeOptions = DEFAULT_SIZES,
   defaultPageSize = 10,
-  unit = '条',
+  unit,
   selectedKeys,
   onSelectedKeysChange,
   bulkActions,
@@ -171,6 +172,9 @@ export function DataTable<T>({
   expandedKeys: expandedKeysProp,
   onExpandedKeysChange,
 }: DataTableProps<T>) {
+  const t = useT()
+  const resolvedEmptyTitle = emptyTitle ?? t('dataTable.empty')
+  const resolvedUnit = unit ?? t('dataTable.unit')
   const [pageInternal, setPageInternal] = useState(1)
   const [pageSizeInternal, setPageSizeInternal] = useState(defaultPageSize)
   const [internalSelected, setInternalSelected] = useState<string[]>([])
@@ -338,7 +342,7 @@ export function DataTable<T>({
                   setSelected(selected.filter((k) => !pageKeys.includes(k)))
                 }
               }}
-              aria-label="全选本页"
+              aria-label={t('dataTable.selectPage')}
             />
           ),
           width: 48,
@@ -354,7 +358,7 @@ export function DataTable<T>({
                     e.target.checked ? [...selected, key] : selected.filter((k) => k !== key),
                   )
                 }}
-                aria-label="选择行"
+                aria-label={t('dataTable.selectRow')}
                 onClick={(e) => e.stopPropagation()}
               />
             )
@@ -370,9 +374,9 @@ export function DataTable<T>({
   const visibilityToolbar = columnVisibility ? (
     <Popover
       trigger={
-        <Button size="sm" variant="ghost" aria-label="列显隐">
+        <Button size="sm" variant="ghost" aria-label={t('dataTable.columns')}>
           <Columns3 size={14} />
-          列
+          {t('dataTable.columns')}
         </Button>
       }
     >
@@ -403,7 +407,7 @@ export function DataTable<T>({
 
   if (total === 0) {
     const body = (
-      <EmptyState title={emptyTitle} description={emptyDesc} action={emptyAction} />
+      <EmptyState title={resolvedEmptyTitle} description={emptyDesc} action={emptyAction} />
     )
     return framed ? <Card>{body}</Card> : body
   }
@@ -419,7 +423,7 @@ export function DataTable<T>({
       {selected.length && bulkActions ? (
         <div className="data-table-bulk">
           <span>
-            已选 <strong>{selected.length}</strong> {unit}
+            {t('dataTable.selectedCount', { count: selected.length, unit: resolvedUnit })}
           </span>
           <div className="actions">{bulkActions}</div>
         </div>
@@ -448,19 +452,19 @@ export function DataTable<T>({
         <div className="data-table-footer">
           <div className="data-table-summary">
             <span>
-              共 <strong>{total}</strong> {unit}
+              {t('dataTable.totalSummary', { total, unit: resolvedUnit })}
               <span className="muted">
                 {' '}
-                · 显示 {from}–{to}
+                · {t('dataTable.showingRange', { from, to })}
               </span>
             </span>
             <span className="muted data-table-page-label">
-              第 {page} / {totalPages} 页
+              {t('dataTable.pageOf', { page, totalPages })}
             </span>
           </div>
           <div className="data-table-controls">
             <label className="data-table-size">
-              <span className="muted">每页</span>
+              <span className="muted">{t('dataTable.perPage')}</span>
               <Select
                 size="sm"
                 value={String(pageSize)}
@@ -476,20 +480,20 @@ export function DataTable<T>({
             </label>
             <div className="actions">
               <Button size="sm" disabled={page <= 1} onClick={() => setPage(1)}>
-                首页
+                {t('dataTable.firstPage')}
               </Button>
               <Button size="sm" disabled={page <= 1} onClick={() => setPage(Math.max(1, page - 1))}>
-                上一页
+                {t('pagination.prev')}
               </Button>
               <Button
                 size="sm"
                 disabled={page >= totalPages}
                 onClick={() => setPage(Math.min(totalPages, page + 1))}
               >
-                下一页
+                {t('pagination.next')}
               </Button>
               <Button size="sm" disabled={page >= totalPages} onClick={() => setPage(totalPages)}>
-                末页
+                {t('dataTable.lastPage')}
               </Button>
             </div>
           </div>

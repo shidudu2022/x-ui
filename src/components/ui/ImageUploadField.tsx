@@ -2,23 +2,24 @@ import { useId, useRef, useState, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { Button } from './Button'
 import { Field, Input } from './Field'
+import { useT } from '@/i18n'
 
 /**
  * Image field with preview, upload, clear, and optional URL paste.
  * Upload transport is injected — no API coupling.
  */
 export function ImageUploadField({
-  label = '图片',
+  label,
   value,
   onChange,
   onUpload,
   accept = 'image/png,image/jpeg,image/webp,image/gif',
-  hint = '支持 PNG / JPEG / WebP / GIF',
-  emptyLabel = '暂无',
-  uploadLabel = '上传图片',
-  clearLabel = '清除',
+  hint,
+  emptyLabel,
+  uploadLabel,
+  clearLabel,
   showUrlInput = true,
-  urlPlaceholder = '或粘贴图片 URL',
+  urlPlaceholder,
   resolveUrl,
   uploading: uploadingProp,
   disabled,
@@ -44,6 +45,13 @@ export function ImageUploadField({
   error?: ReactNode
   className?: string
 }) {
+  const t = useT()
+  const resolvedLabel = label ?? t('imageUpload.label')
+  const resolvedHint = hint ?? t('imageUpload.hint')
+  const resolvedEmptyLabel = emptyLabel ?? t('imageUpload.empty')
+  const resolvedUploadLabel = uploadLabel ?? t('imageUpload.upload')
+  const resolvedClearLabel = clearLabel ?? t('imageUpload.clear')
+  const resolvedUrlPlaceholder = urlPlaceholder ?? t('imageUpload.urlPlaceholder')
   const inputRef = useRef<HTMLInputElement>(null)
   const fieldId = useId()
   const [busy, setBusy] = useState(false)
@@ -62,7 +70,7 @@ export function ImageUploadField({
   }
 
   return (
-    <Field label={label} hint={hint} error={error} className={cn('image-upload-field', className)}>
+    <Field label={resolvedLabel} hint={resolvedHint} error={error} className={cn('image-upload-field', className)}>
       <div className="image-upload-field-body">
         <div
           className={cn('image-upload-preview', !preview && 'is-empty')}
@@ -71,7 +79,7 @@ export function ImageUploadField({
           {preview ? (
             <img src={preview} alt="" />
           ) : (
-            <span>{emptyLabel}</span>
+            <span>{resolvedEmptyLabel}</span>
           )}
         </div>
         <div className="image-upload-controls">
@@ -84,7 +92,7 @@ export function ImageUploadField({
               loading={uploading}
               onClick={() => inputRef.current?.click()}
             >
-              {uploading ? '上传中…' : uploadLabel}
+              {uploading ? t('imageUpload.uploading') : resolvedUploadLabel}
             </Button>
             {value ? (
               <Button
@@ -94,7 +102,7 @@ export function ImageUploadField({
                 disabled={disabled || uploading}
                 onClick={() => onChange?.(null)}
               >
-                {clearLabel}
+                {resolvedClearLabel}
               </Button>
             ) : null}
           </div>
@@ -103,7 +111,7 @@ export function ImageUploadField({
               id={fieldId}
               value={value ?? ''}
               disabled={disabled || uploading}
-              placeholder={urlPlaceholder}
+              placeholder={resolvedUrlPlaceholder}
               onChange={(e) => onChange?.(e.target.value.trim() || null)}
             />
           ) : null}

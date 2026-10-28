@@ -2,9 +2,10 @@ import { useRef, useState } from 'react'
 import { Camera } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { Avatar } from './Avatar'
+import { useT } from '@/i18n'
 
 export function AvatarUpload({
-  name = '用户',
+  name,
   src,
   onFile,
   className,
@@ -14,6 +15,8 @@ export function AvatarUpload({
   onFile?: (file: File) => void
   className?: string
 }) {
+  const t = useT()
+  const resolvedName = name ?? t('common.user')
   const inputRef = useRef<HTMLInputElement>(null)
   const [preview, setPreview] = useState<string | undefined>(src)
 
@@ -29,9 +32,9 @@ export function AvatarUpload({
       type="button"
       className={cn('avatar-upload', className)}
       onClick={() => inputRef.current?.click()}
-      aria-label="上传头像"
+      aria-label={t('avatarUpload.label')}
     >
-      <Avatar name={name} src={preview} size="lg" />
+      <Avatar name={resolvedName} src={preview} size="lg" />
       <span className="avatar-upload-badge" aria-hidden>
         <Camera size={14} />
       </span>

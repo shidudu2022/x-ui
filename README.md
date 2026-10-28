@@ -12,9 +12,24 @@ npm install @shidudu2022/x-ui
 ```
 
 ```tsx
-import { AppShell, Button, AppearanceProvider } from '@shidudu2022/x-ui'
+import {
+  AppShell,
+  Button,
+  AppearanceProvider,
+  LocaleProvider,
+} from '@shidudu2022/x-ui'
 import '@shidudu2022/x-ui/styles.css'
+
+export function App() {
+  return (
+    <LocaleProvider defaultLocale="en">
+      <AppearanceProvider>{/* … */}</AppearanceProvider>
+    </LocaleProvider>
+  )
+}
 ```
+
+`LocaleProvider` 默认英文；`locale="zh"` 或 ThemeDrawer 中的 Language 可切换中文。组件内置文案（分页、确认、日历「今日」等）走 `useT()` / `useLocale()`。
 
 本地构建库产物：`npm run build:lib`（输出 `dist/`）。发布：`npm publish --access public`。
 

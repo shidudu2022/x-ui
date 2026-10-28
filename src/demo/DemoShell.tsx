@@ -24,9 +24,12 @@ import {
 } from 'lucide-react'
 import { AppShell, Breadcrumbs, NavIcon, ThemeDrawer, UserMenu, type NavGroup } from '@/components/layout'
 import { Button, CommandPalette, Drawer, EmptyState, type CommandItem } from '@/components/ui'
+import { useLocale } from '@/i18n'
 import { CATEGORIES, categoryOfSlug, type CategoryId } from '@/demo/catalog/categories'
 import { catalogTitles, entriesOfCategory } from '@/demo/catalog/registry'
 import { TEMPLATE_GROUPS, templateTitles } from '@/demo/catalog/templates'
+import { useDemoMessages } from '@/demo/i18n/useDemoT'
+import { pickL10n } from '@/demo/i18n/types'
 import { useListSearch } from '@/lib/useListSearch'
 
 const CATEGORY_ICONS: Record<CategoryId, LucideIcon> = {
@@ -41,23 +44,6 @@ const CATEGORY_ICONS: Record<CategoryId, LucideIcon> = {
   shell: AppWindow,
 }
 
-const PAGE_TITLES: Record<string, string> = {
-  '/': '概览',
-  '/docs/getting-started': '快速开始',
-  '/docs/theming': '主题与外观',
-  '/docs/conventions': '开发约定',
-  '/docs/utilities': '工具与令牌 API',
-  '/foundations': '设计令牌',
-  '/templates': '页面模板',
-  '/patterns': '组合模式',
-}
-
-const titles: Record<string, string> = {
-  ...PAGE_TITLES,
-  ...templateTitles(),
-  ...catalogTitles(),
-}
-
 const LIST_SEARCH_PATH = '/examples/list'
 
 function ListSearchDrawer({
@@ -70,6 +56,7 @@ function ListSearchDrawer({
   const { q, setQuery } = useListSearch()
   const [draft, setDraft] = useState(q)
   const inputRef = useRef<HTMLInputElement>(null)
+  const dt = useDemoMessages()
 
   useEffect(() => {
     if (open) {
@@ -82,7 +69,7 @@ function ListSearchDrawer({
     <Drawer
       open={open}
       onClose={onClose}
-      title="搜索 · 集群"
+      title={dt('listSearch.title')}
       footer={
         <div className="actions">
           <Button
@@ -93,7 +80,7 @@ function ListSearchDrawer({
               onClose()
             }}
           >
-            清除
+            {dt('listSearch.clear')}
           </Button>
           <Button
             variant="primary"
@@ -102,7 +89,7 @@ function ListSearchDrawer({
               onClose()
             }}
           >
-            在列表中查看
+            {dt('listSearch.viewInList')}
           </Button>
         </div>
       }
@@ -113,7 +100,7 @@ function ListSearchDrawer({
             ref={inputRef}
             type="search"
             value={draft}
-            placeholder="名称 / 标签 / 状态…"
+            placeholder={dt('listSearch.placeholder')}
             onChange={(e) => setDraft(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
@@ -123,10 +110,10 @@ function ListSearchDrawer({
               if (e.key === 'Escape') onClose()
             }}
           />
-          <div className="hint">搜索结果会写入地址栏 ?q=，并过滤下方列表。</div>
+          <div className="hint">{dt('listSearch.hint')}</div>
         </div>
         {!draft.trim() ? (
-          <EmptyState title="开始搜索" description="输入关键字筛选集群列表" />
+          <EmptyState title={dt('listSearch.emptyTitle')} description={dt('listSearch.emptyDesc')} />
         ) : null}
       </div>
     </Drawer>
@@ -141,51 +128,70 @@ export function DemoShell() {
   const [themeOpen, setThemeOpen] = useState(false)
   const { q: listQ } = useListSearch()
   const isListPage = location.pathname === LIST_SEARCH_PATH
+  const { locale } = useLocale()
+  const dt = useDemoMessages()
+
+  const titles = useMemo<Record<string, string>>(
+    () => ({
+      '/': dt('page.overview'),
+      '/docs/getting-started': dt('page.gettingStarted'),
+      '/docs/theming': dt('page.theming'),
+      '/docs/conventions': dt('page.conventions'),
+      '/docs/utilities': dt('page.utilities'),
+      '/foundations': dt('page.designTokens'),
+      '/templates': dt('page.templates'),
+      '/patterns': dt('page.patterns'),
+      '/components': dt('page.allComponents'),
+      ...templateTitles(locale),
+      ...catalogTitles(),
+    }),
+    [dt, locale],
+  )
 
   const navGroups = useMemo<NavGroup[]>(
     () => [
       {
-        section: '开始',
+        section: dt('nav.start'),
         items: [
-          { to: '/', label: '概览', icon: <NavIcon icon={Sparkles} />, end: true },
-          { to: '/docs/getting-started', label: '快速开始', icon: <NavIcon icon={Rocket} /> },
-          { to: '/foundations', label: '设计令牌', icon: <NavIcon icon={Ruler} /> },
-          { to: '/docs/theming', label: '主题与外观', icon: <NavIcon icon={Palette} /> },
-          { to: '/docs/conventions', label: '开发约定', icon: <NavIcon icon={BookOpen} /> },
-          { to: '/docs/utilities', label: '工具与令牌 API', icon: <NavIcon icon={Wrench} /> },
+          { to: '/', label: dt('nav.overview'), icon: <NavIcon icon={Sparkles} />, end: true },
+          { to: '/docs/getting-started', label: dt('nav.gettingStarted'), icon: <NavIcon icon={Rocket} /> },
+          { to: '/foundations', label: dt('nav.designTokens'), icon: <NavIcon icon={Ruler} /> },
+          { to: '/docs/theming', label: dt('nav.theming'), icon: <NavIcon icon={Palette} /> },
+          { to: '/docs/conventions', label: dt('nav.conventions'), icon: <NavIcon icon={BookOpen} /> },
+          { to: '/docs/utilities', label: dt('nav.utilities'), icon: <NavIcon icon={Wrench} /> },
         ],
       },
       {
-        section: '组件',
-        items: [{ to: '/components', label: '全部组件', icon: <NavIcon icon={Boxes} />, end: true }],
+        section: dt('nav.components'),
+        items: [{ to: '/components', label: dt('nav.allComponents'), icon: <NavIcon icon={Boxes} />, end: true }],
       },
       ...CATEGORIES.map((c) => ({
-        section: '组件',
-        label: c.label,
+        section: dt('nav.components'),
+        label: pickL10n(locale, c.label),
         collapsible: true,
         icon: <NavIcon icon={CATEGORY_ICONS[c.id]} />,
         items: entriesOfCategory(c).map((e) => ({ to: `/components/${e.slug}`, label: e.name })),
       })),
       {
-        section: '页面模板',
+        section: dt('nav.templates'),
         items: [
-          { to: '/templates', label: '模板总览', icon: <NavIcon icon={LayoutGrid} />, end: true },
-          { to: '/patterns', label: '组合模式', icon: <NavIcon icon={LayoutTemplate} /> },
+          { to: '/templates', label: dt('nav.templatesOverview'), icon: <NavIcon icon={LayoutGrid} />, end: true },
+          { to: '/patterns', label: dt('nav.patterns'), icon: <NavIcon icon={LayoutTemplate} /> },
         ],
       },
       ...TEMPLATE_GROUPS.map((g) => ({
-        section: '页面模板',
-        label: g.label,
+        section: dt('nav.templates'),
+        label: pickL10n(locale, g.label),
         collapsible: true,
         icon: <NavIcon icon={g.icon} />,
         items: g.items.map((t) => ({
           to: t.to,
-          label: t.label,
+          label: pickL10n(locale, t.label),
           icon: <NavIcon icon={t.icon} />,
         })),
       })),
     ],
-    [],
+    [dt, locale],
   )
 
   const commands: CommandItem[] = useMemo(
@@ -193,21 +199,22 @@ export function DemoShell() {
       Object.entries(titles).map(([to, label]) => {
         const slug = to.startsWith('/components/') ? to.slice('/components/'.length) : ''
         const category = slug ? categoryOfSlug(slug) : undefined
+        const categoryLabel = category ? pickL10n(locale, category.label) : undefined
         return {
           id: to,
-          label: category ? `${label} · ${category.label}` : label,
+          label: categoryLabel ? `${label} · ${categoryLabel}` : label,
           group: slug
-            ? '组件'
+            ? dt('search.components')
             : to.startsWith('/examples') || to === '/templates' || to === '/patterns'
-              ? '模板'
+              ? dt('search.templates')
               : to.startsWith('/docs') || to === '/foundations' || to === '/'
-                ? '文档'
-                : '页面',
+                ? dt('search.docs')
+                : dt('search.pages'),
           type: 'page',
           onSelect: () => navigate(to),
         }
       }),
-    [navigate],
+    [navigate, titles, locale, dt],
   )
 
   useEffect(() => {
@@ -238,7 +245,7 @@ export function DemoShell() {
       if (category) {
         return {
           parent: {
-            label: `组件 · ${category.label}`,
+            label: `${dt('doc.components')} · ${pickL10n(locale, category.label)}`,
             to: `/components#cat-${category.id}`,
             icon: <NavIcon icon={CATEGORY_ICONS[category.id]} />,
           },
@@ -248,14 +255,14 @@ export function DemoShell() {
     }
     if (path.startsWith('/examples/')) {
       return {
-        parent: { label: '页面模板', to: '/templates', icon: <NavIcon icon={LayoutGrid} /> },
+        parent: { label: dt('nav.templates'), to: '/templates', icon: <NavIcon icon={LayoutGrid} /> },
         icon: undefined,
       }
     }
     return { parent: null, icon: activeNav?.icon }
-  }, [location.pathname, activeNav])
+  }, [location.pathname, activeNav, locale, dt])
 
-  const searchLabel = isListPage ? listQ || '搜索集群…' : '搜索组件 / 文档…'
+  const searchLabel = isListPage ? listQ || dt('search.searchClusters') : dt('search.searchComponentsOrDocs')
 
   return (
     <>
@@ -276,17 +283,17 @@ export function DemoShell() {
               <kbd className="search-trigger-kbd">⌘ K</kbd>
             </button>
             <button type="button" className="pill pill-action" onClick={() => setThemeOpen(true)}>
-              <span className="pill-dot" /> 外观
+              <span className="pill-dot" /> {dt('chrome.appearance')}
             </button>
           </>
         }
         sidebarFooter={
           <UserMenu
-            name="Demo"
-            role="designer"
+            name={dt('chrome.demoUser')}
+            role={dt('chrome.designer')}
             items={[
-              { id: 'theme', label: '外观设置', onSelect: () => setThemeOpen(true) },
-              { id: 'github', label: '文档', onSelect: () => undefined },
+              { id: 'theme', label: dt('chrome.appearanceSettings'), onSelect: () => setThemeOpen(true) },
+              { id: 'github', label: dt('chrome.docs'), onSelect: () => undefined },
             ]}
           />
         }
@@ -298,8 +305,8 @@ export function DemoShell() {
         open={cmdOpen}
         onClose={() => setCmdOpen(false)}
         items={commands}
-        title="快速跳转"
-        placeholder="搜索页面…"
+        title={dt('search.quickJump')}
+        placeholder={dt('search.searchPages')}
       />
       <ListSearchDrawer open={listSearchOpen} onClose={() => setListSearchOpen(false)} />
       <ThemeDrawer open={themeOpen} onClose={() => setThemeOpen(false)} />

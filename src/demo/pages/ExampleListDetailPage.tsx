@@ -18,7 +18,9 @@ import {
   type DataTableColumn,
 } from '@/components/ui'
 import { useListSearch } from '@/lib/useListSearch'
-import { type ClusterRow, filterFlat, FLAT_SEED } from './list/listSeed'
+import { useLocale } from '@/i18n'
+import { useDemoT } from '@/demo/i18n/useDemoT'
+import { type ClusterRow, filterFlat, FLAT_SEED, rowNote } from './list/listSeed'
 
 function statusTone(status: ClusterRow['status']) {
   return status === 'running' ? 'success' : status === 'degraded' ? 'warn' : 'neutral'
@@ -28,6 +30,8 @@ function statusTone(status: ClusterRow['status']) {
  * List → drawer detail: row action opens a Drawer with the selected record.
  */
 export function ExampleListDetailPage() {
+  const t = useDemoT()
+  const { locale } = useLocale()
   const { toast } = useToast()
   const { q, clear } = useListSearch()
   const [selected, setSelected] = useState<string[]>([])
@@ -38,51 +42,54 @@ export function ExampleListDetailPage() {
     return [
       {
         key: 'name',
-        header: '名称',
+        header: t('Name', '名称'),
         sortable: true,
         sortValue: (r) => r.name,
-        render: (r) => (
-          <CellStack>
-            <Text variant="strong" title={r.name}>
-              {r.name}
-            </Text>
-            <Muted as="div" title={r.note || undefined}>
-              {emptyCell(r.note)}
-            </Muted>
-          </CellStack>
-        ),
+        render: (r) => {
+          const note = rowNote(locale, r.note)
+          return (
+            <CellStack>
+              <Text variant="strong" title={r.name}>
+                {r.name}
+              </Text>
+              <Muted as="div" title={note || undefined}>
+                {emptyCell(note)}
+              </Muted>
+            </CellStack>
+          )
+        },
       },
       {
         key: 'status',
-        header: '状态',
+        header: t('Status', '状态'),
         sortable: true,
         sortValue: (r) => r.status,
         render: (r) => <Badge tone={statusTone(r.status)}>{r.status}</Badge>,
       },
       {
         key: 'version',
-        header: '版本',
+        header: t('Version', '版本'),
         sortable: true,
         sortValue: (r) => r.version,
         render: (r) => <span className="mono">{emptyCell(r.version)}</span>,
       },
       {
         key: 'nodes',
-        header: '节点',
+        header: t('Nodes', '节点'),
         sortable: true,
         sortValue: (r) => r.nodes,
         render: (r) => r.nodes,
       },
       {
         key: 'tags',
-        header: '标签',
+        header: t('Tags', '标签'),
         render: (r) => (
           <TagGroup>
             {r.tags
-              .filter((t) => t.trim())
-              .map((t) => (
-                <Tag key={t} tone="neutral">
-                  {t}
+              .filter((tag) => tag.trim())
+              .map((tag) => (
+                <Tag key={tag} tone="neutral">
+                  {tag}
                 </Tag>
               ))}
           </TagGroup>
@@ -90,29 +97,32 @@ export function ExampleListDetailPage() {
       },
       {
         key: 'actions',
-        header: '操作',
+        header: t('Actions', '操作'),
         emptyPlaceholder: false,
         render: (r) => (
           <div className="actions" onClick={(e) => e.stopPropagation()}>
             <Button size="sm" variant="primary" onClick={() => setDetail(r)}>
-              详情
+              {t('Detail', '详情')}
             </Button>
-            <Button size="sm" onClick={() => toast(`诊断 ${r.name}（示例）`, 'success')}>
-              诊断
+            <Button size="sm" onClick={() => toast(t(`Diagnose ${r.name} (demo)`, `诊断 ${r.name}（示例）`), 'success')}>
+              {t('Diagnose', '诊断')}
             </Button>
           </div>
         ),
       },
     ]
-  }, [toast])
+  }, [locale, t, toast])
 
   return (
     <ListPage
-      title="列表详情"
-      description="点击「详情」从右侧抽屉查看记录；适合扫列表后快速阅览，无需跳转整页。"
+      title={t('List with detail drawer', '列表详情')}
+      description={t(
+        'Click Detail to open a drawer; scan the list without a full-page navigation.',
+        '点击「详情」从右侧抽屉查看记录；适合扫列表后快速阅览，无需跳转整页。',
+      )}
       actions={
-        <Button variant="primary" onClick={() => toast('打开创建流程（示例）', 'info')}>
-          创建集群
+        <Button variant="primary" onClick={() => toast(t('Open create flow (demo)', '打开创建流程（示例）'), 'info')}>
+          {t('Create cluster', '创建集群')}
         </Button>
       }
     >
@@ -120,39 +130,43 @@ export function ExampleListDetailPage() {
         query={q}
         total={FLAT_SEED.length}
         matched={filtered.length}
-        unit="个"
+        unit={t('items', '个')}
         onClear={clear}
       />
       <DataTable
         columns={columns}
         rows={filtered}
         rowKey={(r) => r.id}
-        unit="个"
+        unit={t('items', '个')}
         selectedKeys={selected}
         onSelectedKeysChange={setSelected}
         defaultSortKey="name"
         pageSize={10}
-        emptyTitle={q ? '无匹配集群' : '还没有集群'}
-        emptyDesc={q ? `没有与「${q}」匹配的结果。` : '创建后即可在此浏览并打开详情抽屉。'}
+        emptyTitle={q ? t('No matching clusters', '无匹配集群') : t('No clusters yet', '还没有集群')}
+        emptyDesc={
+          q
+            ? t(`No results match “${q}”.`, `没有与「${q}」匹配的结果。`)
+            : t('Create a cluster to browse and open the detail drawer here.', '创建后即可在此浏览并打开详情抽屉。')
+        }
         onRowClick={(r) => setDetail(r)}
       />
 
       <Drawer
         open={Boolean(detail)}
         onClose={() => setDetail(null)}
-        title={detail?.name ?? '详情'}
+        title={detail?.name ?? t('Detail', '详情')}
         size="lg"
         footer={
           <div className="actions">
-            <Button onClick={() => setDetail(null)}>关闭</Button>
+            <Button onClick={() => setDetail(null)}>{t('Close', '关闭')}</Button>
             <Button
               variant="primary"
               onClick={() => {
-                if (detail) toast(`已打开 ${detail.name} 完整页（示例）`, 'info')
+                if (detail) toast(t(`Opened full page for ${detail.name} (demo)`, `已打开 ${detail.name} 完整页（示例）`), 'info')
                 setDetail(null)
               }}
             >
-              查看完整页
+              {t('View full page', '查看完整页')}
             </Button>
           </div>
         }
@@ -164,22 +178,25 @@ export function ExampleListDetailPage() {
               <Badge tone={statusTone(detail.status)} size="sm">
                 {detail.status}
               </Badge>
-              <Muted>{emptyCell(detail.note)}</Muted>
+              <Muted>{emptyCell(rowNote(locale, detail.note))}</Muted>
             </MetaRow>
             <DescriptionList
               items={[
                 { label: 'ID', value: <span className="mono">{detail.id}</span> },
-                { label: '版本', value: <span className="mono">{emptyCell(detail.version)}</span> },
-                { label: '节点', value: detail.nodes },
                 {
-                  label: '标签',
+                  label: t('Version', '版本'),
+                  value: <span className="mono">{emptyCell(detail.version)}</span>,
+                },
+                { label: t('Nodes', '节点'), value: detail.nodes },
+                {
+                  label: t('Tags', '标签'),
                   value: emptyCell(
                     <TagGroup>
                       {detail.tags
-                        .filter((t) => t.trim())
-                        .map((t) => (
-                          <Tag key={t} tone="neutral">
-                            {t}
+                        .filter((tag) => tag.trim())
+                        .map((tag) => (
+                          <Tag key={tag} tone="neutral">
+                            {tag}
                           </Tag>
                         ))}
                     </TagGroup>,
@@ -188,7 +205,10 @@ export function ExampleListDetailPage() {
               ]}
             />
             <p className="muted" style={{ margin: 0, fontSize: 12 }}>
-              抽屉适合摘要与快捷操作；复杂编辑可再进完整详情页。
+              {t(
+                'Drawers suit summaries and quick actions; complex edits can use a full detail page.',
+                '抽屉适合摘要与快捷操作；复杂编辑可再进完整详情页。',
+              )}
             </p>
           </div>
         ) : null}

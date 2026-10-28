@@ -1,27 +1,38 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
 import { PageHeader } from '@/components/ui'
+import { useLocale } from '@/i18n'
 import { cn } from '@/lib/cn'
+import { useDemoMessages } from '../i18n/useDemoT'
 
 type TocItem = { id: string; label: string }
 
 /** Scan `.showcase-section > h2` inside the page and keep the active one in sync with scroll. */
-function useToc(rootRef: React.RefObject<HTMLElement | null>, routeKey: string) {
+function useToc(rootRef: React.RefObject<HTMLElement | null>, routeKey: string, locale: string) {
   const [items, setItems] = useState<TocItem[]>([])
   const [active, setActive] = useState('')
 
   useEffect(() => {
     const root = rootRef.current
     if (!root) return
-    const heads = Array.from(root.querySelectorAll<HTMLElement>('.showcase-section > h2'))
-    const next = heads.map((el, i) => {
-      const id = `sec-${i + 1}`
-      el.id = id
-      return { id, label: el.textContent ?? '' }
+    // Defer one frame so locale-switched headings have committed.
+    const raf = requestAnimationFrame(() => {
+      const heads = Array.from(root.querySelectorAll<HTMLElement>('.showcase-section > h2'))
+      const next = heads.map((el, i) => {
+        const id = `sec-${i + 1}`
+        el.id = id
+        return { id, label: el.textContent ?? '' }
+      })
+      setItems(next)
+      setActive((prev) => (next.some((n) => n.id === prev) ? prev : (next[0]?.id ?? '')))
     })
-    setItems(next)
-    setActive(next[0]?.id ?? '')
+    return () => cancelAnimationFrame(raf)
+  }, [rootRef, routeKey, locale])
 
+  useEffect(() => {
+    const root = rootRef.current
+    if (!root) return
+    const heads = Array.from(root.querySelectorAll<HTMLElement>('.showcase-section > h2'))
     if (!heads.length) return
     const io = new IntersectionObserver(
       (entries) => {
@@ -34,14 +45,14 @@ function useToc(rootRef: React.RefObject<HTMLElement | null>, routeKey: string) 
     )
     heads.forEach((h) => io.observe(h))
     return () => io.disconnect()
-  }, [rootRef, routeKey])
+  }, [rootRef, routeKey, locale, items])
 
   return { items, active, setActive }
 }
 
 /**
  * Documentation page frame: eyebrow + PageHeader, content, and a sticky
- * "本页目录" built from the section headings.
+ * "On this page" built from the section headings.
  */
 export function DocPage({
   eyebrow,
@@ -61,9 +72,11 @@ export function DocPage({
   children: ReactNode
 }) {
   const { pathname } = useLocation()
+  const { locale } = useLocale()
   const mainRef = useRef<HTMLDivElement>(null)
-  const { items, active, setActive } = useToc(mainRef, pathname)
+  const { items, active, setActive } = useToc(mainRef, pathname, locale)
   const showToc = toc && items.length > 1
+  const dt = useDemoMessages()
 
   return (
     <div className={cn('doc-page', showToc && 'has-toc', className)}>
@@ -73,8 +86,8 @@ export function DocPage({
         {children}
       </div>
       {showToc ? (
-        <nav className="doc-toc" aria-label="本页目录">
-          <div className="doc-toc-title">本页目录</div>
+        <nav className="doc-toc" aria-label={dt('doc.toc')}>
+          <div className="doc-toc-title">{dt('doc.toc')}</div>
           <ul>
             {items.map((it) => (
               <li key={it.id}>

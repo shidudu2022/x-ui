@@ -12,8 +12,10 @@ import {
   Textarea,
   useToast,
 } from '@/components/ui'
+import { useDemoT } from '@/demo/i18n/useDemoT'
 
 export function ExampleFormPage() {
+  const t = useDemoT()
   const { toast } = useToast()
   const [name, setName] = useState('demo-cluster')
   const [displayName, setDisplayName] = useState('')
@@ -24,55 +26,62 @@ export function ExampleFormPage() {
 
   return (
     <FormPage
-      title="系统设置"
-      description="登录安全与平台偏好。表单页使用固定内容宽度（760px），便于阅读与填写。"
+      title={t('System settings', '系统设置')}
+      description={t(
+        'Login security and platform preferences. Form pages use a fixed content width (760px) for readability.',
+        '登录安全与平台偏好。表单页使用固定内容宽度（760px），便于阅读与填写。',
+      )}
     >
       <div className="stack">
-        <SectionCard title="基本信息">
+        <SectionCard title={t('Basic info', '基本信息')}>
           <div className="form-grid">
-            <Field label="名称" htmlFor="ex-name" hint="小写字母、数字、中划线">
+            <Field
+              label={t('Name', '名称')}
+              htmlFor="ex-name"
+              hint={t('Lowercase letters, digits, hyphens', '小写字母、数字、中划线')}
+            >
               <Input id="ex-name" value={name} onChange={(e) => setName(e.target.value)} />
             </Field>
-            <Field label="显示名" htmlFor="ex-display">
+            <Field label={t('Display name', '显示名')} htmlFor="ex-display">
               <Input
                 id="ex-display"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
-                placeholder="可选"
+                placeholder={t('Optional', '可选')}
               />
             </Field>
-            <Field label="地区" htmlFor="ex-region">
+            <Field label={t('Region', '地区')} htmlFor="ex-region">
               <Select
                 block
                 value={region}
                 onChange={setRegion}
                 options={[
-                  { value: 'cn', label: '中国镜像' },
+                  { value: 'cn', label: t('China mirror', '中国镜像') },
                   { value: 'global', label: 'Global' },
                 ]}
               />
             </Field>
-            <Field label="备注" htmlFor="ex-notes" className="full">
+            <Field label={t('Notes', '备注')} htmlFor="ex-notes" className="full">
               <Textarea
                 id="ex-notes"
                 rows={3}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder="机房 / 用途说明"
+                placeholder={t('Datacenter / purpose', '机房 / 用途说明')}
               />
             </Field>
           </div>
         </SectionCard>
 
-        <SectionCard title="登录安全">
+        <SectionCard title={t('Login security', '登录安全')}>
           <Checkbox
             label={
               <span>
                 <Text as="strong" variant="strong">
-                  强制谷歌验证
+                  {t('Require Google Authenticator', '强制谷歌验证')}
                 </Text>
                 <Text as="span" variant="caption" style={{ display: 'block' }}>
-                  所有管理员登录必须提供 TOTP
+                  {t('All admin sign-ins must provide TOTP', '所有管理员登录必须提供 TOTP')}
                 </Text>
               </span>
             }
@@ -80,20 +89,21 @@ export function ExampleFormPage() {
             onChange={(e) => setTotp(e.target.checked)}
           />
           <Switch
-            label="定时巡检"
+            label={t('Scheduled inspection', '定时巡检')}
             checked={inspect}
             onChange={(e) => setInspect(e.target.checked)}
           />
           <div className="actions">
-            <Button variant="primary" onClick={() => toast('设置已保存（示例）', 'success')}>
-              保存
+            <Button variant="primary" onClick={() => toast(t('Settings saved (demo)', '设置已保存（示例）'), 'success')}>
+              {t('Save', '保存')}
             </Button>
-            <Button onClick={() => toast('已重置（示例）', 'info')}>重置</Button>
+            <Button onClick={() => toast(t('Reset (demo)', '已重置（示例）'), 'info')}>{t('Reset', '重置')}</Button>
           </div>
         </SectionCard>
 
         <Text variant="caption">
-          布局类名：<code>.page.page-narrow</code>（max-width: 760px; margin-inline: auto）
+          {t('Layout class:', '布局类名：')} <code>.page.page-narrow</code>
+          {t(' (max-width: 760px; margin-inline: auto)', '（max-width: 760px; margin-inline: auto）')}
         </Text>
       </div>
     </FormPage>

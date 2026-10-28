@@ -20,8 +20,10 @@ import {
   ToggleButton,
   useToast,
 } from '@/components/ui'
+import { useDemoT } from '@/demo/i18n/useDemoT'
 
 export function ExampleDetailPage() {
+  const t = useDemoT()
   const { toast } = useToast()
   const [tab, setTab] = useState<'overview' | 'workloads' | 'meta'>('overview')
   const [autoRefresh, setAutoRefresh] = useState(true)
@@ -32,61 +34,61 @@ export function ExampleDetailPage() {
         title="demo-cluster"
         description={
           <>
-            生产边缘节点 · <Badge tone="warn">degraded</Badge>
+            {t('Production edge node', '生产边缘节点')} · <Badge tone="warn">degraded</Badge>
             <Mono> · v1.31.3+k3s1</Mono>
           </>
         }
         actions={
           <ToggleButton checked={autoRefresh} onClick={() => setAutoRefresh((v) => !v)}>
-            自动刷新
+            {t('Auto refresh', '自动刷新')}
           </ToggleButton>
         }
         actionItems={[
           {
             id: 'retry',
-            label: '安装/重试',
+            label: t('Install / retry', '安装/重试'),
             variant: 'primary',
-            onClick: () => toast('安装/重试（示例）', 'info'),
+            onClick: () => toast(t('Install / retry (demo)', '安装/重试（示例）'), 'info'),
           },
           {
             id: 'delete',
-            label: '删除',
+            label: t('Delete', '删除'),
             variant: 'danger',
-            onClick: () => toast('打开删除确认（示例）', 'error'),
+            onClick: () => toast(t('Open delete confirm (demo)', '打开删除确认（示例）'), 'error'),
           },
           {
             id: 'kubeconfig',
             label: 'kubeconfig',
             overflow: true,
-            onClick: () => toast('下载 kubeconfig（示例）', 'info'),
+            onClick: () => toast(t('Download kubeconfig (demo)', '下载 kubeconfig（示例）'), 'info'),
           },
           {
             id: 'diagnose',
-            label: '诊断',
+            label: t('Diagnose', '诊断'),
             overflow: true,
-            onClick: () => toast('诊断已开始（示例）', 'success'),
+            onClick: () => toast(t('Diagnose started (demo)', '诊断已开始（示例）'), 'success'),
           },
           {
             id: 'upgrade',
-            label: '升级',
+            label: t('Upgrade', '升级'),
             overflow: true,
-            onClick: () => toast('打开升级（示例）', 'info'),
+            onClick: () => toast(t('Open upgrade (demo)', '打开升级（示例）'), 'info'),
           },
         ]}
-        overflowLabel="更多"
+        overflowLabel={t('More', '更多')}
       />
 
       <div style={{ marginBottom: 16 }}>
-        <Banner>维护模式进行中，危险操作已锁定。</Banner>
+        <Banner>{t('Maintenance in progress; dangerous actions are locked.', '维护模式进行中，危险操作已锁定。')}</Banner>
       </div>
 
       <PageTabs
         value={tab}
         onChange={(id) => setTab(id as typeof tab)}
         items={[
-          { id: 'overview', label: '概览' },
-          { id: 'workloads', label: '工作负载' },
-          { id: 'meta', label: '元数据' },
+          { id: 'overview', label: t('Overview', '概览') },
+          { id: 'workloads', label: t('Workloads', '工作负载') },
+          { id: 'meta', label: t('Metadata', '元数据') },
         ]}
       />
 
@@ -96,14 +98,14 @@ export function ExampleDetailPage() {
             <StatusBar
               left={
                 <>
-                  <Text variant="strong">节点</Text>
-                  <Muted style={{ marginLeft: 8 }}>实时状态</Muted>
+                  <Text variant="strong">{t('Nodes', '节点')}</Text>
+                  <Muted style={{ marginLeft: 8 }}>{t('Live status', '实时状态')}</Muted>
                 </>
               }
               right={
                 <>
-                  <Button size="sm">添加 Server</Button>
-                  <Button size="sm">添加 Agent</Button>
+                  <Button size="sm">{t('Add Server', '添加 Server')}</Button>
+                  <Button size="sm">{t('Add Agent', '添加 Agent')}</Button>
                 </>
               }
             />
@@ -114,11 +116,11 @@ export function ExampleDetailPage() {
               ]}
               rowKey={(r) => r.id}
               columns={[
-                { key: 'role', header: '角色', render: (r) => r.role },
-                { key: 'host', header: '主机', render: (r) => <Mono>{r.host}</Mono> },
+                { key: 'role', header: t('Role', '角色'), render: (r) => r.role },
+                { key: 'host', header: t('Host', '主机'), render: (r) => <Mono>{r.host}</Mono> },
                 {
                   key: 'status',
-                  header: '状态',
+                  header: t('Status', '状态'),
                   render: (r) => (
                     <Badge tone={r.status === 'Ready' ? 'success' : 'danger'}>{r.status}</Badge>
                   ),
@@ -127,14 +129,14 @@ export function ExampleDetailPage() {
             />
           </Card>
           <div className="stack">
-            <SectionCard title="概要">
+            <SectionCard title={t('Summary', '概要')}>
               <MetricGrid>
                 <Metric label="API" value="https://10.0.0.1:6443" />
-                <Metric label="标签" value="prod, edge" />
+                <Metric label={t('Tags', '标签')} value="prod, edge" />
               </MetricGrid>
             </SectionCard>
             <Card>
-              <StatusBar left={<Text variant="strong">最近作业</Text>} />
+              <StatusBar left={<Text variant="strong">{t('Recent jobs', '最近作业')}</Text>} />
               <Table
                 rows={[
                   { id: 'j1', type: 'diagnose', status: 'success' },
@@ -142,10 +144,10 @@ export function ExampleDetailPage() {
                 ]}
                 rowKey={(r) => r.id}
                 columns={[
-                  { key: 'type', header: '类型', render: (r) => r.type },
+                  { key: 'type', header: t('Type', '类型'), render: (r) => r.type },
                   {
                     key: 'status',
-                    header: '状态',
+                    header: t('Status', '状态'),
                     render: (r) => (
                       <Badge tone={r.status === 'success' ? 'success' : 'info'}>{r.status}</Badge>
                     ),
@@ -182,18 +184,18 @@ export function ExampleDetailPage() {
       {tab === 'meta' ? (
         <div className="page-narrow" style={{ margin: 0 }}>
           <SectionCard>
-            <Field label="显示名" htmlFor="meta-name">
-              <Input id="meta-name" defaultValue="生产边缘" />
+            <Field label={t('Display name', '显示名')} htmlFor="meta-name">
+              <Input id="meta-name" defaultValue={t('Production edge', '生产边缘')} />
             </Field>
-            <Field label="标签" htmlFor="meta-tags" hint="逗号分隔">
+            <Field label={t('Tags', '标签')} htmlFor="meta-tags" hint={t('Comma-separated', '逗号分隔')}>
               <Input id="meta-tags" defaultValue="prod, edge" />
             </Field>
-            <Field label="备注" htmlFor="meta-notes">
-              <Textarea id="meta-notes" rows={3} defaultValue="机房 A" />
+            <Field label={t('Notes', '备注')} htmlFor="meta-notes">
+              <Textarea id="meta-notes" rows={3} defaultValue={t('Datacenter A', '机房 A')} />
             </Field>
             <div className="actions">
-              <Button variant="primary" onClick={() => toast('元数据已保存（示例）', 'success')}>
-                保存
+              <Button variant="primary" onClick={() => toast(t('Metadata saved (demo)', '元数据已保存（示例）'), 'success')}>
+                {t('Save', '保存')}
               </Button>
             </div>
           </SectionCard>

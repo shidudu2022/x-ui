@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { ChevronDown, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 
 /** Indent + expand control for tree DataTable first column. */
 export function TreeTableCell({
@@ -16,6 +17,7 @@ export function TreeTableCell({
   onToggle?: () => void
   children: ReactNode
 }) {
+  const t = useT()
   return (
     <div className="tree-table-cell" style={{ paddingLeft: depth * 16 }}>
       {expandable ? (
@@ -23,7 +25,7 @@ export function TreeTableCell({
           type="button"
           className="pod-tree-toggle"
           aria-expanded={expanded}
-          aria-label={expanded ? '折叠' : '展开'}
+          aria-label={expanded ? t('treeTable.collapse') : t('treeTable.expand')}
           onClick={(e) => {
             e.stopPropagation()
             onToggle?.()

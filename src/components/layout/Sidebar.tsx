@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { Tooltip } from '@/components/ui/Tooltip'
+import { useT } from '@/i18n'
 import { Brand } from './Brand'
 
 export type NavItem = {
@@ -50,6 +51,7 @@ export function Sidebar({
   onToggleCollapse?: () => void
   className?: string
 }) {
+  const t = useT()
   const navRef = useRef<HTMLElement>(null)
   const { pathname } = useLocation()
   /** Manual open/close overrides keyed by group label; cleared for the active group on navigation. */
@@ -116,14 +118,14 @@ export function Sidebar({
           <button
             type="button"
             className="nav-scroll-btn nav-scroll-up"
-            aria-label="向上滚动菜单"
+            aria-label={t('sidebar.scrollUp')}
             onClick={() => scrollBy(-SCROLL_STEP)}
           >
             <ChevronUp size={14} strokeWidth={2} />
           </button>
         ) : null}
 
-        <nav ref={navRef} className="nav" aria-label="主导航">
+        <nav ref={navRef} className="nav" aria-label={t('sidebar.mainNav')}>
           {groups.map((group, gi) => {
             const hasActive = group.items.some((it) => matchesPath(pathname, it))
             const key = group.label ?? `group-${gi}`
@@ -211,7 +213,7 @@ export function Sidebar({
           <button
             type="button"
             className="nav-scroll-btn nav-scroll-down"
-            aria-label="向下滚动菜单"
+            aria-label={t('sidebar.scrollDown')}
             onClick={() => scrollBy(SCROLL_STEP)}
           >
             <ChevronDown size={14} strokeWidth={2} />
@@ -224,13 +226,13 @@ export function Sidebar({
       {onToggleCollapse ? (
         <Tooltip
           className="sidebar-collapse"
-          content={collapsed ? '展开侧栏' : '收起侧栏'}
+          content={collapsed ? t('sidebar.expand') : t('sidebar.collapse')}
           side="right"
         >
           <button
             type="button"
             className="sidebar-collapse-btn"
-            aria-label={collapsed ? '展开侧栏' : '收起侧栏'}
+            aria-label={collapsed ? t('sidebar.expand') : t('sidebar.collapse')}
             aria-pressed={collapsed}
             onClick={onToggleCollapse}
           >

@@ -7,6 +7,7 @@ import {
 import { Search, X } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { Spinner } from './Spinner'
+import { useT } from '@/i18n'
 
 type ControlSize = 'sm' | 'md' | 'lg'
 
@@ -41,10 +42,12 @@ export function SearchInput({
   defaultValue,
   onChange,
   disabled,
-  placeholder = '搜索…',
+  placeholder,
   'aria-label': ariaLabel,
   ...rest
 }: SearchInputProps) {
+  const tr = useT()
+  const resolvedPlaceholder = placeholder ?? tr('search.placeholder')
   const uid = useId()
   const inputId = id ?? uid
   const raw = value ?? defaultValue ?? ''
@@ -93,8 +96,8 @@ export function SearchInput({
         defaultValue={defaultValue}
         onChange={onChange}
         disabled={disabled}
-        placeholder={placeholder}
-        aria-label={ariaLabel ?? (typeof placeholder === 'string' ? placeholder : '搜索')}
+        placeholder={resolvedPlaceholder}
+        aria-label={ariaLabel ?? resolvedPlaceholder}
         aria-invalid={invalid || undefined}
       />
       {loading ? (
@@ -106,7 +109,7 @@ export function SearchInput({
         <button
           type="button"
           className="search-input-clear"
-          aria-label="清除"
+          aria-label={tr('search.clear')}
           tabIndex={-1}
           onClick={clear}
         >

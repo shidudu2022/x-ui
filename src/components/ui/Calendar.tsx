@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useLocale } from '@/i18n'
 
 export type CalendarEvent = {
   date: string
@@ -8,7 +9,9 @@ export type CalendarEvent = {
   tone?: 'primary' | 'success' | 'warn' | 'danger'
 }
 
-const WEEK = ['日', '一', '二', '三', '四', '五', '六']
+function toIso(d: Date) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
 
 export function Calendar({
   events = [],
@@ -17,6 +20,7 @@ export function Calendar({
   events?: CalendarEvent[]
   className?: string
 }) {
+  const { t, weekdays } = useLocale()
   const [cursor, setCursor] = useState(() => new Date())
   const y = cursor.getFullYear()
   const m = cursor.getMonth()
@@ -32,25 +36,34 @@ export function Calendar({
   }, [events])
 
   const now = new Date()
-  const todayIso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+  const todayIso = toIso(now)
   const days = new Date(y, m + 1, 0).getDate()
   const start = new Date(y, m, 1).getDay()
+  const viewingToday = y === now.getFullYear() && m === now.getMonth()
 
   return (
     <div className={cn('calendar', className)}>
       <div className="calendar-head">
-        <button type="button" className="btn btn-ghost btn-sm" aria-label="上一月" onClick={() => setCursor(new Date(y, m - 1, 1))}>
+        <button
+          type="button"
+          className="btn btn-ghost btn-sm"
+          aria-label={t('calendar.prevMonth')}
+          onClick={() => setCursor(new Date(y, m - 1, 1))}
+        >
           <ChevronLeft size={16} />
         </button>
-        <strong>
-          {y} 年 {m + 1} 月
-        </strong>
-        <button type="button" className="btn btn-ghost btn-sm" aria-label="下一月" onClick={() => setCursor(new Date(y, m + 1, 1))}>
+        <strong>{t('calendar.yearMonth', { year: y, month: m + 1 })}</strong>
+        <button
+          type="button"
+          className="btn btn-ghost btn-sm"
+          aria-label={t('calendar.nextMonth')}
+          onClick={() => setCursor(new Date(y, m + 1, 1))}
+        >
           <ChevronRight size={16} />
         </button>
       </div>
       <div className="calendar-grid">
-        {WEEK.map((w) => (
+        {weekdays.map((w) => (
           <div key={w} className="calendar-weekday" aria-hidden>
             {w}
           </div>
@@ -75,6 +88,16 @@ export function Calendar({
             </div>
           )
         })}
+      </div>
+      <div className="calendar-foot">
+        <button
+          type="button"
+          className="btn btn-ghost btn-sm calendar-today-btn"
+          disabled={viewingToday}
+          onClick={() => setCursor(new Date(now.getFullYear(), now.getMonth(), 1))}
+        >
+          {t('calendar.today')}
+        </button>
       </div>
     </div>
   )

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { AlertCircle, Inbox, WifiOff } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 import { Button } from './Button'
 import { EmptyState } from './EmptyState'
 import { Skeleton, SkeletonCard, SkeletonTable } from './Skeleton'
@@ -12,14 +13,14 @@ export type ResourceStatus = 'idle' | 'loading' | 'empty' | 'error' | 'offline'
 export function ResourceState({
   status,
   loadingVariant = 'spinner',
-  emptyTitle = '暂无数据',
+  emptyTitle,
   emptyDescription,
   emptyAction,
-  errorTitle = '加载失败',
-  errorDescription = '请稍后重试。',
+  errorTitle,
+  errorDescription,
   onRetry,
-  offlineTitle = '网络不可用',
-  offlineDescription = '检查连接后重试。',
+  offlineTitle,
+  offlineDescription,
   children,
   className,
 }: {
@@ -36,6 +37,12 @@ export function ResourceState({
   children?: ReactNode
   className?: string
 }) {
+  const t = useT()
+  const resolvedEmptyTitle = emptyTitle ?? t('resourceState.emptyTitle')
+  const resolvedErrorTitle = errorTitle ?? t('resourceState.errorTitle')
+  const resolvedErrorDescription = errorDescription ?? t('resourceState.errorDescription')
+  const resolvedOfflineTitle = offlineTitle ?? t('resourceState.offlineTitle')
+  const resolvedOfflineDescription = offlineDescription ?? t('resourceState.offlineDescription')
   if (status === 'idle' || status === 'loading') {
     if (status === 'idle') return children ? <>{children}</> : null
     return (
@@ -59,7 +66,7 @@ export function ResourceState({
     return (
       <EmptyState
         className={cn('resource-state', className)}
-        title={emptyTitle}
+        title={resolvedEmptyTitle}
         description={emptyDescription}
         action={emptyAction}
       />
@@ -74,14 +81,14 @@ export function ResourceState({
       title={
         <span className="resource-state-title">
           <Icon size={18} aria-hidden />
-          {isOffline ? offlineTitle : errorTitle}
+          {isOffline ? resolvedOfflineTitle : resolvedErrorTitle}
         </span>
       }
-      description={isOffline ? offlineDescription : errorDescription}
+      description={isOffline ? resolvedOfflineDescription : resolvedErrorDescription}
       action={
         onRetry ? (
           <Button size="sm" variant="secondary" onClick={onRetry}>
-            重试
+            {t('resourceState.retry')}
           </Button>
         ) : undefined
       }

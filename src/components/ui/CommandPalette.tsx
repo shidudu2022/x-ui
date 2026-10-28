@@ -3,6 +3,7 @@ import { cn } from '@/lib/cn'
 import { Drawer } from './Drawer'
 import { SearchInput } from './SearchInput'
 import { Spinner } from './Spinner'
+import { useT } from '@/i18n'
 
 export type CommandItem = {
   id: string
@@ -38,8 +39,8 @@ export function CommandPalette({
   open,
   onClose,
   items,
-  placeholder = '搜索…',
-  title = '搜索',
+  placeholder,
+  title,
   /** Async / remote results; when provided, replaces local filter for non-empty query */
   onQueryChange,
   loading = false,
@@ -54,6 +55,11 @@ export function CommandPalette({
   loading?: boolean
   recent?: boolean
 }) {
+  const t = useT()
+  const resolvedPlaceholder = placeholder ?? t('command.placeholder')
+  const resolvedTitle = title ?? t('command.title')
+  const recentLabel = t('command.recent')
+  const resultsLabel = t('command.results')
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)
   const [recentIds, setRecentIds] = useState<string[]>([])
@@ -75,7 +81,7 @@ export function CommandPalette({
       const recentItems = recentIds.map((id) => map.get(id)).filter(Boolean) as CommandItem[]
       const rest = items.filter((i) => !recentIds.includes(i.id))
       return [
-        ...recentItems.map((i) => ({ ...i, group: i.group ?? '最近使用' })),
+        ...recentItems.map((i) => ({ ...i, group: i.group ?? recentLabel })),
         ...rest,
       ]
     }
@@ -85,21 +91,21 @@ export function CommandPalette({
         item.type?.toLowerCase().includes(q) ||
         item.group?.toLowerCase().includes(q),
     )
-  }, [items, onQueryChange, query, recent, recentIds])
+  }, [items, onQueryChange, query, recent, recentIds, recentLabel])
 
   const groups = useMemo(() => {
     const map = new Map<string, CommandItem[]>()
     for (const item of filtered) {
-      const g = item.group ?? '结果'
+      const g = item.group ?? resultsLabel
       if (!map.has(g)) map.set(g, [])
       map.get(g)!.push(item)
     }
     return [...map.entries()].sort(([a], [b]) => {
-      if (a === '最近使用') return -1
-      if (b === '最近使用') return 1
-      return a.localeCompare(b, 'zh')
+      if (a === recentLabel) return -1
+      if (b === recentLabel) return 1
+      return a.localeCompare(b)
     })
-  }, [filtered])
+  }, [filtered, recentLabel, resultsLabel])
 
   const flat = filtered
 
@@ -133,7 +139,7 @@ export function CommandPalette({
   let flatIndex = -1
 
   return (
-    <Drawer open={open} onClose={onClose} title={title} size="md">
+    <Drawer open={open} onClose={onClose} title={resolvedTitle} size="md">
       <div className="stack search-drawer">
         <SearchInput
           autoFocus
@@ -149,8 +155,8 @@ export function CommandPalette({
             setActive(0)
             onQueryChange?.('')
           }}
-          placeholder={placeholder}
-          aria-label={placeholder}
+          placeholder={resolvedPlaceholder}
+          aria-label={resolvedPlaceholder}
         />
         <div className="search-drawer-results">
           {loading ? (
@@ -158,7 +164,7 @@ export function CommandPalette({
               <Spinner />
             </div>
           ) : groups.length === 0 ? (
-            <p className="muted">无匹配结果</p>
+            <p className="muted">{t('command.noResults')}</p>
           ) : (
             groups.map(([group, groupItems]) => (
               <div key={group}>

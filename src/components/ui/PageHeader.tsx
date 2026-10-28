@@ -3,6 +3,7 @@ import { ChevronDown, MoreHorizontal } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { Button, type ButtonVariant } from './Button'
 import { DropdownMenu, type DropdownItem } from './DropdownMenu'
+import { useT } from '@/i18n'
 
 export type PageHeaderActionItem = {
   id: string
@@ -25,7 +26,7 @@ export function PageHeader({
   actions,
   actionItems,
   overflowActions,
-  overflowLabel = '更多',
+  overflowLabel,
   overflowIconOnly = false,
   className,
 }: {
@@ -46,6 +47,8 @@ export function PageHeader({
   overflowIconOnly?: boolean
   className?: string
 }) {
+  const t = useT()
+  const resolvedOverflowLabel = overflowLabel ?? t('pageHeader.more')
   const visibleItems = (actionItems ?? []).filter((a) => !a.hidden && !a.overflow)
   const overflowFromItems: DropdownItem[] = (actionItems ?? [])
     .filter((a) => !a.hidden && a.overflow)
@@ -88,7 +91,7 @@ export function PageHeader({
                   </Button>
                 ) : (
                   <Button variant="secondary" aria-haspopup="menu">
-                    {overflowLabel}
+                    {resolvedOverflowLabel}
                     <ChevronDown size={16} aria-hidden />
                   </Button>
                 )

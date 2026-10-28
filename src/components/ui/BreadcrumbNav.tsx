@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 
 export type BreadcrumbNavItem = {
   label: ReactNode
@@ -17,8 +18,9 @@ export function BreadcrumbNav({
   items: BreadcrumbNavItem[]
   className?: string
 }) {
+  const t = useT()
   return (
-    <nav className={cn('breadcrumbs breadcrumb-nav', className)} aria-label="面包屑">
+    <nav className={cn('breadcrumbs breadcrumb-nav', className)} aria-label={t('breadcrumbNav.aria')}>
       {items.map((item, i) => {
         const last = i === items.length - 1
         return (

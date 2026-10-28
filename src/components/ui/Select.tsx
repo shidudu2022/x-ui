@@ -12,6 +12,7 @@ import { createPortal } from 'react-dom'
 import { ChevronDown, Search } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { Input } from './Field'
+import { useT } from '@/i18n'
 
 export type SelectOption = {
   value: string
@@ -87,7 +88,7 @@ export function Select({
   value,
   defaultValue,
   onChange,
-  placeholder = '请选择',
+  placeholder,
   disabled,
   invalid,
   size = 'md',
@@ -100,6 +101,8 @@ export function Select({
   searchThreshold = 8,
   nativeOnMobile,
 }: SelectProps) {
+  const t = useT()
+  const resolvedPlaceholder = placeholder ?? t('select.placeholder')
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [uncontrolled, setUncontrolled] = useState(defaultValue ?? '')
@@ -181,8 +184,8 @@ export function Select({
           .filter((o) => selectedMulti.includes(o.value))
           .map((o) => o.label)
           .join(', ')
-      : placeholder
-    : options.find((o) => o.value === selected)?.label ?? placeholder
+      : resolvedPlaceholder
+    : options.find((o) => o.value === selected)?.label ?? resolvedPlaceholder
 
   function pick(next: string) {
     if (multiple) {
@@ -215,7 +218,7 @@ export function Select({
           onChange?.(e.target.value)
         }}
       >
-        {!selected ? <option value="">{placeholder}</option> : null}
+        {!selected ? <option value="">{resolvedPlaceholder}</option> : null}
         {options.map((opt) => (
           <option key={opt.value} value={opt.value} disabled={opt.disabled}>
             {optionText(opt)}
@@ -239,14 +242,14 @@ export function Select({
           <Input
             size="sm"
             value={query}
-            placeholder="筛选…"
-            aria-label="筛选选项"
+            placeholder={t('select.filter')}
+            aria-label={t('select.filterAria')}
             onChange={(e) => setQuery(e.target.value)}
           />
         </div>
       ) : null}
       {filtered.length === 0 ? (
-        <div className="ui-select-empty muted">无匹配项</div>
+        <div className="ui-select-empty muted">{t('select.empty')}</div>
       ) : (
         filtered.map((opt) => {
           const active = multiple ? selectedMulti.includes(opt.value) : selected === opt.value

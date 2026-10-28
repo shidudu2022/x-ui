@@ -12,4 +12,6 @@ export {
   type Density,
 } from './theme/accents'
 export { THEMES, THEME_IDS, getTheme, type ThemeId } from './theme/themes'
+export { LocaleProvider, useLocale, useT, en as localeEn, zh as localeZh } from './i18n'
+export type { Locale, LocaleMessages, MessageDict } from './i18n'
 export { cn } from './lib/cn'

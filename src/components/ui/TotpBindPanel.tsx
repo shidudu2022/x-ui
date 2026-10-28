@@ -3,6 +3,7 @@ import { cn } from '@/lib/cn'
 import { qrSvgDataUri } from '@/lib/qrSvg'
 import { Button } from './Button'
 import { CopyButton } from './CopyButton'
+import { useT } from '@/i18n'
 
 export function buildTotpOtpauth({
   secret,
@@ -23,9 +24,9 @@ export function TotpBindPanel({
   account,
   issuer = 'X-UI',
   qrSrc,
-  title = '绑定谷歌验证器',
-  description = '使用 Google Authenticator / 1Password 等扫码，或手动输入密钥。',
-  actionLabel = '我已完成绑定',
+  title,
+  description,
+  actionLabel,
   onBound,
   className,
   footer,
@@ -43,6 +44,10 @@ export function TotpBindPanel({
   className?: string
   footer?: ReactNode
 }) {
+  const t = useT()
+  const resolvedTitle = title ?? t('totp.title')
+  const resolvedDescription = description ?? t('totp.description')
+  const resolvedActionLabel = actionLabel ?? t('totp.done')
   const src = useMemo(() => {
     if (qrSrc) return qrSrc
     const otpauth = buildTotpOtpauth({
@@ -56,19 +61,19 @@ export function TotpBindPanel({
   return (
     <div className={cn('totp-bind', className)}>
       <div className="totp-bind-copy">
-        <strong className="totp-bind-title">{title}</strong>
-        {description ? <p className="totp-bind-desc muted">{description}</p> : null}
+        <strong className="totp-bind-title">{resolvedTitle}</strong>
+        {resolvedDescription ? <p className="totp-bind-desc muted">{resolvedDescription}</p> : null}
       </div>
       <div className="totp-qr-wrap">
-        <img className="totp-qr" src={src} width={168} height={168} alt="谷歌验证器绑定二维码" />
+        <img className="totp-qr" src={src} width={168} height={168} alt={t('totp.qrAlt')} />
       </div>
       <div className="totp-secret-row">
         <code className="totp-secret mono">{secret}</code>
-        <CopyButton value={secret} label="复制" />
+        <CopyButton value={secret} />
       </div>
       {onBound ? (
         <Button type="button" size="sm" variant="secondary" block onClick={onBound}>
-          {actionLabel}
+          {resolvedActionLabel}
         </Button>
       ) : null}
       {footer}

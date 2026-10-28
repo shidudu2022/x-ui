@@ -7,6 +7,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { DEMO_EXPANSIONS } from './demo-expansions.mjs'
+/** Demo section title/description EN maps (unique titles from this file + demo-expansions.mjs). */
+import { DESC_EN, SAMPLE_EN, TITLE_EN } from './doc-i18n-maps.mjs'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const outDir = path.join(root, 'src/demo/docs/components')
@@ -853,11 +855,20 @@ DEMOS.sheet = {
 }
 DEMOS.calendar = {
   imports: `import { Calendar } from '@/components/ui'`,
-  props: `[{ name: 'events', type: 'CalendarEvent[]', desc: '事件点' }]`,
+  props: `[{ name: 'events', type: 'CalendarEvent[]', desc: { en: 'Events; optional tone: primary, success, warn, danger', zh: '事件点；tone: primary|success|warn|danger' } }]`,
   demos: [{
-    title: '基础',
-    code: `<Calendar events={[{ date: '2026-10-25', label: '发布' }]} />`,
-    jsx: `<Calendar events={[{ date: '2026-10-25', label: '发布' }]} />`,
+    title: '事件色调',
+    desc: {
+      en: 'The Today button in the bottom-right jumps to the current date.',
+      zh: '右下角「今天」按钮可快速回到当天。',
+    },
+    code: `<Calendar events={[
+  { date: '2026-10-25', label: 'Ship', tone: 'primary' },
+  { date: '2026-10-27', label: 'Done', tone: 'success' },
+  { date: '2026-10-28', label: 'Maint', tone: 'warn' },
+  { date: '2026-10-30', label: 'Due', tone: 'danger' },
+]} />`,
+    jsx: `<Calendar events={[{ date: '2026-10-25', label: d('Ship', '发布'), tone: 'primary' }, { date: '2026-10-27', label: d('Done', '完成'), tone: 'success' }, { date: '2026-10-28', label: d('Maint', '维护'), tone: 'warn' }, { date: '2026-10-30', label: d('Due', '截止'), tone: 'danger' }]} />`,
   }],
 }
 DEMOS.checklist = {
@@ -1076,7 +1087,7 @@ DEMOS['app-shell'] = {
 
 DEMOS['avatar-upload'] = {
   imports: `import { AvatarUpload } from '@/components/ui'`,
-  props: `[{ name: 'name', type: 'string', default: "'用户'", desc: '缩写来源' }, { name: 'src', type: 'string', desc: '头像 URL' }, { name: 'onFile', type: '(file: File) => void', desc: '选中文件' }]`,
+  props: `[{ name: 'name', type: 'string', default: "'User'", desc: '缩写来源' }, { name: 'src', type: 'string', desc: '头像 URL' }, { name: 'onFile', type: '(file: File) => void', desc: '选中文件' }]`,
   demos: [{
     title: '基础',
     code: `<AvatarUpload name="Ada Lovelace" onFile={(f) => console.log(f.name)} />`,
@@ -1267,7 +1278,7 @@ DEMOS['image-upload-field'] = {
 DEMOS['list-filter-bar'] = {
   imports: `import { useState } from 'react'\nimport { ListFilterBar, SearchInput } from '@/components/ui'`,
   hooks: `  const [q, setQ] = useState('api')\n`,
-  props: `[{ name: 'query', type: 'string', desc: '当前搜索词；空则不渲染' }, { name: 'total', type: 'number', desc: '总数' }, { name: 'matched', type: 'number', desc: '命中数' }, { name: 'unit', type: 'string', default: "'条'", desc: '单位' }, { name: 'onClear', type: '() => void', desc: '清除' }]`,
+  props: `[{ name: 'query', type: 'string', desc: '当前搜索词；空则不渲染' }, { name: 'total', type: 'number', desc: '总数' }, { name: 'matched', type: 'number', desc: '命中数' }, { name: 'unit', type: 'string', default: "'items'", desc: '单位' }, { name: 'onClear', type: '() => void', desc: '清除' }]`,
   demos: [{
     title: '基础',
     code: `<ListFilterBar query="api" total={24} matched={3} onClear={() => setQ('')} />`,
@@ -1670,6 +1681,164 @@ for (const [slug, patch] of Object.entries(DEMO_EXPANSIONS)) {
   if (patch.demos) cur.demos = patch.demos
 }
 
+const CJK = /[\u4e00-\u9fff]/
+
+function hasChinese(text) {
+  return CJK.test(text)
+}
+
+/** @param {string} text */
+function jsQuote(text) {
+  return JSON.stringify(text)
+}
+
+/** Combined lookup for all known zh -> en translations. */
+const ALL_EN = { ...DESC_EN, ...SAMPLE_EN, ...TITLE_EN }
+
+const missingTranslations = new Set()
+
+/** Split leading/trailing whitespace from the translatable core. */
+function splitWs(s) {
+  const m = s.match(/^(\s*)([\s\S]*?)(\s*)$/)
+  return { lead: m[1], core: m[2], trail: m[3] }
+}
+
+/** Translate a trimmed Chinese fragment, warning (once) on unknown text. */
+function translateCore(core) {
+  if (!core || !hasChinese(core)) return core
+  const en = ALL_EN[core]
+  if (en == null) {
+    missingTranslations.add(core)
+    return core
+  }
+  return en
+}
+
+/** Translate text preserving surrounding whitespace. */
+function translate(s) {
+  const { lead, core, trail } = splitWs(s)
+  return lead + translateCore(core) + trail
+}
+
+/** @param {string | { en: string, zh: string }} desc */
+function resolveDescPair(desc) {
+  if (desc && typeof desc === 'object' && 'en' in desc && 'zh' in desc) {
+    return { en: desc.en, zh: desc.zh }
+  }
+  const zh = /** @type {string} */ (desc)
+  const fallback = zh.match(/^(.+) 的完整交互示例仍在补齐；以下为推荐接入方式。$/)
+  if (fallback) {
+    const name = fallback[1]
+    return {
+      en: `Full interactive examples for ${name} are still being expanded; recommended integration below.`,
+      zh,
+    }
+  }
+  if (hasChinese(zh)) {
+    return { en: translate(zh), zh }
+  }
+  return { en: zh, zh }
+}
+
+/** Protect already-correct `d("en", "zh")` calls from re-processing. */
+function protectExistingD(str) {
+  const placeholders = []
+  const protectedStr = str.replace(
+    /d\(\s*(['"])((?:[^'"\\]|\\.)*)\1\s*,\s*(['"])((?:[^'"\\]|\\.)*)\3\s*\)/g,
+    (m) => {
+      placeholders.push(m)
+      return `__D_PLACEHOLDER_${placeholders.length - 1}__`
+    },
+  )
+  return { protectedStr, placeholders }
+}
+
+function restoreD(str, placeholders) {
+  return str.replace(/__D_PLACEHOLDER_(\d+)__/g, (_, i) => placeholders[Number(i)])
+}
+
+/** JSX attribute values: attr="...中文..." */
+function transformAttrs(str, mode) {
+  return str.replace(/([\w-]+)="((?:[^"\\]|\\.)*)"/g, (full, attr, val) => {
+    if (!hasChinese(val)) return full
+    const en = translate(val)
+    if (mode === 'code') return `${attr}="${en}"`
+    return `${attr}={d(${jsQuote(en)}, ${jsQuote(val)})}`
+  })
+}
+
+/** JS single-quoted string literals: '...中文...' */
+function transformStrings(str, mode) {
+  return str.replace(/'((?:[^'\\]|\\.)*)'/g, (full, val) => {
+    if (!hasChinese(val)) return full
+    const en = translate(val)
+    if (mode === 'code') return `'${en}'`
+    return `d(${jsQuote(en)}, ${jsQuote(val)})`
+  })
+}
+
+/** JSX text nodes: >...中文...< (excludes anything that looks like embedded JS) */
+function transformTextNodes(str, mode) {
+  return str.replace(/>([^<>{}=()]*)</g, (full, val) => {
+    if (!hasChinese(val)) return full
+    const en = translate(val)
+    if (mode === 'code') return `>${en}<`
+    return `>{d(${jsQuote(en)}, ${jsQuote(val)})}<`
+  })
+}
+
+/** Localize a live jsx body: Chinese -> d("en", "zh") calls. */
+function localizeJsx(jsx) {
+  if (!jsx || !hasChinese(jsx)) return jsx
+  const { protectedStr, placeholders } = protectExistingD(jsx)
+  let out = protectedStr
+  out = transformAttrs(out, 'jsx')
+  out = transformStrings(out, 'jsx')
+  out = transformTextNodes(out, 'jsx')
+  return restoreD(out, placeholders)
+}
+
+/** Localize a source/code body: Chinese -> English baseline only. */
+function localizeCode(code) {
+  if (!code || !hasChinese(code)) return code
+  const { protectedStr, placeholders } = protectExistingD(code)
+  let out = protectedStr
+  out = transformAttrs(out, 'code')
+  out = transformStrings(out, 'code')
+  out = transformTextNodes(out, 'code')
+  return restoreD(out, placeholders)
+}
+
+/** Localize the `props: PropDef[] = [...]` literal: desc: 'zh' -> desc: { en, zh }. */
+function localizeProps(propsStr) {
+  return propsStr.replace(/desc:\s*'((?:[^'\\]|\\.)*)'/g, (full, zh) => {
+    if (!hasChinese(zh)) return full
+    const en = translate(zh)
+    return `desc: { en: ${jsQuote(en)}, zh: ${jsQuote(zh)} }`
+  })
+}
+
+/** @param {string} title */
+function resolveTitlePair(title) {
+  if (hasChinese(title)) {
+    return { en: TITLE_EN[title] ?? title, zh: title }
+  }
+  return { en: title, zh: title }
+}
+
+/** @param {string} title */
+function emitTitleAttr(title) {
+  const { en, zh } = resolveTitlePair(title)
+  return `title={d(${jsQuote(en)}, ${jsQuote(zh)})}`
+}
+
+/** @param {string | { en: string, zh: string } | undefined} desc */
+function emitDescAttr(desc) {
+  if (!desc) return ''
+  const { en, zh } = resolveDescPair(desc)
+  return ` description={d(${jsQuote(en)}, ${jsQuote(zh)})}`
+}
+
 const WIDE_SLUGS = new Set([
   'app-shell',
   'area-chart',
@@ -1696,23 +1865,28 @@ const WIDE_SLUGS = new Set([
 function fileBody(slug, name, def) {
   const docName = `${pascal(slug)}Doc`
   const demosJsx = def.demos
-    .map((d) => {
-      const wide = d.wide === true || (d.wide !== false && WIDE_SLUGS.has(slug))
-      return `      <DocDemo title="${d.title}"${d.desc ? ` description="${d.desc.replace(/"/g, '\\"')}"` : ''}${wide ? ' wide' : ''} code={\`${d.code.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`}>
-        ${d.jsx}
+    .map((demo) => {
+      const wide = demo.wide === true || (demo.wide !== false && WIDE_SLUGS.has(slug))
+      const code = localizeCode(demo.code)
+      const jsx = localizeJsx(demo.jsx)
+      return `      <DocDemo ${emitTitleAttr(demo.title)}${emitDescAttr(demo.desc)}${wide ? ' wide' : ''} code={\`${code.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`}>
+        ${jsx}
       </DocDemo>`
     })
     .join('\n')
+  const hooks = localizeJsx(def.hooks || '')
   return `${def.imports}
+import { useDemoT } from '../../i18n/useDemoT'
 import { DocDemo } from '../DocDemo'
 import { ComponentDocLayout } from '../ComponentDocLayout'
 import { docMeta, type PropDef } from '../docMeta'
 
 const meta = docMeta('${slug}')
-const props: PropDef[] = ${def.props}
+const props: PropDef[] = ${localizeProps(def.props)}
 
 export function ${docName}() {
-${def.hooks || ''}  return (
+  const d = useDemoT()
+${hooks}  return (
     <ComponentDocLayout meta={meta} props={props}>
 ${demosJsx}
     </ComponentDocLayout>
@@ -1760,3 +1934,7 @@ ${indexExports.map((e) => `  '${e.slug}': ${e.docName},`).join('\n')}
 )
 
 console.log(`wrote ${written}/${entries.length}, demos defined=${Object.keys(DEMOS).length}`)
+if (missingTranslations.size) {
+  console.log(`\n⚠ missing EN translations (${missingTranslations.size}):`)
+  for (const t of missingTranslations) console.log('  ' + JSON.stringify(t))
+}

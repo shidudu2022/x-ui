@@ -1,11 +1,12 @@
 import { useState, type KeyboardEvent } from 'react'
 import { X } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { useT } from '@/i18n'
 
 export function TagsInput({
   value,
   onChange,
-  placeholder = '输入后回车添加',
+  placeholder,
   className,
 }: {
   value: string[]
@@ -13,6 +14,8 @@ export function TagsInput({
   placeholder?: string
   className?: string
 }) {
+  const t = useT()
+  const resolvedPlaceholder = placeholder ?? t('tagsInput.placeholder')
   const [draft, setDraft] = useState('')
 
   function add(tag: string) {
@@ -37,7 +40,7 @@ export function TagsInput({
       {value.map((tag) => (
         <span key={tag} className="tag-chip" title={tag}>
           <span className="tag-chip-label">{tag}</span>
-          <button type="button" aria-label={`移除 ${tag}`} onClick={() => onChange(value.filter((t) => t !== tag))}>
+          <button type="button" aria-label={t('tagsInput.remove', { tag })} onClick={() => onChange(value.filter((x) => x !== tag))}>
             <X size={12} strokeWidth={2} />
           </button>
         </span>
@@ -47,7 +50,7 @@ export function TagsInput({
         onChange={(e) => setDraft(e.target.value)}
         onKeyDown={onKeyDown}
         onBlur={() => add(draft)}
-        placeholder={value.length ? '' : placeholder}
+        placeholder={value.length ? '' : resolvedPlaceholder}
         aria-label={placeholder}
       />
     </div>

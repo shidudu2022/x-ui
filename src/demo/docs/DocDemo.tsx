@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { CodeBlock } from '@/components/ui'
+import { useDemoMessages } from '../i18n/useDemoT'
 import { ShowcaseSection } from '../ShowcaseSection'
 import { formatExampleCode } from './formatExampleCode'
 
@@ -19,6 +20,7 @@ export function DocDemo({
   wide?: boolean
   children: ReactNode
 }) {
+  const dt = useDemoMessages()
   return (
     <ShowcaseSection title={title} description={description}>
       <div className={cn('doc-demo', wide && 'doc-demo--wide')}>
@@ -27,7 +29,7 @@ export function DocDemo({
           className="doc-demo-code"
           code={formatExampleCode(code)}
           language="tsx"
-          title="示例源码"
+          title={dt('doc.exampleSource')}
         />
       </div>
     </ShowcaseSection>

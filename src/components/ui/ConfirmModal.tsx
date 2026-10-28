@@ -3,6 +3,7 @@ import { Modal } from './Modal'
 import { Button } from './Button'
 import { Alert } from './Alert'
 import { Field, Input } from './Field'
+import { useT } from '@/i18n'
 
 export type ConfirmModalProps = {
   open: boolean
@@ -29,12 +30,15 @@ export function ConfirmModal({
   title,
   children,
   resourceName,
-  confirmText = '确认',
-  cancelText = '取消',
+  confirmText,
+  cancelText,
   danger,
   confirmValue,
   onConfirm,
 }: ConfirmModalProps) {
+  const t = useT()
+  const resolvedConfirmText = confirmText ?? t('confirm.confirm')
+  const resolvedCancelText = cancelText ?? t('confirm.cancel')
   const [typed, setTyped] = useState('')
   useEffect(() => {
     if (open) setTyped('')
@@ -52,7 +56,7 @@ export function ConfirmModal({
       className={danger ? 'modal-danger' : undefined}
       footer={
         <div className="actions">
-          <Button onClick={onClose}>{cancelText}</Button>
+          <Button onClick={onClose}>{resolvedCancelText}</Button>
           <Button
             variant={danger ? 'danger' : 'primary'}
             disabled={!canConfirm}
@@ -61,15 +65,15 @@ export function ConfirmModal({
               onClose()
             }}
           >
-            {confirmText}
+            {resolvedConfirmText}
           </Button>
         </div>
       }
     >
       <div className="stack confirm-modal-body">
         {danger ? (
-          <Alert tone="danger" title="此操作不可撤销">
-            {children ?? '删除后数据无法恢复，请谨慎确认。'}
+          <Alert tone="danger" title={t('confirm.irreversible')}>
+            {children ?? t('confirm.deleteWarning')}
           </Alert>
         ) : (
           children
@@ -77,7 +81,8 @@ export function ConfirmModal({
 
         {resourceName ? (
           <p className="confirm-resource">
-            资源：<code className="mono">{resourceName}</code>
+            {t('confirm.resource')}
+            <code className="mono">{resourceName}</code>
           </p>
         ) : null}
 
@@ -85,7 +90,7 @@ export function ConfirmModal({
           <Field
             label={
               <>
-                请输入 <code className="mono confirm-expect">{expect}</code> 以确认
+                {t('confirm.typeToConfirm', { value: expect })}
               </>
             }
             htmlFor="confirm-name"
@@ -108,9 +113,16 @@ export function ConfirmModal({
 
 /** Typed delete / irreversible action — danger defaults on */
 export function StrongConfirm({
-  confirmText = '删除',
+  confirmText,
   danger = true,
   ...rest
 }: ConfirmModalProps) {
-  return <ConfirmModal {...rest} danger={danger} confirmText={confirmText} />
+  const t = useT()
+  return (
+    <ConfirmModal
+      {...rest}
+      danger={danger}
+      confirmText={confirmText ?? t('confirm.delete')}
+    />
+  )
 }

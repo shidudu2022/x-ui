@@ -1,6 +1,7 @@
 import { cn } from '@/lib/cn'
 import { useAppearance } from '@/theme/AppearanceProvider'
 import { WALLPAPERS, type WallpaperId } from '@/theme/wallpapers'
+import { useT } from '@/i18n'
 
 export function WallpaperPicker({
   value,
@@ -11,13 +12,14 @@ export function WallpaperPicker({
   onChange?: (wallpaper: WallpaperId) => void
   className?: string
 }) {
+  const t = useT()
   const appearance = useAppearance()
   const current = value ?? appearance.wallpaper
   const setWallpaper = onChange ?? appearance.setWallpaper
   const previewMode = appearance.mode
 
   return (
-    <div className={cn('wallpaper-picker', className)} role="listbox" aria-label="壁纸">
+    <div className={cn('wallpaper-picker', className)} role="listbox" aria-label={t('wallpaperPicker.aria')}>
       {WALLPAPERS.map((w) => {
         const preview = previewMode === 'dark' ? w.dark : w.light
         return (
@@ -39,8 +41,8 @@ export function WallpaperPicker({
               aria-hidden
             />
             <span className="wallpaper-card-copy">
-              <strong className="wallpaper-card-label">{w.label}</strong>
-              <span className="wallpaper-card-desc">{w.description}</span>
+              <strong className="wallpaper-card-label">{t(`wallpaper.${w.id}.label`)}</strong>
+              <span className="wallpaper-card-desc">{t(`wallpaper.${w.id}.description`)}</span>
             </span>
           </button>
         )

@@ -11,6 +11,7 @@ import { Pagination } from './Pagination'
 import { Select } from './Select'
 import { SkeletonTable } from './Skeleton'
 import { Table, type TableColumn } from './Table'
+import { useT } from '@/i18n'
 
 export type ResourceFilterOption = { value: string; label: string }
 
@@ -100,7 +101,7 @@ export function ResourceList<T>({
   onFilterChange,
   onSearch,
   onRefresh,
-  searchLabel = '查询',
+  searchLabel,
   toolbar,
   rowActions = [],
   pinActions = false,
@@ -110,12 +111,16 @@ export function ResourceList<T>({
   onPageChange,
   onPageSizeChange,
   pageSizeOptions = DEFAULT_PAGE_SIZES,
-  emptyTitle = '暂无数据',
+  emptyTitle,
   emptyDesc,
   renderTable,
   className,
   framed = true,
 }: ResourceListProps<T>) {
+  const t = useT()
+  const resolvedSearchLabel = searchLabel ?? t('resourceList.search')
+  const resolvedEmptyTitle = emptyTitle ?? t('resourceList.empty')
+  const resolvedUnit = t('dataTable.unit')
   const pages = pageCount(total, pageSize)
   const safePage = Math.min(Math.max(page, 1), pages)
 
@@ -170,7 +175,7 @@ export function ResourceList<T>({
         <div className="resource-list-filters-actions">
           {onSearch ? (
             <Button type="submit" size="sm" variant="primary">
-              {searchLabel}
+              {resolvedSearchLabel}
             </Button>
           ) : null}
           {toolbar}
@@ -182,8 +187,8 @@ export function ResourceList<T>({
             variant="secondary"
             iconOnly
             className="resource-list-refresh"
-            aria-label="刷新"
-            title="刷新"
+            aria-label={t('resourceList.refresh')}
+            title={t('resourceList.refresh')}
             onClick={onRefresh}
           >
             <RefreshCw size={15} />
@@ -203,7 +208,7 @@ export function ResourceList<T>({
     if (showActions) {
       cols.push({
         key: 'actions',
-        header: '操作',
+        header: t('resourceList.actions'),
         emptyPlaceholder: false,
         pinned: pinActions ? 'right' : undefined,
         render: (row: T) => {
@@ -216,7 +221,7 @@ export function ResourceList<T>({
                   size="sm"
                   variant={
                     action.variant ??
-                    (action.label.includes('删除') ? 'danger' : 'secondary')
+                    (action.label.includes(t('common.delete')) ? 'danger' : 'secondary')
                   }
                   onClick={() => {
                     void action.onClick(row)
@@ -238,7 +243,7 @@ export function ResourceList<T>({
   ) : renderTable ? (
     renderTable({ rows })
   ) : rows.length === 0 ? (
-    <EmptyState title={emptyTitle} description={emptyDesc} />
+    <EmptyState title={resolvedEmptyTitle} description={emptyDesc} />
   ) : (
     <Table columns={tableColumns} rows={rows} rowKey={rowKey} />
   )
@@ -247,11 +252,11 @@ export function ResourceList<T>({
     <div className="resource-list-footer">
       <div className="resource-list-footer-meta">
         <span>
-          共 <strong>{total}</strong> 条
+          {t('resourceList.totalSummary', { total, unit: resolvedUnit })}
         </span>
         {onPageSizeChange ? (
           <label className="resource-list-page-size">
-            <span className="muted">每页</span>
+            <span className="muted">{t('resourceList.perPage')}</span>
             <Select
               size="sm"
               value={String(pageSize)}

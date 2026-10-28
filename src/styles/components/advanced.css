@@ -857,6 +857,18 @@
   color: var(--danger);
 }
 
+.calendar-foot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--hairline);
+}
+
+.calendar-today-btn {
+  min-width: 4.5em;
+}
+
 /* Transfer */
 .transfer {
   display: grid;

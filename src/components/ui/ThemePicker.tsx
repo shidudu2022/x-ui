@@ -1,6 +1,7 @@
 import { cn } from '@/lib/cn'
 import { THEMES, type ThemeId } from '@/theme/themes'
 import { useAppearance } from '@/theme/AppearanceProvider'
+import { useT } from '@/i18n'
 
 export function ThemePicker({
   value,
@@ -11,12 +12,13 @@ export function ThemePicker({
   onChange?: (theme: ThemeId) => void
   className?: string
 }) {
+  const tr = useT()
   const appearance = useAppearance()
   const current = value ?? appearance.theme
   const setTheme = onChange ?? appearance.setTheme
 
   return (
-    <div className={cn('theme-picker', className)} role="listbox" aria-label="主题">
+    <div className={cn('theme-picker', className)} role="listbox" aria-label={tr('themePicker.aria')}>
       {THEMES.map((t) => (
         <button
           key={t.id}
@@ -28,8 +30,8 @@ export function ThemePicker({
         >
           <span className="theme-card-preview" aria-hidden />
           <span className="theme-card-copy">
-            <strong className="theme-card-label">{t.label}</strong>
-            <span className="theme-card-desc">{t.description}</span>
+            <strong className="theme-card-label">{tr(`theme.${t.id}.label`)}</strong>
+            <span className="theme-card-desc">{tr(`theme.${t.id}.description`)}</span>
           </span>
         </button>
       ))}

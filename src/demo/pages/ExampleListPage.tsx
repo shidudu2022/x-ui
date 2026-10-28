@@ -1,7 +1,10 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Button, ListPage, PageTabs, useToast } from '@/components/ui'
 import { useListSearch } from '@/lib/useListSearch'
+import { useLocale } from '@/i18n'
+import { pickL10n } from '@/demo/i18n/types'
+import { useDemoT } from '@/demo/i18n/useDemoT'
 import { ListCardsTemplate } from './list/ListCardsTemplate'
 import { ListCompactTemplate } from './list/ListCompactTemplate'
 import { ListPinnedTemplate } from './list/ListPinnedTemplate'
@@ -14,14 +17,36 @@ import {
   type ListTemplateId,
 } from './list/listSeed'
 
-const DESCRIPTIONS: Record<ListTemplateId, string> = {
-  sortable: '可排序平面表：表头点击排序、列显隐、列宽拖拽、多选批量。',
-  static: '不可排序平面表：固定列顺序与展示，适合只读浏览与操作。',
-  pinned: '固定列：左侧名称 + 右侧操作列 sticky，横向滚动时保持可见。',
-  tree: '命名空间分组树：展开/折叠子行，分页按根节点计。',
-  cards: '卡片网格：适合浏览与少字段摘要，无表格。',
-  compact: '紧凑列表：少列、大页容量，偏运维扫读（无排序）。',
-  resource: 'ResourceList：筛选栏 + 表格 + 分页一体，适合业务资源列表页。',
+const DESCRIPTIONS: Record<ListTemplateId, { en: string; zh: string }> = {
+  sortable:
+    {
+      en: 'Sortable flat table: header sort, column visibility, resize, multi-select bulk actions.',
+      zh: '可排序平面表：表头点击排序、列显隐、列宽拖拽、多选批量。',
+    },
+  static: {
+    en: 'Static flat table: fixed column order, good for read-only browsing.',
+    zh: '不可排序平面表：固定列顺序与展示，适合只读浏览与操作。',
+  },
+  pinned: {
+    en: 'Pinned columns: name left + actions right stay visible while scrolling.',
+    zh: '固定列：左侧名称 + 右侧操作列 sticky，横向滚动时保持可见。',
+  },
+  tree: {
+    en: 'Namespace tree: expand/collapse child rows; pagination counts root nodes.',
+    zh: '命名空间分组树：展开/折叠子行，分页按根节点计。',
+  },
+  cards: {
+    en: 'Card grid: browse with fewer fields, no table.',
+    zh: '卡片网格：适合浏览与少字段摘要，无表格。',
+  },
+  compact: {
+    en: 'Compact list: fewer columns, larger page size, ops scanning (no sort).',
+    zh: '紧凑列表：少列、大页容量，偏运维扫读（无排序）。',
+  },
+  resource: {
+    en: 'ResourceList: filters + table + pagination in one shell.',
+    zh: 'ResourceList：筛选栏 + 表格 + 分页一体，适合业务资源列表页。',
+  },
 }
 
 /**
@@ -29,6 +54,8 @@ const DESCRIPTIONS: Record<ListTemplateId, string> = {
  * Topbar search (`?q=`) applies to every template.
  */
 export function ExampleListPage() {
+  const t = useDemoT()
+  const { locale } = useLocale()
   const { toast } = useToast()
   const { q, clear } = useListSearch()
   const [params, setParams] = useSearchParams()
@@ -44,21 +71,22 @@ export function ExampleListPage() {
     [params, setParams],
   )
 
+  const tabItems = useMemo(
+    () => LIST_TEMPLATES.map((item) => ({ id: item.id, label: pickL10n(locale, item.label) })),
+    [locale],
+  )
+
   return (
     <ListPage
-      title="集群"
-      description={DESCRIPTIONS[tpl]}
+      title={t('Clusters', '集群')}
+      description={pickL10n(locale, DESCRIPTIONS[tpl])}
       actions={
-        <Button variant="primary" onClick={() => toast('打开创建流程（示例）', 'info')}>
-          创建集群
+        <Button variant="primary" onClick={() => toast(t('Open create flow (demo)', '打开创建流程（示例）'), 'info')}>
+          {t('Create cluster', '创建集群')}
         </Button>
       }
     >
-      <PageTabs
-        value={tpl}
-        onChange={setTpl}
-        items={LIST_TEMPLATES.map((t) => ({ id: t.id, label: t.label }))}
-      />
+      <PageTabs value={tpl} onChange={setTpl} items={tabItems} />
       {tpl === 'sortable' ? <ListTableTemplate q={q} onClear={clear} sortable /> : null}
       {tpl === 'static' ? <ListTableTemplate q={q} onClear={clear} sortable={false} /> : null}
       {tpl === 'pinned' ? <ListPinnedTemplate q={q} onClear={clear} /> : null}

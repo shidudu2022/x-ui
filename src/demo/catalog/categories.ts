@@ -1,3 +1,7 @@
+import type { Locale } from '@/i18n'
+import type { L10n } from '../i18n/types'
+import { pickL10n } from '../i18n/types'
+
 export type CategoryId =
   | 'layout'
   | 'general'
@@ -11,9 +15,9 @@ export type CategoryId =
 
 export type Category = {
   id: CategoryId
-  label: string
+  label: L10n
   /** One-line positioning shown on index + category headers. */
-  description: string
+  description: L10n
   /** Slugs in display order. Every catalog slug must appear exactly once. */
   slugs: string[]
 }
@@ -22,8 +26,11 @@ export type Category = {
 export const CATEGORIES: Category[] = [
   {
     id: 'layout',
-    label: '布局与排版',
-    description: '文字、间距、卡片与页面骨架。写页面先用这些原语建立层级，再叠加业务组件。',
+    label: { en: 'Layout & typography', zh: '布局与排版' },
+    description: {
+      en: 'Text, spacing, cards, and page skeletons. Start a page with these primitives to establish hierarchy, then layer business components on top.',
+      zh: '文字、间距、卡片与页面骨架。写页面先用这些原语建立层级，再叠加业务组件。',
+    },
     slugs: [
       'text',
       'heading',
@@ -43,8 +50,11 @@ export const CATEGORIES: Category[] = [
   },
   {
     id: 'general',
-    label: '通用',
-    description: '按钮、标记、头像、进度与折叠等无业务语义的基础展示。',
+    label: { en: 'General', zh: '通用' },
+    description: {
+      en: 'Buttons, tags, avatars, progress, and accordions — basic display primitives with no business semantics.',
+      zh: '按钮、标记、头像、进度与折叠等无业务语义的基础展示。',
+    },
     slugs: [
       'button',
       'toggle-button',
@@ -66,8 +76,11 @@ export const CATEGORIES: Category[] = [
   },
   {
     id: 'forms',
-    label: '表单',
-    description: '输入、选择、日期、上传与字段容器；统一用 Field 承载标签、提示与错误。',
+    label: { en: 'Forms', zh: '表单' },
+    description: {
+      en: 'Inputs, selects, dates, uploads, and field containers; use Field uniformly to carry labels, hints, and errors.',
+      zh: '输入、选择、日期、上传与字段容器；统一用 Field 承载标签、提示与错误。',
+    },
     slugs: [
       'field',
       'input',
@@ -103,8 +116,11 @@ export const CATEGORIES: Category[] = [
   },
   {
     id: 'data',
-    label: '数据展示',
-    description: '表格、列表、指标、树与日志。数据页优先使用 ResourceList / DataTable。',
+    label: { en: 'Data display', zh: '数据展示' },
+    description: {
+      en: 'Tables, lists, metrics, trees, and logs. Prefer ResourceList / DataTable for data pages.',
+      zh: '表格、列表、指标、树与日志。数据页优先使用 ResourceList / DataTable。',
+    },
     slugs: [
       'resource-list',
       'data-table',
@@ -128,36 +144,29 @@ export const CATEGORIES: Category[] = [
   },
   {
     id: 'charts',
-    label: '图表',
-    description: '基于 recharts 的封装，颜色跟随主题与强调色。',
-    slugs: [
-      'chart-container',
-      'line-chart',
-      'area-chart',
-      'bar-chart',
-      'pie-chart',
-      'radial-progress',
-    ],
+    label: { en: 'Charts', zh: '图表' },
+    description: {
+      en: 'Wrappers around recharts; colors follow the theme and accent color.',
+      zh: '基于 recharts 的封装，颜色跟随主题与强调色。',
+    },
+    slugs: ['chart-container', 'line-chart', 'area-chart', 'bar-chart', 'pie-chart', 'radial-progress'],
   },
   {
     id: 'feedback',
-    label: '反馈',
-    description: '提示、空态、加载与资源状态。按「打断程度」选择合适的反馈形式。',
-    slugs: [
-      'alert',
-      'callout',
-      'banner',
-      'maintenance-banner',
-      'toast',
-      'empty-state',
-      'resource-state',
-      'skeleton',
-    ],
+    label: { en: 'Feedback', zh: '反馈' },
+    description: {
+      en: 'Alerts, empty states, loading, and resource states. Choose the right form of feedback based on how disruptive it should be.',
+      zh: '提示、空态、加载与资源状态。按「打断程度」选择合适的反馈形式。',
+    },
+    slugs: ['alert', 'callout', 'banner', 'maintenance-banner', 'toast', 'empty-state', 'resource-state', 'skeleton'],
   },
   {
     id: 'overlay',
-    label: '浮层与确认',
-    description: '对话框、抽屉、气泡、菜单与危险操作确认。',
+    label: { en: 'Overlays & confirmation', zh: '浮层与确认' },
+    description: {
+      en: 'Dialogs, drawers, popovers, menus, and confirmation for destructive actions.',
+      zh: '对话框、抽屉、气泡、菜单与危险操作确认。',
+    },
     slugs: [
       'modal',
       'drawer',
@@ -174,23 +183,20 @@ export const CATEGORIES: Category[] = [
   },
   {
     id: 'navigation',
-    label: '导航与步骤',
-    description: 'Tab、分段、面包屑、分页与步骤。',
-    slugs: [
-      'tabs',
-      'page-tabs',
-      'segmented',
-      'breadcrumbs',
-      'breadcrumb-nav',
-      'steps',
-      'step-heading',
-      'nav-icon',
-    ],
+    label: { en: 'Navigation & steps', zh: '导航与步骤' },
+    description: {
+      en: 'Tabs, segmented controls, breadcrumbs, pagination, and steps.',
+      zh: 'Tab、分段、面包屑、分页与步骤。',
+    },
+    slugs: ['tabs', 'page-tabs', 'segmented', 'breadcrumbs', 'breadcrumb-nav', 'steps', 'step-heading', 'nav-icon'],
   },
   {
     id: 'shell',
-    label: '应用壳与账户',
-    description: '侧栏、顶栏、用户菜单、登录与外观设置。',
+    label: { en: 'App shell & account', zh: '应用壳与账户' },
+    description: {
+      en: 'Sidebar, topbar, user menu, login, and appearance settings.',
+      zh: '侧栏、顶栏、用户菜单、登录与外观设置。',
+    },
     slugs: [
       'app-shell',
       'sidebar',
@@ -217,4 +223,9 @@ export function categoryOfSlug(slug: string): Category | undefined {
 
 export function getCategory(id: string): Category | undefined {
   return CATEGORIES.find((c) => c.id === id)
+}
+
+/** Locale-resolved { label, description } for a category. */
+export function localizedCategory(category: Category, locale: Locale): { label: string; description: string } {
+  return { label: pickL10n(locale, category.label), description: pickL10n(locale, category.description) }
 }

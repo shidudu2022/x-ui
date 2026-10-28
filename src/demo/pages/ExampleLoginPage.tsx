@@ -10,11 +10,13 @@ import {
   TotpBindPanel,
   useToast,
 } from '@/components/ui'
+import { useDemoT } from '@/demo/i18n/useDemoT'
 
 /** Demo Base32 secret — not a real credential */
 const DEMO_TOTP_SECRET = 'JBSWY3DPEHPK3PXP'
 
 export function ExampleLoginPage() {
+  const t = useDemoT()
   const { toast } = useToast()
   const [user, setUser] = useState('')
   const [password, setPassword] = useState('')
@@ -33,21 +35,21 @@ export function ExampleLoginPage() {
     const fields: typeof fieldErrors = {}
 
     if (!user.trim()) {
-      fields.user = '请输入用户名'
-      list.push('请输入用户名')
+      fields.user = t('Enter a username', '请输入用户名')
+      list.push(t('Enter a username', '请输入用户名'))
     }
     if (!password) {
-      fields.password = '请输入密码'
-      list.push('请输入密码')
+      fields.password = t('Enter a password', '请输入密码')
+      list.push(t('Enter a password', '请输入密码'))
     } else if (password.length < 6) {
-      fields.password = '密码至少 6 位'
-      list.push('密码至少 6 位')
+      fields.password = t('Password must be at least 6 characters', '密码至少 6 位')
+      list.push(t('Password must be at least 6 characters', '密码至少 6 位'))
     }
     if (!totpBound) {
-      list.push('请先完成谷歌验证器绑定')
+      list.push(t('Complete Google Authenticator binding first', '请先完成谷歌验证器绑定'))
     } else if (totp.length < 6) {
-      fields.totp = '请输入 6 位验证码'
-      list.push('请输入 6 位谷歌验证码')
+      fields.totp = t('Enter the 6-digit code', '请输入 6 位验证码')
+      list.push(t('Enter the 6-digit Google code', '请输入 6 位谷歌验证码'))
     }
 
     setFieldErrors(fields)
@@ -59,29 +61,29 @@ export function ExampleLoginPage() {
     <LoginCard
       hint={
         <>
-          演示账号 admin / admin123 · 无真实鉴权
+          {t('Demo account admin / admin123 · no real auth', '演示账号 admin / admin123 · 无真实鉴权')}
           <br />
-          还没有账号？{' '}
+          {t("Don't have an account? ", '还没有账号？')}{' '}
           <Link className="text-link" to="/examples/register">
-            注册
+            {t('Sign up', '注册')}
           </Link>
         </>
       }
       onSubmit={(e) => {
         e.preventDefault()
         if (!validate()) {
-          toast('请完善登录信息', 'warn')
+          toast(t('Complete the login form', '请完善登录信息'), 'warn')
           return
         }
         setSubmitting(true)
         window.setTimeout(() => {
           setSubmitting(false)
-          toast('登录成功（示例）', 'success')
+          toast(t('Signed in (demo)', '登录成功（示例）'), 'success')
         }, 450)
       }}
     >
-      {errors.length ? <FormErrors errors={errors} title="无法登录" /> : null}
-      <Field label="用户名" htmlFor="login-user" error={fieldErrors.user}>
+      {errors.length ? <FormErrors errors={errors} title={t('Unable to sign in', '无法登录')} /> : null}
+      <Field label={t('Username', '用户名')} htmlFor="login-user" error={fieldErrors.user}>
         <Input
           id="login-user"
           value={user}
@@ -89,12 +91,12 @@ export function ExampleLoginPage() {
             setUser(e.target.value)
             setFieldErrors((f) => ({ ...f, user: undefined }))
           }}
-          placeholder="例如：admin"
+          placeholder={t('e.g. admin', '例如：admin')}
           autoComplete="username"
           invalid={Boolean(fieldErrors.user)}
         />
       </Field>
-      <Field label="密码" htmlFor="login-pass" error={fieldErrors.password}>
+      <Field label={t('Password', '密码')} htmlFor="login-pass" error={fieldErrors.password}>
         <Input
           id="login-pass"
           type="password"
@@ -103,7 +105,7 @@ export function ExampleLoginPage() {
             setPassword(e.target.value)
             setFieldErrors((f) => ({ ...f, password: undefined }))
           }}
-          placeholder="输入密码"
+          placeholder={t('Enter password', '输入密码')}
           autoComplete="current-password"
           invalid={Boolean(fieldErrors.password)}
         />
@@ -117,15 +119,19 @@ export function ExampleLoginPage() {
           onBound={() => {
             setTotpBound(true)
             setErrors([])
-            toast('已标记为绑定（示例）', 'success')
+            toast(t('Marked as bound (demo)', '已标记为绑定（示例）'), 'success')
           }}
         />
       ) : null}
 
       <Field
-        label="谷歌验证码"
+        label={t('Google Authenticator code', '谷歌验证码')}
         htmlFor="login-totp"
-        hint={totpBound ? '演示任意 6 位数字可通过。' : '绑定完成后输入 6 位动态码。'}
+        hint={
+          totpBound
+            ? t('Any 6 digits pass in this demo.', '演示任意 6 位数字可通过。')
+            : t('Enter the 6-digit code after binding.', '绑定完成后输入 6 位动态码。')
+        }
         error={fieldErrors.totp}
       >
         <PinInput
@@ -138,11 +144,11 @@ export function ExampleLoginPage() {
           }}
           invalid={Boolean(fieldErrors.totp)}
           autoFocus={false}
-          aria-label="谷歌验证码"
+          aria-label={t('Google Authenticator code', '谷歌验证码')}
         />
       </Field>
       <Button variant="primary" size="lg" block type="submit" loading={submitting}>
-        登录
+        {t('Sign in', '登录')}
       </Button>
     </LoginCard>
   )
