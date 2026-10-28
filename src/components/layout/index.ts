@@ -1,4 +1,12 @@
-export { AppShell } from './AppShell'
+export {
+  AppShell,
+  resolveActiveNav,
+  isNestedUnderNav,
+  pathSegmentLabel,
+  useAppShellSearch,
+  useAppShellSearchOptional,
+  type AppShellListSearchConfig,
+} from './AppShell'
 export { Brand } from './Brand'
 export { Breadcrumbs, type BreadcrumbParent, type Crumb } from './Breadcrumbs'
 export { NavIcon } from './NavIcon'

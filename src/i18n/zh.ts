@@ -283,6 +283,13 @@ export const zh: LocaleMessages = {
     'listFilter.search': '搜索…',
     'listFilter.summary': '搜索「{query}」· 显示 {matched} / {total} {unit}',
 
+    'listSearch.title': '筛选',
+    'listSearch.trigger': '搜索',
+    'listSearch.clear': '清空',
+    'listSearch.apply': '查询',
+
+    'topbar.appearance': '外观',
+
     'themeDrawer.language': '语言',
 
     'settingsRow.danger': '危险区域',

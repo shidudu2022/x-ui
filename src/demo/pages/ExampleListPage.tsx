@@ -1,6 +1,6 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Button, ListPage, PageTabs, useToast } from '@/components/ui'
+import { Button, Field, Input, ListPage, PageTabs, useToast } from '@/components/ui'
 import { useListSearch } from '@/lib/useListSearch'
 import { useLocale } from '@/i18n'
 import { pickL10n } from '@/demo/i18n/types'
@@ -51,15 +51,20 @@ const DESCRIPTIONS: Record<ListTemplateId, { en: string; zh: string }> = {
 
 /**
  * List page templates — switch via PageTabs + URL `?tpl=`.
- * Topbar search (`?q=`) applies to every template.
+ * Topbar search drawer (`?q=`) applies to every template.
  */
 export function ExampleListPage() {
   const t = useDemoT()
   const { locale } = useLocale()
   const { toast } = useToast()
-  const { q, clear } = useListSearch()
+  const { q, setQuery, clear } = useListSearch()
+  const [draft, setDraft] = useState(q)
   const [params, setParams] = useSearchParams()
   const tpl = parseListTemplateId(params.get('tpl'))
+
+  useEffect(() => {
+    setDraft(q)
+  }, [q])
 
   const setTpl = useCallback(
     (id: string) => {
@@ -85,6 +90,29 @@ export function ExampleListPage() {
           {t('Create cluster', '创建集群')}
         </Button>
       }
+      search={{
+        title: t('Filter clusters', '筛选集群'),
+        hasQuery: Boolean(q),
+        triggerLabel: q || t('Search', '搜索'),
+        onClear: () => {
+          setDraft('')
+          clear()
+        },
+        onSubmit: () => setQuery(draft),
+        children: (
+          <Field label={t('Keyword', '关键词')} htmlFor="list-q" hint={t('Filters all list templates via ?q=', '通过 ?q= 作用于全部列表模板')}>
+            <Input
+              id="list-q"
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              placeholder={t('Name / tag…', '名称 / 标签…')}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') setQuery(draft)
+              }}
+            />
+          </Field>
+        ),
+      }}
     >
       <PageTabs value={tpl} onChange={setTpl} items={tabItems} />
       {tpl === 'sortable' ? <ListTableTemplate q={q} onClear={clear} sortable /> : null}

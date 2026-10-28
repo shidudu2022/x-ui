@@ -286,6 +286,13 @@ export const en: LocaleMessages = {
     'listFilter.search': 'Search…',
     'listFilter.summary': 'Search “{query}” · {matched} / {total} {unit}',
 
+    'listSearch.title': 'Filter',
+    'listSearch.trigger': 'Search',
+    'listSearch.clear': 'Clear',
+    'listSearch.apply': 'Apply',
+
+    'topbar.appearance': 'Appearance',
+
     'themeDrawer.language': 'Language',
 
     'settingsRow.danger': 'Danger zone',

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   Badge,
   Button,
@@ -6,6 +6,8 @@ import {
   DataTable,
   DescriptionList,
   Drawer,
+  Field,
+  Input,
   ListFilterBar,
   ListPage,
   MetaRow,
@@ -33,10 +35,15 @@ export function ExampleListDetailPage() {
   const t = useDemoT()
   const { locale } = useLocale()
   const { toast } = useToast()
-  const { q, clear } = useListSearch()
+  const { q, setQuery, clear } = useListSearch()
+  const [draft, setDraft] = useState(q)
   const [selected, setSelected] = useState<string[]>([])
   const [detail, setDetail] = useState<ClusterRow | null>(null)
   const filtered = filterFlat(FLAT_SEED, q)
+
+  useEffect(() => {
+    setDraft(q)
+  }, [q])
 
   const columns = useMemo((): DataTableColumn<ClusterRow>[] => {
     return [
@@ -125,6 +132,26 @@ export function ExampleListDetailPage() {
           {t('Create cluster', '创建集群')}
         </Button>
       }
+      search={{
+        title: t('Filter', '筛选'),
+        hasQuery: Boolean(q),
+        triggerLabel: q || t('Search', '搜索'),
+        onClear: () => {
+          setDraft('')
+          clear()
+        },
+        onSubmit: () => setQuery(draft),
+        children: (
+          <Field label={t('Keyword', '关键词')} htmlFor="list-detail-q">
+            <Input
+              id="list-detail-q"
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              placeholder={t('Name…', '名称…')}
+            />
+          </Field>
+        ),
+      }}
     >
       <ListFilterBar
         query={q}

@@ -52,7 +52,8 @@ export { Heading, type HeadingLevel } from './Heading'
 export { Kbd } from './Kbd'
 export { TextLink } from './Link'
 export { ListFilterBar } from './ListFilterBar'
-export { ListPage } from './ListPage'
+export { ListPage, type ListPageSearch } from './ListPage'
+export { ListSearchDrawer } from './ListSearchDrawer'
 export {
   ResourceList,
   type ResourceColumn,
