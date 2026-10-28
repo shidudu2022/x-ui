@@ -178,6 +178,16 @@
   min-height: 0;
 }
 
+/* ListPage filter drawer — keep Field label↔control breathing room
+   (do not reuse .search-drawer, which zeros .field gap for CommandPalette). */
+.list-search-form.stack {
+  gap: 16px;
+}
+
+.list-search-form .field {
+  gap: 8px;
+}
+
 .search-drawer-results {
   flex: 1;
   min-height: 0;

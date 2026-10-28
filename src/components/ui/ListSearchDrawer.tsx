@@ -59,7 +59,7 @@ export function ListSearchDrawer({
         </div>
       }
     >
-      <div className="stack search-drawer">{children}</div>
+      <div className="stack list-search-form">{children}</div>
     </Drawer>
   )
 }
