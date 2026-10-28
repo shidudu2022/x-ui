@@ -36,24 +36,35 @@ export function ListPage({
   className?: string
 }) {
   const shellSearch = useAppShellSearchOptional()
+  // Depend on stable callbacks only — the full context value changes when
+  // `open` flips, and re-running register/unregister would immediately close.
+  const register = shellSearch?.register
+  const update = shellSearch?.update
+  const unregister = shellSearch?.unregister
+  const setOpen = shellSearch?.setOpen
+  const open = Boolean(shellSearch?.open)
+
+  const searchEnabled = Boolean(search)
 
   useEffect(() => {
-    if (!shellSearch || !search) return
-    shellSearch.register({
+    if (!register || !unregister || !search) return
+    register({
       hasQuery: Boolean(search.hasQuery),
       triggerLabel: search.triggerLabel,
     })
-    return () => shellSearch.unregister()
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- presence while search enabled
-  }, [shellSearch, Boolean(search)])
+    return () => unregister()
+    // search object identity changes every render when callers pass inline props;
+    // only (un)register when search is enabled/disabled.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- see above
+  }, [register, unregister, searchEnabled])
 
   useEffect(() => {
-    if (!shellSearch || !search) return
-    shellSearch.update({
+    if (!update || !search) return
+    update({
       hasQuery: Boolean(search.hasQuery),
       triggerLabel: search.triggerLabel,
     })
-  }, [shellSearch, search?.hasQuery, search?.triggerLabel])
+  }, [update, searchEnabled, search?.hasQuery, search?.triggerLabel])
 
   return (
     <section className={cn('page', 'active', className)}>
@@ -62,8 +73,8 @@ export function ListPage({
       {children}
       {search ? (
         <ListSearchDrawer
-          open={Boolean(shellSearch?.open)}
-          onClose={() => shellSearch?.setOpen(false)}
+          open={open}
+          onClose={() => setOpen?.(false)}
           title={search.title}
           onClear={search.onClear}
           onSubmit={search.onSubmit}
