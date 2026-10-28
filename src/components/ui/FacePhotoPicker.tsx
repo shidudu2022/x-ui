@@ -107,7 +107,7 @@ export function FacePhotoPicker({
           ) : (
             <span className="face-photo-empty">
               <span className="face-photo-empty-icon" aria-hidden>
-                <User size={22} strokeWidth={1.75} />
+                <User size={28} strokeWidth={1.75} />
               </span>
               <Text variant="muted" size="xs">
                 {emptyTitle ?? t('facePhoto.emptyTitle')}
@@ -138,7 +138,7 @@ export function FacePhotoPicker({
             />
           </svg>
           <span className="face-photo-camera" aria-hidden>
-            <Camera size={12} strokeWidth={2} />
+            <Camera size={14} strokeWidth={2} />
           </span>
         </button>
 

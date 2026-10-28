@@ -25,8 +25,8 @@ export function FacePhotoPickerDoc() {
       <DocDemo
         title={d('Oval guide', '椭圆引导')}
         description={d(
-          'Same layout as ImageUploadField: compact preview + actions; oval uses accent color.',
-          '布局对齐 ImageUploadField：紧凑预览 + 操作按钮；椭圆描边用强调色。',
+          'Large 3:4 preview with oval guide (no frame border) + actions below.',
+          '大尺寸 3:4 预览 + 椭圆引导（无边框），操作按钮在下方。',
         )}
         code={`const [url, setUrl] = useState<string | null>(null)
 const [ok, setOk] = useState(false)
