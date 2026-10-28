@@ -7,8 +7,9 @@ import { docMeta, type PropDef } from '../docMeta'
 
 const meta = docMeta('face-photo-picker')
 const props: PropDef[] = [
+  { name: 'label', type: 'ReactNode', desc: { en: 'Field label', zh: '字段标签' } },
   { name: 'previewUrl', type: 'string | null', desc: { en: 'Object URL / image src', zh: '预览 URL' } },
-  { name: 'onFileSelect', type: '(file: File | null) => void', desc: { en: 'File picked', zh: '选择文件' } },
+  { name: 'onFileSelect', type: '(file: File | null) => void', desc: { en: 'File picked or cleared', zh: '选择或清除文件' } },
   { name: 'confirmed', type: 'boolean', desc: { en: 'Confirm checkbox', zh: '确认勾选' } },
   { name: 'onConfirmedChange', type: '(v: boolean) => void', desc: { en: 'Confirm change', zh: '确认变更' } },
 ]
@@ -24,8 +25,8 @@ export function FacePhotoPickerDoc() {
       <DocDemo
         title={d('Oval guide', '椭圆引导')}
         description={d(
-          '3:4 frame with face oval; confirm checkbox after pick.',
-          '3:4 取景框 + 人脸椭圆；选图后可勾选确认。',
+          'Same layout as ImageUploadField: compact preview + actions; oval uses accent color.',
+          '布局对齐 ImageUploadField：紧凑预览 + 操作按钮；椭圆描边用强调色。',
         )}
         code={`const [url, setUrl] = useState<string | null>(null)
 const [ok, setOk] = useState(false)

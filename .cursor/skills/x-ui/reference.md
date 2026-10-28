@@ -42,9 +42,9 @@ Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner
 - **PageTabs**：详情子导航（无面板内容）
 - **ResourceState**：`idle` | `loading` | `empty` | `error` | `offline`
 - **ImagePreview**：`src` 等；部署子路径配合 `withBase`
-- **PdfPreview**：PDF 灯箱；`src`（http/blob/data）；受控 `open`/`onOpenChange`（拉取后打开）；下载 / 新标签页
+- **PdfPreview**：`presentation: 'modal' | 'drawer'`；iframe 嵌在 Modal/Drawer；受控 `open`/`onOpenChange`；footer 下载 / 新标签页
 - **MaskedSecretField**：半掩码密钥只读展示；`maskRatio` 默认 0.5；显隐 + `CopyButton`；工具函数 `maskSecret`
-- **FacePhotoPicker**：3:4 取景 + 椭圆引导；`onFileSelect` 由调用方管文件；可选确认勾选
+- **FacePhotoPicker**：对齐 ImageUploadField（紧凑 3:4 预览 + 操作）；椭圆引导用强调色；`onFileSelect` 由调用方管文件；可选确认勾选
 - **MermaidDiagram**：动态 `import('mermaid')`；宿主需安装可选 peer `mermaid`
 - **TotpBindPanel**：`secret` / `account` / `issuer`；可选 `qrSrc`，默认本地 SVG QR（`uqr`）
 - **MetricGrid** `columns?: 2 | 3 | 4`（默认 2；窄屏仍 1 列）

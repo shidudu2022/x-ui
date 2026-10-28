@@ -1,13 +1,16 @@
-import { useEffect, useState, type ReactNode } from 'react'
-import { Download, ExternalLink, FileText, X } from 'lucide-react'
+import { useState, type ReactNode } from 'react'
+import { Download, ExternalLink, FileText } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { useT } from '@/i18n'
 import { withBase } from '@/lib/baseUrl'
-import { usePresence } from '@/lib/usePresence'
 import { Button } from './Button'
+import { Drawer, type DrawerSize } from './Drawer'
+import { Modal } from './Modal'
+
+export type PdfPreviewPresentation = 'modal' | 'drawer'
 
 /**
- * PDF thumbnail / trigger + lightbox (iframe). Supports controlled `open` for
+ * PDF preview embedded in Modal or Drawer. Supports controlled `open` for
  * post-fetch flows (e.g. open after API returns a blob URL).
  */
 export function PdfPreview({
@@ -16,6 +19,10 @@ export function PdfPreview({
   fileName,
   open: openProp,
   onOpenChange,
+  presentation = 'modal',
+  modalSize = 'lg',
+  drawerSize = 'xl',
+  drawerSide = 'right',
   className,
   children,
   showDownload = true,
@@ -26,6 +33,11 @@ export function PdfPreview({
   fileName?: string
   open?: boolean
   onOpenChange?: (open: boolean) => void
+  /** Embed PDF in Modal (default) or Drawer. */
+  presentation?: PdfPreviewPresentation
+  modalSize?: 'sm' | 'md' | 'lg'
+  drawerSize?: DrawerSize
+  drawerSide?: 'left' | 'right'
   className?: string
   /** Custom trigger; omit when using controlled open-only mode. */
   children?: ReactNode
@@ -40,18 +52,10 @@ export function PdfPreview({
     if (!controlled) setUncontrolledOpen(next)
     onOpenChange?.(next)
   }
-  const { present, visible } = usePresence(open, 180)
   const fullSrc = withBase(src)
   const dialogTitle = title ?? fileName ?? tr('pdfPreview.dialog')
-
-  useEffect(() => {
-    if (!visible) return
-    function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') setOpen(false)
-    }
-    document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
-  }, [visible])
+  const frameTitle =
+    typeof dialogTitle === 'string' ? dialogTitle : tr('pdfPreview.dialog')
 
   function download() {
     const a = document.createElement('a')
@@ -62,6 +66,34 @@ export function PdfPreview({
     a.click()
     a.remove()
   }
+
+  const footer = (
+    <div className="pdf-preview-footer-actions">
+      {showOpenTab ? (
+        <a
+          className="btn btn-ghost btn-sm"
+          href={fullSrc}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span className="btn-label">
+            <ExternalLink size={14} aria-hidden />
+            {tr('pdfPreview.openTab')}
+          </span>
+        </a>
+      ) : null}
+      {showDownload ? (
+        <Button type="button" variant="secondary" size="sm" onClick={download}>
+          <Download size={14} aria-hidden />
+          {tr('pdfPreview.download')}
+        </Button>
+      ) : null}
+    </div>
+  )
+
+  const frame = (
+    <iframe className="pdf-preview-frame" title={frameTitle} src={fullSrc} />
+  )
 
   return (
     <>
@@ -81,67 +113,37 @@ export function PdfPreview({
           onClick={() => setOpen(true)}
           aria-label={tr('pdfPreview.preview')}
         >
-          <FileText size={22} aria-hidden />
+          <FileText size={20} aria-hidden />
           <span className="pdf-preview-card-label">
             {fileName || tr('pdfPreview.preview')}
           </span>
         </button>
       ) : null}
 
-      {present ? (
-        <div
-          className={cn('pdf-preview-lightbox', visible && 'open')}
-          role="dialog"
-          aria-modal="true"
-          aria-label={typeof dialogTitle === 'string' ? dialogTitle : tr('pdfPreview.dialog')}
-          onClick={() => setOpen(false)}
+      {presentation === 'drawer' ? (
+        <Drawer
+          open={open}
+          onClose={() => setOpen(false)}
+          title={dialogTitle}
+          size={drawerSize}
+          side={drawerSide}
+          footer={footer}
+          className="pdf-preview-drawer"
         >
-          <div
-            className="pdf-preview-panel"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="pdf-preview-toolbar">
-              <strong className="pdf-preview-title">{dialogTitle}</strong>
-              <div className="pdf-preview-toolbar-actions">
-                {showOpenTab ? (
-                  <a
-                    className="btn btn-ghost btn-sm"
-                    href={fullSrc}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <span className="btn-label">
-                      <ExternalLink size={14} aria-hidden />
-                      {tr('pdfPreview.openTab')}
-                    </span>
-                  </a>
-                ) : null}
-                {showDownload ? (
-                  <Button type="button" variant="secondary" size="sm" onClick={download}>
-                    <Download size={14} aria-hidden />
-                    {tr('pdfPreview.download')}
-                  </Button>
-                ) : null}
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  iconOnly
-                  aria-label={tr('pdfPreview.close')}
-                  onClick={() => setOpen(false)}
-                >
-                  <X size={16} />
-                </Button>
-              </div>
-            </div>
-            <iframe
-              className="pdf-preview-frame"
-              title={typeof dialogTitle === 'string' ? dialogTitle : tr('pdfPreview.dialog')}
-              src={fullSrc}
-            />
-          </div>
-        </div>
-      ) : null}
+          <div className="pdf-preview-embed">{frame}</div>
+        </Drawer>
+      ) : (
+        <Modal
+          open={open}
+          onClose={() => setOpen(false)}
+          title={dialogTitle}
+          size={modalSize}
+          footer={footer}
+          className="pdf-preview-modal"
+        >
+          <div className="pdf-preview-embed">{frame}</div>
+        </Modal>
+      )}
     </>
   )
 }

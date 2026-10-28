@@ -205,11 +205,15 @@ export const en: LocaleMessages = {
     'maskedSecret.show': 'Show secret',
     'maskedSecret.hide': 'Hide secret',
 
+    'facePhoto.label': 'Face photo',
     'facePhoto.pickAria': 'Choose face photo',
     'facePhoto.changeAria': 'Change face photo',
     'facePhoto.previewAlt': 'Face preview',
-    'facePhoto.emptyTitle': 'Click to choose a photo',
+    'facePhoto.emptyTitle': 'No photo',
     'facePhoto.emptyHint': 'JPEG recommended',
+    'facePhoto.upload': 'Choose photo',
+    'facePhoto.change': 'Change photo',
+    'facePhoto.clear': 'Clear',
     'facePhoto.guide':
       'Place your face inside the oval. Eyes, nose, and mouth must be clear — no mask or sunglasses.',
     'facePhoto.confirm': 'I confirm the photo shows a clear, unobstructed face that matches me',

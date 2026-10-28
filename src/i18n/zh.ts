@@ -204,11 +204,15 @@ export const zh: LocaleMessages = {
     'maskedSecret.show': '显示密钥',
     'maskedSecret.hide': '隐藏密钥',
 
+    'facePhoto.label': '人脸照片',
     'facePhoto.pickAria': '选择人脸照片',
     'facePhoto.changeAria': '更换人脸照片',
     'facePhoto.previewAlt': '人脸预览',
-    'facePhoto.emptyTitle': '点击选择照片',
+    'facePhoto.emptyTitle': '暂无照片',
     'facePhoto.emptyHint': '建议 JPEG',
+    'facePhoto.upload': '选择照片',
+    'facePhoto.change': '更换照片',
+    'facePhoto.clear': '清除',
     'facePhoto.guide':
       '请将正脸置于椭圆框内，确保双眼、鼻子、嘴巴清晰可见，无口罩或墨镜遮挡。',
     'facePhoto.confirm': '我已确认照片中人脸清晰、正脸无遮挡，与本人一致',
