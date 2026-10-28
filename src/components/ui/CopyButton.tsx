@@ -12,6 +12,7 @@ export function CopyButton({
   variant = 'ghost',
   size = 'sm',
   className,
+  disabled,
   onCopied,
   onFailed,
 }: {
@@ -21,6 +22,7 @@ export function CopyButton({
   variant?: ButtonVariant
   size?: ButtonSize
   className?: string
+  disabled?: boolean
   onCopied?: () => void
   onFailed?: () => void
 }) {
@@ -30,6 +32,7 @@ export function CopyButton({
   const [ok, setOk] = useState(false)
 
   async function copy() {
+    if (disabled) return
     const success = await copyToClipboard(value)
     if (success) {
       setOk(true)
@@ -45,6 +48,7 @@ export function CopyButton({
       type="button"
       variant={variant}
       size={size}
+      disabled={disabled}
       className={cn('copy-btn', className)}
       onClick={copy}
     >

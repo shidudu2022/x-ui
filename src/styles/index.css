@@ -47,6 +47,7 @@
 @import './components/choice-card.css' layer(components);
 @import './components/misc.css' layer(components);
 @import './components/advanced.css' layer(components);
+@import './components/secret-face-pdf.css' layer(components);
 @import './components/theme-glass.css' layer(components);
 
 @import './charts/chart.css' layer(charts);

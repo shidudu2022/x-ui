@@ -139,6 +139,10 @@ GitHub Pages / 子路径：`withBase()`（`@/lib/baseUrl`）；`npm run build:pa
 ## 组件选用速查
 
 - **按钮** `Button` · **表单** `Field` + Input/Select/… · **搜索框** `SearchInput`（图标 + 清除，勿手拼）· **颜色** `ColorInput`（非原生 color）  
+- **密钥展示** `MaskedSecretField`（半掩码 + 显隐 + 复制）→ `/components/masked-secret-field`
+- **人脸 KYC 拍照** `FacePhotoPicker`（椭圆引导）→ `/components/face-photo-picker`
+- **PDF 预览** `PdfPreview`（灯箱 / 受控 open）→ `/components/pdf-preview`
+- **流程图** `MermaidDiagram`（可选 peer `mermaid`）→ `/components/mermaid-diagram`
 - **登录** `LoginCard` + `TotpBindPanel` / `PinInput` → 读 `ExampleLoginPage`  
 - **大卡片选型** `ChoiceCard` + `ChoiceCardGrid`（`recommended` → Badge）；小目录链用 `CatalogTile` → 读 `ExampleChoicePage`  
 - **注册 / 验证码** → `ExampleRegisterPage` / `ExampleVerifyEmailPage`  

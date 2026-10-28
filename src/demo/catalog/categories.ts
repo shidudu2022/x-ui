@@ -72,6 +72,7 @@ export const CATEGORIES: Category[] = [
       'checklist',
       'code-block',
       'json-viewer',
+      'mermaid-diagram',
     ],
   },
   {
@@ -110,6 +111,8 @@ export const CATEGORIES: Category[] = [
       'file-upload',
       'image-upload-field',
       'avatar-upload',
+      'face-photo-picker',
+      'masked-secret-field',
       'settings-row',
       'form-errors',
     ],
@@ -179,6 +182,7 @@ export const CATEGORIES: Category[] = [
       'strong-confirm-drawer',
       'command-palette',
       'image-preview',
+      'pdf-preview',
     ],
   },
   {

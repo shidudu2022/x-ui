@@ -202,6 +202,28 @@ export const en: LocaleMessages = {
     'imagePreview.close': 'Close',
     'imagePreview.loadFailed': 'Failed to load',
 
+    'maskedSecret.show': 'Show secret',
+    'maskedSecret.hide': 'Hide secret',
+
+    'facePhoto.pickAria': 'Choose face photo',
+    'facePhoto.changeAria': 'Change face photo',
+    'facePhoto.previewAlt': 'Face preview',
+    'facePhoto.emptyTitle': 'Click to choose a photo',
+    'facePhoto.emptyHint': 'JPEG recommended',
+    'facePhoto.guide':
+      'Place your face inside the oval. Eyes, nose, and mouth must be clear — no mask or sunglasses.',
+    'facePhoto.confirm': 'I confirm the photo shows a clear, unobstructed face that matches me',
+
+    'pdfPreview.preview': 'Preview PDF',
+    'pdfPreview.dialog': 'PDF preview',
+    'pdfPreview.close': 'Close',
+    'pdfPreview.download': 'Download',
+    'pdfPreview.openTab': 'Open in new tab',
+
+    'mermaid.missingPeer':
+      'Install the optional peer dependency "mermaid" to render diagrams.',
+    'mermaid.renderFailed': 'Diagram render failed',
+
     'confirm.irreversible': 'This action cannot be undone',
     'confirm.deleteWarning': 'Deleted data cannot be recovered. Please confirm carefully.',
     'confirm.resource': 'Resource: ',

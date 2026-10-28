@@ -8,7 +8,8 @@
 
 ```bash
 npm install @shidudu2022/x-ui
-# peer: react / react-dom / react-router(-dom) ^19 / ^7
+# peer: react / react-dom ^19；AppShell 等需 react-router(-dom) ^7（optional）
+# MermaidDiagram 需可选 peer mermaid（>=10 <12）
 ```
 
 ```tsx
@@ -147,7 +148,7 @@ columns={[
 
 ### 新增组件
 
-`TimePicker` · `PageTabs` · `StatCard` · `ResourceState` · `ImagePreview` · `ColorInput` · `JsonViewer` · `KeyValueEditor` · `SearchResultList` · `SettingsRow` / `DangerZone` · `AccentPicker` · `Stack` / `FormGrid` / `CatalogTile` · `TotpBindPanel` · `TreeTableCell`
+`TimePicker` · `PageTabs` · `StatCard` · `ResourceState` · `ImagePreview` · `ColorInput` · `JsonViewer` · `KeyValueEditor` · `SearchResultList` · `SettingsRow` / `DangerZone` · `AccentPicker` · `Stack` / `FormGrid` / `CatalogTile` · `TotpBindPanel` · `TreeTableCell` · `MaskedSecretField` · `FacePhotoPicker` · `PdfPreview` · `MermaidDiagram`
 
 > 仍按需：Mention / 轻量 RichText；虚拟长列表；Playwright 视觉回归；可选 npm 包形态。
 

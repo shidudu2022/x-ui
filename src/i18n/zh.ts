@@ -201,6 +201,27 @@ export const zh: LocaleMessages = {
     'imagePreview.close': '关闭',
     'imagePreview.loadFailed': '无法加载',
 
+    'maskedSecret.show': '显示密钥',
+    'maskedSecret.hide': '隐藏密钥',
+
+    'facePhoto.pickAria': '选择人脸照片',
+    'facePhoto.changeAria': '更换人脸照片',
+    'facePhoto.previewAlt': '人脸预览',
+    'facePhoto.emptyTitle': '点击选择照片',
+    'facePhoto.emptyHint': '建议 JPEG',
+    'facePhoto.guide':
+      '请将正脸置于椭圆框内，确保双眼、鼻子、嘴巴清晰可见，无口罩或墨镜遮挡。',
+    'facePhoto.confirm': '我已确认照片中人脸清晰、正脸无遮挡，与本人一致',
+
+    'pdfPreview.preview': '预览 PDF',
+    'pdfPreview.dialog': 'PDF 预览',
+    'pdfPreview.close': '关闭',
+    'pdfPreview.download': '下载',
+    'pdfPreview.openTab': '新标签页打开',
+
+    'mermaid.missingPeer': '请安装可选 peer 依赖 mermaid 以渲染流程图。',
+    'mermaid.renderFailed': '流程图渲染失败',
+
     'confirm.irreversible': '此操作不可撤销',
     'confirm.deleteWarning': '删除后数据无法恢复，请谨慎确认。',
     'confirm.resource': '资源：',

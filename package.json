@@ -1,6 +1,6 @@
 {
   "name": "@shidudu2022/x-ui",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "React design system for ops / admin consoles",
   "license": "MIT",
   "author": "shidudu",
@@ -51,6 +51,7 @@
     "preview:pages": "npm run build:pages && vite preview --base /x-ui/"
   },
   "peerDependencies": {
+    "mermaid": ">=10 <12",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router": "^7.0.0",
@@ -61,6 +62,9 @@
       "optional": true
     },
     "react-router-dom": {
+      "optional": true
+    },
+    "mermaid": {
       "optional": true
     }
   },
@@ -74,6 +78,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
+    "mermaid": "^11.17.2",
     "oxlint": "^1.88.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",

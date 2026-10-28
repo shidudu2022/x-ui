@@ -44,8 +44,12 @@ import { FilterBarDoc } from './FilterBarDoc'
 import { FormErrorsDoc } from './FormErrorsDoc'
 import { FormPageDoc } from './FormPageDoc'
 import { HeadingDoc } from './HeadingDoc'
+import { FacePhotoPickerDoc } from './FacePhotoPickerDoc'
 import { ImagePreviewDoc } from './ImagePreviewDoc'
 import { ImageUploadFieldDoc } from './ImageUploadFieldDoc'
+import { MaskedSecretFieldDoc } from './MaskedSecretFieldDoc'
+import { MermaidDiagramDoc } from './MermaidDiagramDoc'
+import { PdfPreviewDoc } from './PdfPreviewDoc'
 import { InputDoc } from './InputDoc'
 import { InputGroupDoc } from './InputGroupDoc'
 import { JsonViewerDoc } from './JsonViewerDoc'
@@ -162,6 +166,7 @@ export const DOC_PAGES: Record<string, ComponentType> = {
   'drawer': DrawerDoc,
   'dropdown-menu': DropdownMenuDoc,
   'empty-state': EmptyStateDoc,
+  'face-photo-picker': FacePhotoPickerDoc,
   'field': FieldDoc,
   'file-upload': FileUploadDoc,
   'filter-bar': FilterBarDoc,
@@ -181,6 +186,8 @@ export const DOC_PAGES: Record<string, ComponentType> = {
   'login-card': LoginCardDoc,
   'log-viewer': LogViewerDoc,
   'maintenance-banner': MaintenanceBannerDoc,
+  'masked-secret-field': MaskedSecretFieldDoc,
+  'mermaid-diagram': MermaidDiagramDoc,
   'meta-row': MetaRowDoc,
   'meter-bar': MeterBarDoc,
   'metric': MetricDoc,
@@ -193,6 +200,7 @@ export const DOC_PAGES: Record<string, ComponentType> = {
   'page-header': PageHeaderDoc,
   'page-tabs': PageTabsDoc,
   'pagination': PaginationDoc,
+  'pdf-preview': PdfPreviewDoc,
   'pie-chart': PieChartDoc,
   'pill': PillDoc,
   'pin-input': PinInputDoc,

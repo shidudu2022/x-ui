@@ -50,6 +50,7 @@ export default defineConfig({
         'lucide-react',
         'recharts',
         'uqr',
+        'mermaid',
       ],
       output: {
         assetFileNames: (asset) => {
