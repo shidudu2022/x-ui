@@ -1,80 +1,61 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import {
-  Bell,
+  BookOpen,
   Boxes,
-  Columns2,
-  FileText,
-  FormInput,
-  Gauge,
-  Heading,
+  ChartColumn,
+  Compass,
+  LayoutGrid,
   LayoutTemplate,
-  List,
-  ListTodo,
-  Loader,
-  LogIn,
-  MailCheck,
-  MessageSquare,
-  UserPlus,
-  Navigation,
+  MousePointerClick,
   Palette,
-  PanelRight,
-  PieChart,
+  PanelsTopLeft,
+  Rocket,
+  Ruler,
   Search,
-  Settings,
   Sparkles,
   Table2,
-  Type,
-  UserRound,
-  Workflow,
+  Wrench,
+  TextCursorInput,
+  AppWindow,
+  BellRing,
   Layers,
-  CircleSlash,
-  Shield,
-  ShieldAlert,
-  LayoutGrid,
+  type LucideIcon,
 } from 'lucide-react'
-import { AppShell, Breadcrumbs, NavIcon, ThemeDrawer, UserMenu } from '@/components/layout'
+import { AppShell, Breadcrumbs, NavIcon, ThemeDrawer, UserMenu, type NavGroup } from '@/components/layout'
 import { Button, CommandPalette, Drawer, EmptyState, type CommandItem } from '@/components/ui'
+import { CATEGORIES, categoryOfSlug, type CategoryId } from '@/demo/catalog/categories'
+import { catalogTitles, entriesOfCategory } from '@/demo/catalog/registry'
+import { TEMPLATE_GROUPS, templateTitles } from '@/demo/catalog/templates'
 import { useListSearch } from '@/lib/useListSearch'
 
-const titles: Record<string, string> = {
+const CATEGORY_ICONS: Record<CategoryId, LucideIcon> = {
+  layout: PanelsTopLeft,
+  general: MousePointerClick,
+  forms: TextCursorInput,
+  data: Table2,
+  charts: ChartColumn,
+  feedback: BellRing,
+  overlay: Layers,
+  navigation: Compass,
+  shell: AppWindow,
+}
+
+const PAGE_TITLES: Record<string, string> = {
   '/': '概览',
-  '/foundations': '基础',
-  '/components/buttons': '按钮',
-  '/components/forms': '表单',
-  '/components/data': '数据展示',
-  '/components/feedback': '反馈',
-  '/components/navigation': '导航与布局',
-  '/components/charts': '图表',
-  '/components/advanced': '进阶组件',
+  '/docs/getting-started': '快速开始',
+  '/docs/theming': '主题与外观',
+  '/docs/conventions': '开发约定',
+  '/docs/utilities': '工具与令牌 API',
+  '/foundations': '设计令牌',
+  '/templates': '页面模板',
   '/patterns': '组合模式',
-  '/examples/page': '页面标题',
-  '/examples/list': '列表页',
-  '/examples/list-detail': '列表详情',
-  '/examples/form': '表单页',
-  '/examples/detail': '详情页',
-  '/examples/wizard': '向导页',
-  '/examples/log': '日志页',
-  '/examples/login': '登录页',
-  '/examples/register': '注册页',
-  '/examples/verify-email': '邮箱验证',
-  '/examples/strong-confirm': '强确认',
-  '/examples/typography': '字体字号',
-  '/examples/dashboard': '仪表盘',
-  '/examples/settings': '设置页',
-  '/examples/empty': '空态 / 404',
-  '/examples/search': '搜索结果',
-  '/examples/compare': '对比 / Diff',
-  '/examples/profile': '个人资料',
-  '/examples/roles': '角色权限',
-  '/examples/notifications': '通知中心',
-  '/examples/skeleton': '加载骨架',
-  '/examples/errors': '错误与离线',
-  '/examples/audit': '审计详情',
-  '/examples/onboarding': '开通向导',
-  '/examples/i18n': '文案与密度',
-  '/examples/permissions': '权限策略',
-  '/examples/choice': '路径选择',
+}
+
+const titles: Record<string, string> = {
+  ...PAGE_TITLES,
+  ...templateTitles(),
+  ...catalogTitles(),
 }
 
 const LIST_SEARCH_PATH = '/examples/list'
@@ -161,77 +142,71 @@ export function DemoShell() {
   const { q: listQ } = useListSearch()
   const isListPage = location.pathname === LIST_SEARCH_PATH
 
-  const navGroups = useMemo(
+  const navGroups = useMemo<NavGroup[]>(
     () => [
       {
-        label: '开始',
+        section: '开始',
         items: [
           { to: '/', label: '概览', icon: <NavIcon icon={Sparkles} />, end: true },
-          { to: '/foundations', label: '基础', icon: <NavIcon icon={Palette} /> },
+          { to: '/docs/getting-started', label: '快速开始', icon: <NavIcon icon={Rocket} /> },
+          { to: '/foundations', label: '设计令牌', icon: <NavIcon icon={Ruler} /> },
+          { to: '/docs/theming', label: '主题与外观', icon: <NavIcon icon={Palette} /> },
+          { to: '/docs/conventions', label: '开发约定', icon: <NavIcon icon={BookOpen} /> },
+          { to: '/docs/utilities', label: '工具与令牌 API', icon: <NavIcon icon={Wrench} /> },
         ],
       },
       {
-        label: '组件',
-        items: [
-          { to: '/components/buttons', label: '按钮', icon: <NavIcon icon={Boxes} /> },
-          { to: '/components/forms', label: '表单', icon: <NavIcon icon={FormInput} /> },
-          { to: '/components/data', label: '数据', icon: <NavIcon icon={Table2} /> },
-          { to: '/components/feedback', label: '反馈', icon: <NavIcon icon={MessageSquare} /> },
-          { to: '/components/navigation', label: '导航', icon: <NavIcon icon={Navigation} /> },
-          { to: '/components/charts', label: '图表', icon: <NavIcon icon={PieChart} /> },
-          { to: '/components/advanced', label: '进阶', icon: <NavIcon icon={Layers} /> },
-        ],
+        section: '组件',
+        items: [{ to: '/components', label: '全部组件', icon: <NavIcon icon={Boxes} />, end: true }],
       },
+      ...CATEGORIES.map((c) => ({
+        section: '组件',
+        label: c.label,
+        collapsible: true,
+        icon: <NavIcon icon={CATEGORY_ICONS[c.id]} />,
+        items: entriesOfCategory(c).map((e) => ({ to: `/components/${e.slug}`, label: e.name })),
+      })),
       {
-        label: '示例',
+        section: '页面模板',
         items: [
-          { to: '/examples/dashboard', label: '仪表盘', icon: <NavIcon icon={Gauge} /> },
-          { to: '/examples/settings', label: '设置页', icon: <NavIcon icon={Settings} /> },
-          { to: '/examples/empty', label: '空态 / 404', icon: <NavIcon icon={CircleSlash} /> },
-          { to: '/examples/search', label: '搜索结果', icon: <NavIcon icon={Search} /> },
-          { to: '/examples/compare', label: '对比 / Diff', icon: <NavIcon icon={Columns2} /> },
-          { to: '/examples/profile', label: '个人资料', icon: <NavIcon icon={UserRound} /> },
-          { to: '/examples/roles', label: '角色权限', icon: <NavIcon icon={Shield} /> },
-          { to: '/examples/notifications', label: '通知中心', icon: <NavIcon icon={Bell} /> },
-          { to: '/examples/skeleton', label: '加载骨架', icon: <NavIcon icon={Loader} /> },
-          { to: '/examples/typography', label: '字体字号', icon: <NavIcon icon={Type} /> },
-          { to: '/examples/page', label: '页面标题', icon: <NavIcon icon={Heading} /> },
-          { to: '/examples/list', label: '列表页', icon: <NavIcon icon={List} /> },
-          { to: '/examples/list-detail', label: '列表详情', icon: <NavIcon icon={PanelRight} /> },
-          { to: '/examples/form', label: '表单页', icon: <NavIcon icon={FileText} /> },
-          { to: '/examples/choice', label: '路径选择', icon: <NavIcon icon={LayoutGrid} /> },
-          { to: '/examples/detail', label: '详情页', icon: <NavIcon icon={Boxes} /> },
-          { to: '/examples/wizard', label: '向导页', icon: <NavIcon icon={Workflow} /> },
-          { to: '/examples/log', label: '日志页', icon: <NavIcon icon={ListTodo} /> },
-          { to: '/examples/login', label: '登录页', icon: <NavIcon icon={LogIn} /> },
-          { to: '/examples/register', label: '注册页', icon: <NavIcon icon={UserPlus} /> },
-          { to: '/examples/verify-email', label: '邮箱验证', icon: <NavIcon icon={MailCheck} /> },
-          { to: '/examples/strong-confirm', label: '强确认', icon: <NavIcon icon={ShieldAlert} /> },
-          { to: '/examples/errors', label: '错误与离线', icon: <NavIcon icon={CircleSlash} /> },
-          { to: '/examples/audit', label: '审计详情', icon: <NavIcon icon={ListTodo} /> },
-          { to: '/examples/onboarding', label: '开通向导', icon: <NavIcon icon={Workflow} /> },
-          { to: '/examples/i18n', label: '文案与密度', icon: <NavIcon icon={Type} /> },
-          { to: '/examples/permissions', label: '权限策略', icon: <NavIcon icon={Shield} /> },
+          { to: '/templates', label: '模板总览', icon: <NavIcon icon={LayoutGrid} />, end: true },
           { to: '/patterns', label: '组合模式', icon: <NavIcon icon={LayoutTemplate} /> },
         ],
       },
+      ...TEMPLATE_GROUPS.map((g) => ({
+        section: '页面模板',
+        label: g.label,
+        collapsible: true,
+        icon: <NavIcon icon={g.icon} />,
+        items: g.items.map((t) => ({
+          to: t.to,
+          label: t.label,
+          icon: <NavIcon icon={t.icon} />,
+        })),
+      })),
     ],
     [],
   )
 
   const commands: CommandItem[] = useMemo(
     () =>
-      Object.entries(titles).map(([to, label]) => ({
-        id: to,
-        label,
-        group: to.startsWith('/components')
-          ? '组件'
-          : to.startsWith('/examples')
-            ? '示例'
-            : '页面',
-        type: 'page',
-        onSelect: () => navigate(to),
-      })),
+      Object.entries(titles).map(([to, label]) => {
+        const slug = to.startsWith('/components/') ? to.slice('/components/'.length) : ''
+        const category = slug ? categoryOfSlug(slug) : undefined
+        return {
+          id: to,
+          label: category ? `${label} · ${category.label}` : label,
+          group: slug
+            ? '组件'
+            : to.startsWith('/examples') || to === '/templates' || to === '/patterns'
+              ? '模板'
+              : to.startsWith('/docs') || to === '/foundations' || to === '/'
+                ? '文档'
+                : '页面',
+          type: 'page',
+          onSelect: () => navigate(to),
+        }
+      }),
     [navigate],
   )
 
@@ -256,15 +231,37 @@ export function DemoShell() {
         : location.pathname === item.to || location.pathname.startsWith(`${item.to}/`),
     )
 
-  const searchLabel = isListPage
-    ? listQ || '搜索集群…'
-    : '搜索组件…'
+  const crumb = useMemo(() => {
+    const path = location.pathname
+    if (path.startsWith('/components/')) {
+      const category = categoryOfSlug(path.slice('/components/'.length))
+      if (category) {
+        return {
+          parent: {
+            label: `组件 · ${category.label}`,
+            to: `/components#cat-${category.id}`,
+            icon: <NavIcon icon={CATEGORY_ICONS[category.id]} />,
+          },
+          icon: undefined,
+        }
+      }
+    }
+    if (path.startsWith('/examples/')) {
+      return {
+        parent: { label: '页面模板', to: '/templates', icon: <NavIcon icon={LayoutGrid} /> },
+        icon: undefined,
+      }
+    }
+    return { parent: null, icon: activeNav?.icon }
+  }, [location.pathname, activeNav])
+
+  const searchLabel = isListPage ? listQ || '搜索集群…' : '搜索组件 / 文档…'
 
   return (
     <>
       <AppShell
         navGroups={navGroups}
-        topbarTitle={<Breadcrumbs current={title} currentIcon={activeNav?.icon} />}
+        topbarTitle={<Breadcrumbs current={title} currentIcon={crumb.icon} parent={crumb.parent} />}
         topbarRight={
           <>
             <button
@@ -278,11 +275,7 @@ export function DemoShell() {
               <span className="search-trigger-text">{searchLabel}</span>
               <kbd className="search-trigger-kbd">⌘ K</kbd>
             </button>
-            <button
-              type="button"
-              className="pill pill-action"
-              onClick={() => setThemeOpen(true)}
-            >
+            <button type="button" className="pill pill-action" onClick={() => setThemeOpen(true)}>
               <span className="pill-dot" /> 外观
             </button>
           </>

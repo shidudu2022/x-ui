@@ -6,6 +6,18 @@
   max-width: 100%;
 }
 
+.date-field.is-inline-width {
+  width: auto;
+  max-width: 100%;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.date-field.is-inline-width .date-field-trigger {
+  width: auto;
+  min-width: 10.5rem;
+}
+
 .date-field-trigger {
   box-sizing: border-box;
   display: inline-flex;
@@ -769,7 +781,22 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+.calendar-weekday {
+  padding: 2px 0 4px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.calendar-cell.is-today {
+  border-color: var(--primary);
+}
+
+.calendar-cell.is-today .calendar-day {
+  color: var(--primary);
 }
 
 .calendar-grid {
@@ -782,7 +809,7 @@
   min-height: 64px;
   border: 1px solid var(--hairline);
   border-radius: 8px;
-  padding: 6px;
+  padding: 8px;
   background: var(--surface-2);
 }
 
@@ -799,13 +826,14 @@
 .calendar-events {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  margin-top: 4px;
+  gap: 3px;
+  margin-top: 6px;
 }
 
 .calendar-chip {
-  font-size: 10px;
-  padding: 1px 4px;
+  font-size: 11px;
+  line-height: 1.4;
+  padding: 1px 6px;
   border-radius: 4px;
   background: var(--primary-soft);
   color: var(--primary);

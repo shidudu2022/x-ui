@@ -25,7 +25,15 @@ pnpm install   # 或 npm / yarn
 pnpm dev
 ```
 
-浏览器打开提示的本地地址。侧栏：**基础 / 组件 / 示例 / 组合**。
+浏览器打开提示的本地地址。文档站结构：
+
+| 分区 | 内容 |
+|------|------|
+| 开始 | 概览 · 快速开始 · 设计令牌 · 主题与外观 · 开发约定 |
+| 组件 | 全部组件索引 + 9 个分类（布局与排版 / 通用 / 表单 / 数据展示 / 图表 / 反馈 / 浮层与确认 / 导航与步骤 / 应用壳与账户）；每个组件页含引入、使用场景、可交互示例（带源码）、API、相关组件 |
+| 页面模板 | 模板总览（30 个整页示例，5 组）· 组合模式 |
+
+⌘K 可搜索组件（含分类）、文档与模板。
 
 ## 在线预览（GitHub Pages）
 
@@ -42,7 +50,7 @@ npm run preview:pages
 
 `build:pages` 使用 `VITE_BASE=/x-ui/`，并写入 SPA 回退（`scripts/spa-github-pages.mjs`）。业务资源路径用 `@/lib/baseUrl` 的 `withBase()`。
 
-## 示例页
+## 页面模板
 
 | 场景 | 路径 | 要点 |
 |------|------|------|
@@ -64,6 +72,9 @@ npm run preview:pages
 | 审计 | `/examples/audit` | Timeline + DescriptionList + 日志 |
 | 文案 | `/examples/i18n` | 长文案、密度 |
 | 权限 | `/examples/permissions` | 禁用 / 隐藏策略 |
+| 重置密码 | `/examples/reset-password` | 发重置链接 |
+| 邀请成员 | `/examples/invite` | TagsInput + 角色 |
+| API Key | `/examples/api-keys` | ResourceList + Drawer + Copy |
 
 ### 列表模板（`/examples/list?tpl=`）
 
@@ -77,7 +88,9 @@ npm run preview:pages
 | `compact` | 紧凑密度表格 |
 | `resource` | ResourceList（筛选 + 表 + 分页一体） |
 
-组件馆：`/components/{buttons,forms,data,feedback,navigation,charts,advanced}` · 组合：`/patterns`
+组件文档：`/components`（按分类）· `/components/<slug>` 单组件 · 模板总览：`/templates` · 组合：`/patterns`
+
+待补页面示例：账单订单、文件管理、Webhook、定时任务、告警规则、导入导出、多租户切换。
 
 ## 表格固定列
 
@@ -102,6 +115,7 @@ columns={[
 
 | 项 | 说明 |
 |----|------|
+| Sidebar / AppShell | `navGroups` 支持 `section` 分区标题、`collapsible` 可折叠分组（含当前路由自动展开，图标栏模式下降级为分组图标） |
 | Select | 选项搜索；窄屏/触控可回退原生 `<select>` |
 | DataTable | `remote`；`hideFooter` / `hideHeader`；`columnVisibility`；`resizableColumns`；`pinned` |
 | Table | sticky 固定列 + 边缘边框；多选与左固定联动 |
@@ -130,7 +144,7 @@ Cursor Agent 请加载：
 .cursor/skills/x-ui/SKILL.md
 ```
 
-组件导出名与**示例页面索引**见 `.cursor/skills/x-ui/reference.md`。
+组件导出名、**示例页面索引**与文档站数据源（分类 / 目录 / 模板）见 `.cursor/skills/x-ui/reference.md`。
 
 **示例优先**：实现页面前先按 Skill 里「场景 → 示例」表打开 `src/demo/pages/...` 对照，再按同样组件与校验方式实现（登录对照 `ExampleLoginPage`，强确认抽屉对照 `ExampleStrongConfirmPage`，列表对照 `list/*Template`）。
 

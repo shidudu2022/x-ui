@@ -8,6 +8,8 @@ export type CalendarEvent = {
   tone?: 'primary' | 'success' | 'warn' | 'danger'
 }
 
+const WEEK = ['日', '一', '二', '三', '四', '五', '六']
+
 export function Calendar({
   events = [],
   className,
@@ -29,6 +31,8 @@ export function Calendar({
     return map
   }, [events])
 
+  const now = new Date()
+  const todayIso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
   const days = new Date(y, m + 1, 0).getDate()
   const start = new Date(y, m, 1).getDay()
 
@@ -46,6 +50,11 @@ export function Calendar({
         </button>
       </div>
       <div className="calendar-grid">
+        {WEEK.map((w) => (
+          <div key={w} className="calendar-weekday" aria-hidden>
+            {w}
+          </div>
+        ))}
         {Array.from({ length: start }).map((_, i) => (
           <div key={`e-${i}`} className="calendar-cell is-empty" />
         ))}
@@ -54,7 +63,7 @@ export function Calendar({
           const iso = `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`
           const list = byDay.get(iso) ?? []
           return (
-            <div key={iso} className="calendar-cell">
+            <div key={iso} className={cn('calendar-cell', iso === todayIso && 'is-today')}>
               <span className="calendar-day">{d}</span>
               <div className="calendar-events">
                 {list.slice(0, 2).map((ev) => (

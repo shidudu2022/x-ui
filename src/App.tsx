@@ -5,14 +5,14 @@ import { AppearanceProvider } from '@/theme/AppearanceProvider'
 import { DemoShell } from '@/demo/DemoShell'
 import { OverviewPage } from '@/demo/pages/OverviewPage'
 import { FoundationsPage } from '@/demo/pages/FoundationsPage'
-import { ButtonsPage } from '@/demo/pages/ButtonsPage'
-import { FormsPage } from '@/demo/pages/FormsPage'
-import { DataPage } from '@/demo/pages/DataPage'
-import { FeedbackPage } from '@/demo/pages/FeedbackPage'
-import { NavigationPage } from '@/demo/pages/NavigationPage'
-import { ChartsPage } from '@/demo/pages/ChartsPage'
-import { AdvancedPage } from '@/demo/pages/AdvancedPage'
+import { ComponentIndexPage } from '@/demo/pages/ComponentIndexPage'
+import { ComponentDocPage } from '@/demo/pages/ComponentDocPage'
 import { PatternsPage } from '@/demo/pages/PatternsPage'
+import { TemplatesIndexPage } from '@/demo/pages/TemplatesIndexPage'
+import { GettingStartedPage } from '@/demo/pages/docs/GettingStartedPage'
+import { ThemingPage } from '@/demo/pages/docs/ThemingPage'
+import { ConventionsPage } from '@/demo/pages/docs/ConventionsPage'
+import { UtilitiesPage } from '@/demo/pages/docs/UtilitiesPage'
 import { ExamplePageHeaderPage } from '@/demo/pages/ExamplePageHeaderPage'
 import { ExampleListPage } from '@/demo/pages/ExampleListPage'
 import { ExampleFormPage } from '@/demo/pages/ExampleFormPage'
@@ -40,6 +40,24 @@ import { ExampleOnboardingPage } from '@/demo/pages/ExampleOnboardingPage'
 import { ExampleI18nPage } from '@/demo/pages/ExampleI18nPage'
 import { ExamplePermissionsPage } from '@/demo/pages/ExamplePermissionsPage'
 import { ExampleChoicePage } from '@/demo/pages/ExampleChoicePage'
+import { ExampleResetPasswordPage } from '@/demo/pages/ExampleResetPasswordPage'
+import { ExampleInvitePage } from '@/demo/pages/ExampleInvitePage'
+import { ExampleApiKeysPage } from '@/demo/pages/ExampleApiKeysPage'
+
+const LEGACY_COMPONENT_REDIRECTS: Record<string, string> = {
+  buttons: 'button',
+  forms: 'field',
+  data: 'data-table',
+  feedback: 'alert',
+  navigation: 'page-header',
+  charts: 'chart-container',
+  advanced: 'command-palette',
+}
+
+function LegacyComponentRedirect({ legacy }: { legacy: string }) {
+  const slug = LEGACY_COMPONENT_REDIRECTS[legacy] ?? ''
+  return <Navigate to={slug ? `/components/${slug}` : '/components'} replace />
+}
 
 export default function App() {
   return (
@@ -50,14 +68,27 @@ export default function App() {
             <Routes>
               <Route element={<DemoShell />}>
                 <Route index element={<OverviewPage />} />
+                <Route path="docs/getting-started" element={<GettingStartedPage />} />
+                <Route path="docs/theming" element={<ThemingPage />} />
+                <Route path="docs/conventions" element={<ConventionsPage />} />
+                <Route path="docs/utilities" element={<UtilitiesPage />} />
                 <Route path="foundations" element={<FoundationsPage />} />
-                <Route path="components/buttons" element={<ButtonsPage />} />
-                <Route path="components/forms" element={<FormsPage />} />
-                <Route path="components/data" element={<DataPage />} />
-                <Route path="components/feedback" element={<FeedbackPage />} />
-                <Route path="components/navigation" element={<NavigationPage />} />
-                <Route path="components/charts" element={<ChartsPage />} />
-                <Route path="components/advanced" element={<AdvancedPage />} />
+                <Route path="templates" element={<TemplatesIndexPage />} />
+                <Route path="components" element={<ComponentIndexPage />} />
+                <Route path="components/buttons" element={<LegacyComponentRedirect legacy="buttons" />} />
+                <Route path="components/forms" element={<LegacyComponentRedirect legacy="forms" />} />
+                <Route path="components/data" element={<LegacyComponentRedirect legacy="data" />} />
+                <Route path="components/feedback" element={<LegacyComponentRedirect legacy="feedback" />} />
+                <Route
+                  path="components/navigation"
+                  element={<LegacyComponentRedirect legacy="navigation" />}
+                />
+                <Route path="components/charts" element={<LegacyComponentRedirect legacy="charts" />} />
+                <Route
+                  path="components/advanced"
+                  element={<LegacyComponentRedirect legacy="advanced" />}
+                />
+                <Route path="components/:slug" element={<ComponentDocPage />} />
                 <Route path="patterns" element={<PatternsPage />} />
                 <Route path="examples/page" element={<ExamplePageHeaderPage />} />
                 <Route path="examples/list" element={<ExampleListPage />} />
@@ -69,6 +100,9 @@ export default function App() {
                 <Route path="examples/login" element={<ExampleLoginPage />} />
                 <Route path="examples/register" element={<ExampleRegisterPage />} />
                 <Route path="examples/verify-email" element={<ExampleVerifyEmailPage />} />
+                <Route path="examples/reset-password" element={<ExampleResetPasswordPage />} />
+                <Route path="examples/invite" element={<ExampleInvitePage />} />
+                <Route path="examples/api-keys" element={<ExampleApiKeysPage />} />
                 <Route path="examples/strong-confirm" element={<ExampleStrongConfirmPage />} />
                 <Route path="examples/typography" element={<ExampleTypographyPage />} />
                 <Route path="examples/dashboard" element={<ExampleDashboardPage />} />

@@ -36,7 +36,7 @@ description: >-
 | 注册表单 | `/examples/register` | `ExampleRegisterPage.tsx` |
 | 邮箱验证码 | `/examples/verify-email` | `ExampleVerifyEmailPage.tsx` |
 | 输入匹配字符强确认（抽屉） | `/examples/strong-confirm` | `ExampleStrongConfirmPage.tsx` |
-| 居中强确认 / Modal 确认 | `/components/feedback` | `FeedbackPage.tsx`（`StrongConfirm`） |
+| 居中强确认 / Modal 确认 | `/components/confirm-modal` · `/components/confirm` | `ConfirmModalDoc` / `ConfirmDoc` |
 | 定宽业务表单 | `/examples/form` | `ExampleFormPage.tsx` |
 | 大卡片路径选择（推荐 Badge） | `/examples/choice` | `ExampleChoicePage.tsx` |
 | 分区设置 / DangerZone | `/examples/settings` | `ExampleSettingsPage.tsx` |
@@ -61,9 +61,13 @@ description: >-
 | 日志页 | `/examples/log` | `ExampleLogPage.tsx` |
 | 字体字号 | `/examples/typography` | `ExampleTypographyPage.tsx` |
 | 组合模式 | `/patterns` | `PatternsPage.tsx` |
-| 令牌 / 色 / 字 | `/foundations` | `FoundationsPage.tsx` |
-| 文字 + Badge/Tag 混排 | `/components/data` | `DataPage.tsx`（`MetaRow`）+ `ExampleListDetailPage.tsx` |
-| 单组件 API 演示 | `/components/{buttons,forms,data,feedback,navigation,charts,advanced}` | 同名 `*Page.tsx` |
+| 令牌 / 色 / 字 / 圆角 | `/foundations` | `FoundationsPage.tsx` |
+| 接入 / Provider / 应用壳 | `/docs/getting-started` | `docs/GettingStartedPage.tsx` |
+| 主题 / 品牌色 | `/docs/theming` | `docs/ThemingPage.tsx` |
+| 组件选型规则 | `/docs/conventions` | `docs/ConventionsPage.tsx` |
+| 全部页面模板 | `/templates` | `TemplatesIndexPage.tsx` · `catalog/templates.ts` |
+| 文字 + Badge/Tag 混排 | `/components/meta-row` · `/components/badge` | `MetaRowDoc` / `BadgeDoc` + `ExampleListDetailPage.tsx` |
+| 单组件文档 | `/components/<slug>` | `src/demo/docs/components/*Doc.tsx` · 分类索引 `/components` · 分类 `catalog/categories.ts` |
 
 列表 `tpl`：`sortable` \| `static` \| `pinned` \| `tree` \| `cards` \| `compact` \| `resource`。  
 完整路径均在 `src/demo/pages/`（组件馆页同目录）。更细的文件表见 [reference.md](reference.md)#示例页面索引。
@@ -118,9 +122,9 @@ GitHub Pages / 子路径：`withBase()`（`@/lib/baseUrl`）；`npm run build:pa
 
 | 场景 | 用法 |
 |------|------|
-| 带侧栏应用 | `AppShell` + `navGroups` + `sidebarFooter`（`UserMenu`） |
+| 带侧栏应用 | `AppShell` + `navGroups` + `sidebarFooter`（`UserMenu`）；`navGroups` 支持 `section` 分区标题与 `collapsible` 可折叠分组 |
 | 页头 | `PageHeader`：`actions` 常显；`actionItems` + `overflow` 收进「更多」；主按钮默认 `md` |
-| 定宽表单/设置 | `className="page-narrow"` |
+| 定宽表单/设置 | `FormPage`（等价 `page-narrow`） |
 | 全宽列表 | `DataTable` / `ListPage`；顶栏 `?q=`；列表 `?tpl=` |
 | 分区设置 | `SectionCard` + `SettingsRow` / `Field` / `Switch`；`DangerZone`；`AccentPicker` |
 | 空态 / 加载 | `EmptyState` · `Spinner` / `Skeleton*` / `ResourceState` |
@@ -155,7 +159,7 @@ GitHub Pages / 子路径：`withBase()`（`@/lib/baseUrl`）；`npm run build:pa
 
 ## 缺口
 
-仍按需：Mention / 重型 RichText、虚拟长列表、Playwright 视觉回归。新示例必须挂进本索引 + `reference.md` + 侧栏/概览。
+仍按需：Mention / 重型 RichText、虚拟长列表、Playwright 视觉回归。新示例必须挂进本索引 + `reference.md` + `catalog/templates.ts`（侧栏 / 模板总览自动生成）；新组件必须挂进 `catalog/registry.ts` + `catalog/categories.ts`。
 
 ## 反例
 

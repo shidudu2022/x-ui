@@ -625,6 +625,7 @@ export function DateRangePicker({
   invalid,
   minuteStep = 1,
   disabledDate,
+  block = true,
   className,
 }: {
   start?: string
@@ -636,6 +637,8 @@ export function DateRangePicker({
   invalid?: boolean
   minuteStep?: number
   disabledDate?: (dateISO: string) => boolean
+  /** Full-width trigger (forms). Set false for toolbars. */
+  block?: boolean
   className?: string
 }) {
   const [open, setOpen] = useState(false)
@@ -658,9 +661,12 @@ export function DateRangePicker({
   const draftParts = splitValue(draft)
   const rangeStartISO = draft ?? (startParts.date || undefined)
   const rangeEndISO = draft ? undefined : endParts.date || undefined
+  const sameDay = Boolean(startParts.date && endParts.date && startParts.date === endParts.date)
   const display =
     start && end
-      ? `${formatDisplay(start, mode)} → ${formatDisplay(end, mode)}`
+      ? sameDay && mode === 'date'
+        ? formatDisplay(start, mode)
+        : `${formatDisplay(start, mode)} → ${formatDisplay(end, mode)}`
       : start
         ? `${formatDisplay(start, mode)} → …`
         : ''
@@ -723,6 +729,7 @@ export function DateRangePicker({
         open && 'open',
         invalid && 'is-invalid',
         disabled && 'is-disabled',
+        !block && 'is-inline-width',
         className,
       )}
       ref={rootRef}

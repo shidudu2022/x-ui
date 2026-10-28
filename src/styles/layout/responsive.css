@@ -106,6 +106,7 @@
 
   /* Always show labels in the mobile drawer */
   .sidebar.is-collapsed .demo-nav-group-label,
+  .sidebar.is-collapsed .nav-section-label,
   .sidebar.is-collapsed .nav-item-label,
   .sidebar.is-collapsed .nav-divider,
   .sidebar.is-collapsed .user-meta,
@@ -190,8 +191,7 @@
   }
 
   .grid-2,
-  .form-grid,
-  .metric-grid {
+  .form-grid {
     grid-template-columns: 1fr;
   }
 
@@ -285,6 +285,14 @@
     word-break: break-word;
     max-width: 100%;
     overflow-x: auto;
+  }
+
+  /* Keep component-doc source snippets formatted (do not wrap into one line) */
+  .doc-demo .doc-demo-code,
+  .doc-demo .doc-demo-code .code-block-pre {
+    white-space: pre;
+    overflow-wrap: normal;
+    word-break: normal;
   }
 
   .data-table {
@@ -427,6 +435,13 @@
 
   .page-header .actions .btn {
     flex: 1 1 100%;
+  }
+
+  .metric-grid,
+  .metric-grid.cols-2,
+  .metric-grid.cols-3,
+  .metric-grid.cols-4 {
+    grid-template-columns: 1fr;
   }
 }
 

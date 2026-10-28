@@ -1,133 +1,169 @@
 import { Link } from 'react-router-dom'
-import { useAppearance } from '@/theme/AppearanceProvider'
-import {
-  AccentPicker,
-  Card,
-  PageHeader,
-  Segmented,
-  ThemePicker,
-  WallpaperPicker,
-} from '@/components/ui'
+import { Badge, Card, CodeBlock, Heading, Text } from '@/components/ui'
+import { ACCENTS } from '@/theme/accents'
+import { THEMES } from '@/theme/themes'
+import { CATEGORIES } from '@/demo/catalog/categories'
+import { COMPONENT_CATALOG, entriesOfCategory } from '@/demo/catalog/registry'
+import { ALL_TEMPLATES } from '@/demo/catalog/templates'
 import { ShowcaseSection } from '../ShowcaseSection'
 
-const COMPONENTS = [
-  { label: '按钮', to: '/components/buttons', desc: '主次 / 危险 / Loading' },
-  { label: '表单', to: '/components/forms', desc: '输入、选择、开关' },
-  { label: '数据', to: '/components/data', desc: '表格、标签、空态' },
-  { label: '反馈', to: '/components/feedback', desc: 'Alert、Toast、Modal' },
-  { label: '导航', to: '/components/navigation', desc: 'Tabs、Steps、ChoiceCard' },
-  { label: '图表', to: '/components/charts', desc: '折线、柱状、饼图' },
-  { label: '进阶', to: '/components/advanced', desc: '日期、级联、Sheet' },
+const FEATURES = [
+  {
+    title: '为控制台而生',
+    body: 'AppShell、ResourceList、DataTable、强确认抽屉、向导与日志——运维 / 管理后台的常见场景都有现成骨架。',
+  },
+  {
+    title: '令牌驱动的外观',
+    body: `深浅色 × ${THEMES.length} 个主题包 × ${ACCENTS.length} 种强调色 × 2 档密度，全部由 CSS 变量驱动，覆盖令牌即可定制品牌。`,
+  },
+  {
+    title: '示例即文档',
+    body: '每个组件页都有可交互示例与格式化源码、使用场景和 API；整页模板可直接对照复制。',
+  },
+  {
+    title: '轻依赖',
+    body: '原生 CSS + @layer，无 Tailwind / UI 库依赖；React 19、TypeScript 类型完整，图表基于 recharts。',
+  },
 ]
 
-const EXAMPLES = [
-  { label: '仪表盘', to: '/examples/dashboard', desc: '指标 + 图表' },
-  { label: '设置', to: '/examples/settings', desc: '分区表单' },
-  { label: '空态 / 404', to: '/examples/empty', desc: 'EmptyState' },
-  { label: '搜索', to: '/examples/search', desc: '结果列表' },
-  { label: '对比', to: '/examples/compare', desc: '双栏 Diff' },
-  { label: '资料', to: '/examples/profile', desc: '头像 + 抽屉' },
-  { label: '角色', to: '/examples/roles', desc: '多选表格' },
-  { label: '通知', to: '/examples/notifications', desc: '消息中心' },
-  { label: '骨架', to: '/examples/skeleton', desc: '加载占位' },
-  { label: '列表', to: '/examples/list', desc: '可排序 / 树 / 卡片 / ResourceList' },
-  { label: '列表详情', to: '/examples/list-detail', desc: '详情按钮 → 抽屉' },
-  { label: '表单页', to: '/examples/form', desc: '定宽表单' },
-  { label: '路径选择', to: '/examples/choice', desc: 'ChoiceCard' },
-  { label: '登录', to: '/examples/login', desc: 'LoginCard' },
-  { label: '注册', to: '/examples/register', desc: '注册 → 邮箱验证码' },
-  { label: '邮箱验证', to: '/examples/verify-email', desc: 'PinInput 验证码' },
-  { label: '强确认', to: '/examples/strong-confirm', desc: '抽屉内输入匹配字符' },
-  { label: '错误与离线', to: '/examples/errors', desc: '403 / 500 / ResourceState' },
-  { label: '审计', to: '/examples/audit', desc: 'Timeline + 日志' },
-  { label: '开通', to: '/examples/onboarding', desc: '多步提交完成态' },
-  { label: '文案密度', to: '/examples/i18n', desc: '长文案 / 密度' },
-  { label: '权限', to: '/examples/permissions', desc: '禁用 / 隐藏' },
+const START_HERE = [
+  { to: '/docs/getting-started', title: '快速开始', desc: '安装、Provider、应用壳、第一个页面' },
+  { to: '/docs/theming', title: '主题与外观', desc: '深浅色 / 主题 / 强调色 / 品牌色' },
+  { to: '/docs/conventions', title: '开发约定', desc: '布局、表单、列表与反馈的选型规则' },
+  { to: '/foundations', title: '设计令牌', desc: '颜色、字号、圆角与图表色板' },
 ]
 
-function IndexGroup({
-  title,
-  items,
-}: {
-  title: string
-  items: { label: string; to: string; desc: string }[]
-}) {
-  return (
-    <section className="index-group">
-      <header className="index-group-head">
-        <h3>{title}</h3>
-        <span className="muted">{items.length}</span>
-      </header>
-      <div className="index-grid">
-        {items.map((item) => (
-          <Link key={item.to} to={item.to} className="index-tile">
-            <span className="index-tile-label">{item.label}</span>
-            <span className="index-tile-desc">{item.desc}</span>
-          </Link>
-        ))}
-      </div>
-    </section>
-  )
-}
+const FEATURED_TEMPLATES = [
+  '/examples/list',
+  '/examples/form',
+  '/examples/settings',
+  '/examples/dashboard',
+  '/examples/login',
+  '/examples/strong-confirm',
+]
 
 export function OverviewPage() {
-  const { modePreference, setModePreference, density, setDensity, theme } = useAppearance()
+  const featured = FEATURED_TEMPLATES.map((to) => ALL_TEMPLATES.find((t) => t.to === to)).filter(
+    (t): t is NonNullable<typeof t> => Boolean(t),
+  )
 
   return (
     <div>
-      <PageHeader
-        title="X-UI"
-        description="从设计稿抽离的通用 React UI 框架。侧栏分页浏览组件，可按模块接入业务项目。"
-      />
+      <section className="hero">
+        <Badge tone="info" className="hero-badge">
+          React 19 · TypeScript · CSS 变量
+        </Badge>
+        <h1>X-UI · 面向控制台的 React 设计系统</h1>
+        <p>
+          {COMPONENT_CATALOG.length} 个组件、{ALL_TEMPLATES.length} 个页面模板，覆盖应用壳、表单、数据表、图表与危险操作确认。
+          样式由 CSS 变量驱动，可按模块接入业务项目。
+        </p>
+        <CodeBlock
+          compact
+          className="hero-install"
+          language="bash"
+          title="安装"
+          code="npm install @shidudu2022/x-ui"
+        />
+        <div className="hero-actions">
+          <Link to="/docs/getting-started" className="btn btn-primary">
+            快速开始
+          </Link>
+          <Link to="/components" className="btn btn-secondary">
+            浏览组件
+          </Link>
+          <Link to="/templates" className="btn btn-secondary">
+            查看模板
+          </Link>
+        </div>
+      </section>
 
-      <ShowcaseSection title="外观" description="深浅色 / 主题 / 壁纸 / 强调色 / 密度写入 body[data-*] 与 localStorage。">
-        <Card padded className="appearance-demo-card">
-          <div className="stack">
-            <strong>深浅色</strong>
-            <Segmented
-              value={modePreference}
-              onChange={setModePreference}
-              options={[
-                { value: 'system', label: '跟随系统' },
-                { value: 'light', label: '浅色' },
-                { value: 'dark', label: '深色' },
-              ]}
-            />
-            <strong>主题</strong>
-            <ThemePicker />
-            {theme === 'glass' ? (
-              <>
-                <strong>壁纸</strong>
-                <WallpaperPicker />
-              </>
-            ) : null}
-            <strong>强调色</strong>
-            <AccentPicker />
-            <strong>密度</strong>
-            <Segmented
-              value={density}
-              onChange={setDensity}
-              options={[
-                { value: 'comfortable', label: '舒适' },
-                { value: 'compact', label: '紧凑' },
-              ]}
-            />
-          </div>
-        </Card>
+      <div className="stat-strip">
+        <div className="stat-strip-item">
+          <strong>{COMPONENT_CATALOG.length}</strong>
+          <span>组件</span>
+        </div>
+        <div className="stat-strip-item">
+          <strong>{CATEGORIES.length}</strong>
+          <span>组件分类</span>
+        </div>
+        <div className="stat-strip-item">
+          <strong>{ALL_TEMPLATES.length}</strong>
+          <span>页面模板</span>
+        </div>
+        <div className="stat-strip-item">
+          <strong>{THEMES.length * ACCENTS.length * 2}</strong>
+          <span>外观组合</span>
+        </div>
+      </div>
+
+      <ShowcaseSection title="从这里开始">
+        <div className="category-grid">
+          {START_HERE.map((s) => (
+            <Link key={s.to} to={s.to} className="category-card">
+              <div className="category-card-head">
+                <strong>{s.title}</strong>
+              </div>
+              <p>{s.desc}</p>
+            </Link>
+          ))}
+        </div>
       </ShowcaseSection>
 
-      <ShowcaseSection
-        title="组件与示例索引"
-        description="按模块跳转；也可从左侧导航进入。"
-      >
-        <div className="index-catalog">
-          <IndexGroup title="组件" items={COMPONENTS} />
-          <IndexGroup title="示例页" items={EXAMPLES} />
+      <ShowcaseSection title="特性">
+        <div className="category-grid">
+          {FEATURES.map((f) => (
+            <Card key={f.title} padded className="guide-card">
+              <Heading level="card" as="h3">
+                {f.title}
+              </Heading>
+              <Text variant="muted" size="md" as="p" style={{ marginTop: 6 }}>
+                {f.body}
+              </Text>
+            </Card>
+          ))}
+        </div>
+      </ShowcaseSection>
+
+      <ShowcaseSection title="组件分类" description="每个组件页都包含引入方式、使用场景、示例源码与 API。">
+        <div className="category-grid">
+          {CATEGORIES.map((c) => {
+            const entries = entriesOfCategory(c)
+            return (
+              <Link key={c.id} to={`/components#cat-${c.id}`} className="category-card">
+                <div className="category-card-head">
+                  <strong>{c.label}</strong>
+                  <span>{entries.length}</span>
+                </div>
+                <p>{c.description}</p>
+                <div className="category-card-sample">
+                  {entries
+                    .slice(0, 5)
+                    .map((e) => e.name)
+                    .join(' · ')}
+                  …
+                </div>
+              </Link>
+            )
+          })}
+        </div>
+      </ShowcaseSection>
+
+      <ShowcaseSection title="常用页面模板" description="整页示例，可直接对照复制结构与校验方式。">
+        <div className="category-grid">
+          {featured.map((t) => (
+            <Link key={t.to} to={t.to} className="category-card">
+              <div className="category-card-head">
+                <strong>{t.label}</strong>
+              </div>
+              <p>{t.desc}</p>
+            </Link>
+          ))}
         </div>
         <p className="index-footnote muted">
-          更多组合见 <Link to="/patterns" className="text-link">组合模式</Link>
+          全部 {ALL_TEMPLATES.length} 个模板见 <Link to="/templates" className="text-link">页面模板</Link>
           {' · '}
-          令牌见 <Link to="/foundations" className="text-link">基础</Link>
+          局部组合见 <Link to="/patterns" className="text-link">组合模式</Link>
         </p>
       </ShowcaseSection>
     </div>

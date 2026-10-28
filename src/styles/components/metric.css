@@ -1,7 +1,19 @@
 .metric-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(var(--metric-cols, 2), minmax(0, 1fr));
   gap: 8px;
+}
+
+.metric-grid.cols-2 {
+  --metric-cols: 2;
+}
+
+.metric-grid.cols-3 {
+  --metric-cols: 3;
+}
+
+.metric-grid.cols-4 {
+  --metric-cols: 4;
 }
 
 .metric {

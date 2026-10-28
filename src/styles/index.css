@@ -51,6 +51,7 @@
 
 @import './charts/chart.css' layer(charts);
 @import './demo/showcase.css' layer(demo);
+@import './demo/doc.css' layer(demo);
 
 /* Pin after form so .field input height does not win */
 @import './components/pin-input.css' layer(components);
@@ -60,3 +61,14 @@
 
 /* Density last so compact overrides can win */
 @import './tokens/density.css' layer(density);
+
+/*
+ * Unlayered: win over layered responsive `pre { white-space: pre-wrap }`
+ * so doc example source keeps real newlines / indentation.
+ */
+.doc-demo .doc-demo-code,
+.doc-demo .doc-demo-code .code-block-pre {
+  white-space: pre;
+  overflow-wrap: normal;
+  word-break: normal;
+}

@@ -20,37 +20,8 @@ export function PatternsPage() {
     <div>
       <PageHeader
         title="组合模式"
-        description="登录、向导、仪表盘等局部组合。完整页面示例见侧栏「示例」。"
+        description={<>登录、向导、仪表盘等局部组合。整页示例见 <Link to="/templates" className="text-link">页面模板</Link>。</>}
       />
-
-      <ShowcaseSection title="完整页面示例">
-        <div className="showcase-row">
-          <Link to="/examples/typography" className="btn btn-secondary">
-            字体字号
-          </Link>
-          <Link to="/examples/page" className="btn btn-secondary">
-            页面标题
-          </Link>
-          <Link to="/examples/list" className="btn btn-secondary">
-            列表页
-          </Link>
-          <Link to="/examples/form" className="btn btn-secondary">
-            表单页
-          </Link>
-          <Link to="/examples/detail" className="btn btn-secondary">
-            详情页
-          </Link>
-          <Link to="/examples/wizard" className="btn btn-secondary">
-            向导页
-          </Link>
-          <Link to="/examples/log" className="btn btn-secondary">
-            日志页
-          </Link>
-          <Link to="/examples/login" className="btn btn-secondary">
-            登录页
-          </Link>
-        </div>
-      </ShowcaseSection>
 
       <ShowcaseSection title="Login 卡片">
         <div className="login-screen" style={{ minHeight: 360, position: 'relative' }}>

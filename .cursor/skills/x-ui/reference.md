@@ -16,7 +16,7 @@ Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner
 - **Badge**: tone `success` | `warn` | `danger` | `info` | `neutral`；`size` `sm` | `md`；`bordered` 默认 `true`
 - **Tag**: tone `neutral` | `primary` | `info` | `success` | `warn` | `danger`；`size` `sm` | `md`
 - **MetaRow**：文字与 Badge/Tag 横排混用（`align-items: center`）；列表单元格 / 详情顶栏优先用它，勿手写 column flex 以免标签被拉宽
-- **DatePicker / DateRangePicker** `mode`: `date` | `datetime`；`minuteStep`；`disabledDate`；范围双月；datetime：双日历 + 右侧开始/结束时间滚轮
+- **DatePicker / DateRangePicker** `mode`: `date` | `datetime`；`minuteStep`；`disabledDate`；范围双月；datetime：双日历 + 右侧开始/结束时间滚轮；`DateRangePicker` `block?: boolean`（默认占满；工具栏用 `false`）；起止同一天时触发器只显示一天
 - **TimePicker**：`HH:mm`，`minuteStep`
 - **ColorInput**：自定义 HSV（非原生 color）；受控 `value` / `onChange`（`#rrggbb`）
 - **Drawer** `size`: `sm` | `md` | `lg` | `xl`；`side`: `left` | `right`；进场 `usePresence`
@@ -43,6 +43,7 @@ Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner
 - **ResourceState**：`idle` | `loading` | `empty` | `error` | `offline`
 - **ImagePreview**：`src` 等；部署子路径配合 `withBase`
 - **TotpBindPanel**：`secret` / `account` / `issuer`；可选 `qrSrc`，默认本地 SVG QR（`uqr`）
+- **MetricGrid** `columns?: 2 | 3 | 4`（默认 2；窄屏仍 1 列）
 - **Stack / FormGrid / CatalogTile / CatalogGroup**：间距与目录布局原语
 - **ChoiceCard / ChoiceCardGrid**：大卡片路径选择（导入/创建/开通）；`recommended` 用 `Badge`（不改描边/底，避免像选中）；勿与小链 `CatalogTile` 混用
 
@@ -51,7 +52,7 @@ Accordion, AccentPicker, Alert, Avatar, AvatarGroup, AvatarUpload, Badge, Banner
 AppShell, Brand, Breadcrumbs, NavIcon, Sidebar, ThemeDrawer, Topbar, UserMenu
 
 - `AppShell`：侧栏折叠 `localStorage` key `x-ui.sidebar-collapsed`；窄屏抽屉导航
-- `NavGroup` / `NavItem`：`{ label?, items: { to, label, icon?, end? }[] }`
+- `NavGroup` / `NavItem`：`{ label?, section?, collapsible?, defaultOpen?, icon?, items: { to, label, icon?, end? }[] }`；`section` 在首个同名分组前渲染分区标题；`collapsible` 渲染可折叠分组（含当前路由自动展开；侧栏折叠成图标栏时变为单个分组图标）
 - `ThemeDrawer`：深浅色 / 主题（`ThemePicker`）/ 强调色（`AccentPicker`）/ 密度；无「完成」按钮
 
 ## `@/components/charts`
@@ -92,14 +93,18 @@ Agent 实现业务页时：**先按场景打开对应文件照抄结构**，再�
 
 | 场景 | 路由 | 源码 |
 |------|------|------|
-| 概览 | `/` | `OverviewPage.tsx` |
-| 基础令牌 | `/foundations` | `FoundationsPage.tsx` |
+| 概览（落地页） | `/` | `OverviewPage.tsx` |
+| 快速开始 | `/docs/getting-started` | `docs/GettingStartedPage.tsx` |
+| 主题与外观 | `/docs/theming` | `docs/ThemingPage.tsx` |
+| 开发约定 | `/docs/conventions` | `docs/ConventionsPage.tsx` |
+| 设计令牌 | `/foundations` | `FoundationsPage.tsx` |
+| 页面模板总览 | `/templates` | `TemplatesIndexPage.tsx` |
 | 组合模式 | `/patterns` | `PatternsPage.tsx` |
 | 登录 + TOTP | `/examples/login` | `ExampleLoginPage.tsx` |
 | 注册 | `/examples/register` | `ExampleRegisterPage.tsx` |
 | 邮箱验证码 | `/examples/verify-email` | `ExampleVerifyEmailPage.tsx` |
 | 强确认（抽屉） | `/examples/strong-confirm` | `ExampleStrongConfirmPage.tsx` |
-| 强确认（Modal） | `/components/feedback` | `FeedbackPage.tsx` |
+| 强确认（Modal） | `/components/confirm-modal` | `docs/components/ConfirmModalDoc.tsx` |
 | 定宽表单 | `/examples/form` | `ExampleFormPage.tsx` |
 | 路径选择 / ChoiceCard | `/examples/choice` | `ExampleChoicePage.tsx` |
 | 设置 / DangerZone | `/examples/settings` | `ExampleSettingsPage.tsx` |
@@ -112,6 +117,11 @@ Agent 实现业务页时：**先按场景打开对应文件照抄结构**，再�
 | 列表·卡片 | `?tpl=cards` | `list/ListCardsTemplate.tsx` |
 | 列表·紧凑 | `?tpl=compact` | `list/ListCompactTemplate.tsx` |
 | 列表·ResourceList | `?tpl=resource` | `list/ListResourceTemplate.tsx` |
+| 组件索引（按分类） | `/components` | `ComponentIndexPage.tsx` |
+| 单组件文档 | `/components/<slug>` | `docs/components/*Doc.tsx` |
+| 重置密码 | `/examples/reset-password` | `ExampleResetPasswordPage.tsx` |
+| 邀请成员 | `/examples/invite` | `ExampleInvitePage.tsx` |
+| API Key | `/examples/api-keys` | `ExampleApiKeysPage.tsx` |
 | 详情 / 页头溢出 | `/examples/detail` | `ExampleDetailPage.tsx` |
 | 页头 | `/examples/page` | `ExamplePageHeaderPage.tsx` |
 | 仪表盘 | `/examples/dashboard` | `ExampleDashboardPage.tsx` |
@@ -130,8 +140,21 @@ Agent 实现业务页时：**先按场景打开对应文件照抄结构**，再�
 | 文案密度 | `/examples/i18n` | `ExampleI18nPage.tsx` |
 | 日志 | `/examples/log` | `ExampleLogPage.tsx` |
 | 字体 | `/examples/typography` | `ExampleTypographyPage.tsx` |
-| 组件馆 | `/components/*` | `ButtonsPage` / `FormsPage` / `DataPage`（含 MetaRow 混排） / `FeedbackPage` / `NavigationPage` / `ChartsPage` / `AdvancedPage` |
+| 组件文档 | `/components/<slug>` | `docs/components/*Doc.tsx`（由 `scripts/gen-component-docs.mjs` 生成） |
 
-路由注册：`src/App.tsx`。侧栏标题：`src/demo/DemoShell.tsx`。
+路由注册：`src/App.tsx`。侧栏与面包屑：`src/demo/DemoShell.tsx`。
+
+## 文档站信息架构（数据源）
+
+| 数据 | 文件 | 说明 |
+|------|------|------|
+| 组件分类 | `src/demo/catalog/categories.ts` | 9 个分类 + slug 顺序；**每个 slug 必须恰好出现一次** |
+| 组件目录 | `src/demo/catalog/registry.ts` | `slug / name / summary / related`；`category`、`exports` 自动派生（`EXPORT_OVERRIDES` 补充多导出） |
+| 使用指南 | `src/demo/catalog/usage.ts` | 「何时使用 / 不适用 / 要点」，按 slug 手写，缺省则不显示该区块 |
+| 页面模板 | `src/demo/catalog/templates.ts` | 模板分组 / 描述 / 图标；侧栏、`/templates`、⌘K 共用 |
+| 组件页框架 | `src/demo/docs/ComponentDocLayout.tsx` + `DocPage.tsx` | 引入 → 何时使用 → 示例 → API → 相关 → 上下篇；右侧「本页目录」自动扫描 h2 |
+
+新增组件：`registry.ts` 加条目 → `categories.ts` 归类 → `gen-component-docs.mjs` 加 demo → `node scripts/gen-component-docs.mjs --force` → `npx tsc -b`。
+新增模板：写页面 → `App.tsx` 注册路由 → `templates.ts` 加条目（侧栏自动出现）。
 
 **StrongConfirmDrawer**：抽屉内输入 `confirmValue` / `resourceName` 完全匹配后才能确认。
